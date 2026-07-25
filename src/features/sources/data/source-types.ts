@@ -1,11 +1,14 @@
 import type { CollectionEntry } from "astro:content";
 
 /**
- * One source from the frontmatter of a bias or a mental model.
+ * One source from the frontmatter of a bias, a mental model or design pattern.
  *
  * It is derived from the `bias` collection instead of being declared here so
  * that the type can never drift from `sourceSchema` in `src/content.config.ts`.
- * `bias` and `mentalModels` share that same schema, so either one would do.
+ * `bias` `designPatterns` and `mentalModels` share that same schema,
+ * so either one would do.
+ *
+ * It's the same <"bias">, <"mentalModels"> or <"designPatterns">
  */
 export type Source = CollectionEntry<"bias">["data"]["sources"][number];
 
