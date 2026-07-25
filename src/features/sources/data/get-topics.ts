@@ -4,31 +4,28 @@ import { parseSourceDate } from "./parse-source-date.ts";
 import type { Source } from "./source-types.ts";
 
 /**
- * A topic = a bias or a mental model that HAS sources. It is the unit the
+ * A topic = a bias, a mental model or design pattern that HAS sources. It is the unit the
  * whole feature works with: the drawer paints one folder per topic and the
- * dynamic route builds one page per topic.
+ * dynamic route builds one page per topic. The share the same frontmatter for sources
  */
 export interface Topic {
-	/** "sesgo-anclaje" — the id of the <dialog> in the HTML; prefixed by
-	 *  kind so a bias and a model can never collide in the same page */
 	id: string;
-	/** "anclaje" — the URL segment, /behavior/fuentes/<slug> */
-	slug: string;
+	slug: string; /** the URL segment, /behavior/fuentes/<slug> */
 	kind: "sesgo" | "modelo" | "diseño";
-	/** biasName, modelName, or designs */
 	name: string;
-	/** link to the post, only if it is published (backlog: "upload") */
-	href?: string;
-	/** derived from `backlog`: wip → estudiando, upload → publicado.
-	 *  There is no separate `status` field in the frontmatter. */
-	state: "estudiando" | "publicado";
-	/** publishDate of the post, DD/MM/YYYY */
-	date: string;
+	href?: string; /** link to the post, only if it is published (backlog: "upload") */
+	state:
+		| "estudiando"
+		| "publicado"; /** derived from `backlog`: wip → estudiando, upload → publicado.*/
+	date: string; /** DD/MM/YYYY */
 	sources: Source[];
 }
 
-/** the two collections that carry `sources` in their frontmatter */
-type SourcedEntry = CollectionEntry<"bias"> | CollectionEntry<"mentalModels">;
+/** the two collections that carry `sources` in their frontmatter.*/
+type SourcedEntry =
+	| CollectionEntry<"bias">
+	| CollectionEntry<"mentalModels">
+	| CollectionEntry<"designPatterns">;
 
 /**
  * There is no `status` field in the frontmatter: the state of a topic is
@@ -41,6 +38,8 @@ const toState = (backlog: "wip" | "upload"): Topic["state"] =>
  * The shape of a topic, in one place. Both collections share `id`,
  * `backlog`, `publishDate` and `sources`; only the name field and the
  * route change, so those two arrive already resolved.
+ *
+ * This build a frontmatter (aka object)
  */
 const buildTopic = (
 	entry: SourcedEntry,
@@ -52,8 +51,7 @@ const buildTopic = (
 	slug: entry.id,
 	kind,
 	name,
-	href:
-		entry.data.backlog === "upload" ? `${basePath}/${entry.id}` : undefined,
+	href: entry.data.backlog === "upload" ? `${basePath}/${entry.id}` : undefined,
 	state: toState(entry.data.backlog),
 	date: entry.data.publishDate,
 	sources: entry.data.sources,
@@ -69,6 +67,9 @@ const modelToTopic = (entry: CollectionEntry<"mentalModels">) =>
 		entry.data.modelName,
 		"/behavior/modelos-mentales",
 	);
+
+const designToTopic = (entry: CollectionEntry<"designPatterns">) =>
+	buildTopic(entry, "diseño", entry.data.designPatternName, "/behavior/diseño");
 
 /**
  * A topic with no sources never reaches the drawer, so it never shows an
@@ -102,6 +103,8 @@ const disambiguateSlugs = (topics: Topic[]): Topic[] => {
  * What is being studied goes first (the drawer is a workbench, not an
  * archive) and, within each group, the newest first. Change the order
  * HERE, not in the component.
+ * However in their own pages (/sesgo | /modelos-mentales | /diseño),
+ * the latest rank firts
  */
 const byStudyingThenNewest = (a: Topic, b: Topic) => {
 	if (a.state !== b.state) return a.state === "estudiando" ? -1 : 1;
@@ -120,14 +123,16 @@ const byStudyingThenNewest = (a: Topic, b: Topic) => {
  * between the two.
  */
 export const getTopics = async (): Promise<Topic[]> => {
-	const [biases, models] = await Promise.all([
+	const [biases, models, design] = await Promise.all([
 		getCollection("bias"),
 		getCollection("mentalModels"),
+		getCollection("designPatterns"),
 	]);
 
 	const topics = [
 		...biases.map(biasToTopic),
 		...models.map(modelToTopic),
+		...design.map(designToTopic),
 	].filter(hasSources);
 
 	return disambiguateSlugs(topics).sort(byStudyingThenNewest);
