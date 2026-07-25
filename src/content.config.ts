@@ -154,7 +154,7 @@ const projectCollection = defineCollection({
 });
 
 /**
- * Sources cited in a post (bias or mental model). They are located in the
+ * Sources cited in a post (bias, design or mental model). They are located in the
  * frontmatter of the post itself—no duplicate content—and are
  * displayed as what they are (book, video, quote...) in /behavior/fuentes
  * and in the "Detrás de este post" block on the post detail page.
@@ -283,6 +283,52 @@ const mentalModelsCollection = defineCollection({
 				},
 			),
 });
+const designPatternsCollection = defineCollection({
+	loader: glob({
+		pattern: "**/*.{md,mdx}",
+		base: "./src/content/design-patterns",
+	}),
+	schema: ({ image }) =>
+		z
+			.object({
+				designPatternName: z.string().max(80),
+				cover: z.object({
+					src: image().optional(),
+					alt: z.string(),
+				}),
+				titleTag: z.string().max(60),
+				description: z.string().min(110).max(160),
+				backlog: z.enum(["wip", "upload"]),
+				publishDate: z.string().refine(isValidDateFormat),
+				lastTimeEdited: z
+					.string()
+					.refine(isValidDateFormat)
+					.refine((val) => (val ? isValidDateFormat(val) : true))
+					.transform((val, ctx) => {
+						const publishDate = ctx;
+						return val ?? publishDate;
+					})
+					.optional(),
+				keywords: z.array(z.string()),
+				readingTime: z.number().optional(),
+				sources: z.array(sourceSchema).default([]),
+			})
+			.refine(
+				(data) => {
+					if (data.lastTimeEdited && data.publishDate) {
+						const publishDateObj = new Date(data.publishDate);
+						const lastTimeEditedObj = new Date(data.lastTimeEdited);
+						return lastTimeEditedObj >= publishDateObj;
+					}
+					return true;
+				},
+				{
+					message:
+						"The field { lastTimeEdited } cannot be earlier than { publishDate }.",
+					path: ["lastTimeEdited"],
+				},
+			),
+});
 
 const notesCollection = defineCollection({
 	loader: glob({
@@ -329,5 +375,6 @@ export const collections = {
 	projects: projectCollection,
 	notes: notesCollection,
 	mentalModels: mentalModelsCollection,
+	designPatterns: designPatternsCollection,
 };
 // essay: essayCollection,
