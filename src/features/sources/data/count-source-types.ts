@@ -4,7 +4,7 @@ import { TYPE_LABELS, type Source } from "./source-types.ts";
 
 /** one entry of the header summary: the figure apart from its label */
 export interface TypeTally {
-	n: number;
+	numb: number;
 	label: string;
 }
 
@@ -12,13 +12,9 @@ export interface TypeTally {
  * How many sources of each type a topic keeps, in order of first
  * appearance (a Map preserves insertion order, same as the object literal
  * this replaced).
- *
- * A Map and not a Record because its keys keep the `Source["type"]` union:
- * indexing TYPE_LABELS with them needs no cast, and a type added to the
- * `z.enum` without its label still breaks the build — which is the point.
  */
 export const countSourceTypes = (
-	sources: Source[],
+	sources: Source[], // all sources in behavior/* are the sames structure
 ): Map<Source["type"], number> => {
 	const counts = new Map<Source["type"], number>();
 	for (const source of sources) {
@@ -32,7 +28,7 @@ export const countSourceTypes = (
  * joined string: each type is its own unit in the header.
  */
 export const buildTally = (counts: Map<Source["type"], number>): TypeTally[] =>
-	[...counts].map(([type, n]) => ({
-		n,
-		label: pluralize(n, TYPE_LABELS[type]),
+	[...counts].map(([type, numb]) => ({
+		numb,
+		label: pluralize(numb, TYPE_LABELS[type]),
 	}));

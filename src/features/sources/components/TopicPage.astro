@@ -79,9 +79,9 @@ const TYPE_FILTERS = [...byType.keys()];
 		<div class={styles.topicMeta}>
 			<ul class={styles.topicTally}>
 				{
-					tally.map(({ n, label }) => (
+					tally.map(({ numb, label }) => (
 						<li class={styles.tallyItem}>
-							<span class={styles.tallyN}>{n}</span>
+							<span class={styles.tallyN}>{numb}</span>
 							{label}
 						</li>
 					))
