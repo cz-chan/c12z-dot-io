@@ -14,7 +14,7 @@ export interface TypeTally {
  * this replaced).
  */
 export const countSourceTypes = (
-	sources: Source[], // all sources in behavior/* are the sames structure
+	sources: Source[], // all sources in behavior/* follow the sames structure
 ): Map<Source["type"], number> => {
 	const counts = new Map<Source["type"], number>();
 	for (const source of sources) {
