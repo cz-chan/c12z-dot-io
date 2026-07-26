@@ -86,21 +86,24 @@ const { id, title, titleHref, file = false, sources } = Astro.props;
 						hidden={index !== 0}
 					>
 						{source.type === "cita" ? (
-							<blockquote class={`${styles.sheetQuote} ${styles.clamp2}`}>
+							<blockquote class={`${styles.sheetQuote} ${styles.clamp4}`}>
 								“{source.title}”
 							</blockquote>
 						) : (
-							<h3 class={`${styles.sheetTitle} ${styles.clamp2}`}>
+							<h3 class={`${styles.sheetTitle} ${styles.clamp4}`}>
 								{source.title}
 							</h3>
 						)}
 						{source.author && (
 							<p class={styles.sheetAuthor}>— {source.author}</p>
 						)}
+						{/* only the file is scrolled: in the folder the excerpt is
+					    clamped, so marking it would add a fade and a tab stop over
+					    text that cannot move */}
 						{source.excerpt && (
 							<p
 								class={styles.sheetExcerpt}
-								data-excerpt
+								data-excerpt={file ? "" : undefined}
 							>
 								{source.excerpt}
 							</p>
