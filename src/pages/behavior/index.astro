@@ -2,20 +2,20 @@
 import MainLayout from "@layouts/MainLayout.astro";
 import PagesSEO from "@/seo/PagesSEO.astro";
 
-import { PAGES } from "@/global/pages-info";
+import { PAGES } from "@/global/pages-info.ts";
 
 import BehaviorPage from "@/features/behavior/components/BehaviorPage.astro";
 import { behaviorKeywords } from "@/features/behavior/seo/behavior.keywords";
 ---
 
 <MainLayout>
-  <PagesSEO
-    slot="head"
-    pageTitle={PAGES.behavior.title}
-    pageDescription={PAGES.behavior.description}
-    ogImage={PAGES.behavior.ogImage}
-    ogImageAlt={PAGES.behavior.ogImageAlt}
-    pageKeywords={behaviorKeywords}
-  />
-  <BehaviorPage />
+	<PagesSEO
+		slot="head"
+		pageTitle={PAGES.behavior.title}
+		pageDescription={PAGES.behavior.description}
+		ogImage={PAGES.behavior.ogImage}
+		ogImageAlt={PAGES.behavior.ogImageAlt}
+		pageKeywords={behaviorKeywords}
+	/>
+	<BehaviorPage />
 </MainLayout>

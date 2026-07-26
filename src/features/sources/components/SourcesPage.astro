@@ -43,7 +43,13 @@ const totalSources = countSources(topics);
 	/>
 
 	<header class={styles.pageHeader}>
-		<h1 class={styles.title}>Las fuentes.</h1>
+		{/* el otro extremo lo pone el cartel 04 de /behavior */}
+		<h1
+			class={styles.title}
+			transition:name="sources-header-page-h1-transition-name"
+		>
+			Las fuentes.
+		</h1>
 		<p>
 			Cada una de las carpeta hace referencia a un contenido distinto que he
 			subido (o subiré) en la sección de behavior, ya sea diseño, sesgos o

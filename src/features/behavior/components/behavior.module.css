@@ -1,190 +1,413 @@
 /* ============================================================
  * /behavior — hub de la sección.
- * Índice editorial: tres filas grandes tipo sumario de
- * periódico. El acento de sección (--c-behavior) solo aparece en
- * hover/focus, como detalle puntual.
+ * Un solo módulo brutalista: rail de índice (--rail-w) + cartel a
+ * color. Esquinas duras, hairlines, y el color solo dentro del
+ * cartel — identifica el tipo de contenido, no decora.
+ * Tinta del cartel: --ink-fixed en los dos temas, porque los
+ * colores de sección son claros y saturados en ambos.
  * ============================================================ */
 
+/* `main` va topado a --screen-md; esta página se sale de ahí para ocupar
+ * todo el ancho útil del sitio (--screen-n menos el padding del body).
+ * Full-bleed centrado respecto al viewport: main ya está centrado, así que
+ * left:50% + translateX(-50%) alinea con header y footer. En pantallas
+ * pequeñas manda el viewport y nunca desborda. */
 .behaviorPage {
 	display: grid;
-	margin-inline: auto;
-	max-width: var(--screen-md);
-	width: 100%;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	width: min(calc(100vw - var(--sp-6)), calc(var(--screen-n) - var(--sp-5)));
+	max-width: none;
+
+	/* Medidas propias del módulo que no existen como token global: se
+	 * declaran una vez aquí y se consumen abajo con var(), para no repartir
+	 * números sueltos por el archivo. */
+	--rail-w: var(--wdth-12); /* 12rem — ancho del rail en desktop */
+	--watermark-size: 13rem;
+	--card-title-size: var(--t-h1);
+	--card-title-size-sm: var(--t-intro);
+
+	/* Alto del módulo: fijo. No depende del alto del dispositivo ni del hueco
+	 * que dejan header y footer, así que la feature no necesita nada de fuera
+	 * —ni el layout ni un `:has()`— y se ve idéntica en cualquier pantalla.
+	 * En rem y no en px: 1rem = 14px aquí (`html` va a --t-body), pero si el
+	 * usuario sube el tamaño de fuente del navegador el módulo crece con el
+	 * texto en vez de recortarlo.
+	 * Solo cambia con el ANCHO, y por un motivo de layout: por debajo de
+	 * 48rem el rail se apila sobre el cartel y hay que compensar su alto. */
+	--module-min-h: 50rem; /* 616px — móvil: rail apilado + cartel */
+
+	@media (width >= 48rem) {
+		--module-min-h: 40rem; /* 532px — rail lateral, no resta alto */
+	}
 }
 
 .pageHeader {
-	margin-bottom: var(--sp-4);
+	margin-bottom: var(--sp-6);
 
 	& .title {
 		margin-bottom: var(--sp-2);
 	}
 }
 
-/* ---- Sumario: tres filas ------------------------------------ */
+/* ---- Módulo -------------------------------------------------- */
 
-.index {
-	list-style: none;
+/* El módulo se come el alto que sobra; el suelo evita que se aplaste en
+ * viewports bajos o en móvil, donde el rail se apila sobre el cartel. */
+.module {
+	display: grid;
+	grid-template-columns: 1fr;
+	/* móvil: índice arriba, y todo el resto para el cartel */
+	grid-template-rows: auto 1fr;
+	min-height: var(--module-min-h);
+	border: var(--wdth) solid var(--fg);
+
+	@media (width >= 48rem) {
+		grid-template-columns: var(--rail-w) 1fr;
+		grid-template-rows: 1fr;
+	}
+}
+
+/* ---- Rail ---------------------------------------------------- */
+
+/* Móvil y tablet: el índice se comprime arriba —tres celdas de contenido en
+ * fila y el cajón de fuentes cruzado debajo— para que el cartel a color se
+ * lleve casi toda la pantalla y no haya que bajar a buscarlo. De 48rem en
+ * adelante vuelve a ser la columna lateral. */
+.rail {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	border-bottom: var(--wdth) solid var(--fg);
+
+	@media (width >= 48rem) {
+		display: flex;
+		flex-direction: column;
+		border-bottom: none;
+		border-right: var(--wdth) solid var(--fg);
+	}
+}
+
+.railHead {
+	grid-column: 1 / -1;
+	margin-bottom: 0;
+	padding: var(--sp-3) var(--sp-4);
+	border-bottom: var(--hairline-2);
+	font-family: var(--ff-mono);
+	font-size: var(--t-nano);
+	line-height: 1;
+	letter-spacing: var(--tracking-widest);
+	text-transform: uppercase;
+	color: var(--fg-3);
+}
+
+/* El estado del módulo vive aquí. Nunca `display: none` ni `visibility:
+ * hidden`: matarían el foco de teclado, y con él las flechas ↑↓ que
+ * recorren el índice gratis por ser radios de verdad. */
+.railRadio {
+	position: absolute;
+	width: var(--wdth);
+	height: var(--wdth);
+	margin: calc(var(--wdth) * -1);
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.railItem {
 	display: flex;
 	flex-direction: column;
+	gap: var(--sp-05);
+	text-align: left;
+	cursor: pointer;
+	padding: var(--sp-3) var(--sp-4);
 	border-bottom: var(--hairline-2);
-}
+	border-left: var(--sp-1) solid transparent;
+	transition:
+		background-color var(--t-fast) var(--ease),
+		border-color var(--t-fast) var(--ease);
 
-.row {
-	border-top: var(--hairline-2);
-}
+	/* en la fila de tres, las dos primeras celdas necesitan su propio filo;
+	 * el de la tercera lo pone el borde del rail */
+	&:nth-of-type(-n + 2) {
+		border-right: var(--hairline-2);
+	}
 
-.rowInner {
-	display: grid;
-	grid-template-columns: auto 1fr auto;
-	column-gap: var(--sp-5);
-	row-gap: var(--sp-2);
-	align-items: baseline;
-	padding-block: var(--sp-6);
-
-	&:focus-visible {
-		outline: 0.125rem solid var(--c-behavior);
-		outline-offset: 0.25rem;
+	/* Fuentes no es una sección más: no se lee, se consulta. Va apartada al
+	 * pie del rail, cruzada de lado a lado y sobre su propio fondo, para que
+	 * se lea como cajón y no como el cuarto tema. */
+	&:last-of-type {
+		grid-column: 1 / -1;
+		border-right: none;
+		border-bottom: none;
+		background-color: var(--surface-3);
 	}
 
 	@media (width >= 48rem) {
-		grid-template-columns: var(--wdth-8) 1fr auto auto;
+		&:nth-of-type(-n + 2) {
+			border-right: none;
+		}
+
+		/* el `auto` es lo que lo empuja al fondo de la columna */
+		&:last-of-type {
+			margin-top: auto;
+			border-top: var(--hairline-2);
+		}
+	}
+
+	&:hover {
+		background-color: var(--surface-2);
 	}
 }
 
-.rowIndex {
-	font-family: var(--ff-mono);
-	font-size: var(--t-mili);
-	line-height: var(--lh-mili);
-	color: var(--fg-3);
-	transition: color var(--t-fast) var(--ease);
+/* el foco lo recibe el radio, pero se pinta en su etiqueta */
+.railRadio:focus-visible + .railItem {
+	outline: var(--sp-05) solid var(--accent);
+	outline-offset: calc(var(--sp-05) * -1);
 }
 
-.rowMain {
+.railName {
+	font-family: var(--ff-pixel);
+	font-size: var(--t-micro);
+	text-wrap: balance;
+	line-height: var(--lh-h2);
+	color: var(--fg-3);
+	transition: color var(--t-fast) var(--ease);
+
+	@media (width >= 48rem) {
+		font-size: var(--t-h4);
+	}
+}
+
+/* marca de selección: la decide el radio marcado, que va justo antes */
+.railRadio:checked + .railItem {
+	border-left-color: var(--accent);
+
+	& .railName {
+		color: var(--fg);
+	}
+}
+
+/* ---- Cartel -------------------------------------------------- */
+
+/* Los cuatro carteles comparten celda; solo se pinta el activo.
+ * Sin `min-height` propio: el cartel es la fila `1fr` del módulo, y el módulo
+ * ya tiene su alto en `--module-min-h`. Un suelo aquí solo podría pisarlo. */
+.stack {
+	display: grid;
+}
+
+.card {
+	grid-area: 1 / 1;
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: var(--sp-6);
+	padding: var(--sp-6);
+	background-color: var(--card-color);
+	color: var(--ink-fixed);
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity var(--t-base) var(--ease);
+}
+
+/* el radio vive dentro del rail y el cartel cuelga de `.stack`: no son
+ * hermanos, así que el enlace lo hace `:has()` desde el módulo */
+.module:has(.railRadio:nth-of-type(1):checked) .card:nth-of-type(1),
+.module:has(.railRadio:nth-of-type(2):checked) .card:nth-of-type(2),
+.module:has(.railRadio:nth-of-type(3):checked) .card:nth-of-type(3),
+.module:has(.railRadio:nth-of-type(4):checked) .card:nth-of-type(4) {
+	visibility: visible;
+	opacity: 1;
+}
+
+/* El color de la sección se declara una sola vez por cartel y se reparte
+ * desde `--card-color`: fondo del cartel, y tinta del chip y del botón, que
+ * van en negativo sobre --ink-fixed. Antes esto eran doce reglas
+ * `nth-of-type` repetidas, y la del botón pisaba al `:hover`. */
+.card:nth-of-type(1) {
+	--card-color: var(--c-bias-soft);
+}
+
+.card:nth-of-type(2) {
+	--card-color: var(--c-mental-model);
+}
+
+.card:nth-of-type(3) {
+	--card-color: var(--c-design);
+}
+
+.card:nth-of-type(4) {
+	--card-color: var(--c-source);
+}
+
+.watermark {
+	position: absolute;
+	right: var(--sp-4);
+	bottom: calc(var(--sp-7) * -1);
+	font-family: var(--ff-pixel);
+	font-size: var(--watermark-size);
+	line-height: var(--lh-display);
+	color: color-mix(in srgb, var(--ink-fixed) 13%, transparent);
+	user-select: none;
+	pointer-events: none;
+}
+
+.cardTop,
+.cardBottom {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-4);
+}
+
+/* `typo.css` pinta todos los `p` con --fg-2 (gris claro, pensado para el
+ * fondo oscuro de la página). Dentro del cartel el fondo es color claro,
+ * así que hay que devolverlos a la tinta del cartel a mano. El margen
+ * también sobra: aquí el aire lo reparte el `gap`. */
+.cardEyebrow,
+.cardDescription,
+.cardMetaTop,
+.cardFoot {
+	color: inherit;
+	margin-bottom: 0;
+}
+
+.cardEyebrow {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-2);
+	font-family: var(--ff-mono);
+	font-size: var(--t-nano);
+	line-height: 1;
+	letter-spacing: var(--tracking-widest);
+	text-transform: uppercase;
+}
+
+.cardChip {
+	padding: var(--sp-05) var(--sp-2);
+	background-color: var(--ink-fixed);
+	color: var(--card-color);
+}
+
+/* titular y contador van juntos: el `gap` del `.cardTop` es demasiado aire
+ * entre dos cosas que se leen como una sola línea de información */
+.cardHeading {
 	display: flex;
 	flex-direction: column;
 	gap: var(--sp-2);
-	min-width: 0;
 }
 
-.rowName {
+.cardTitle {
 	font-family: var(--ff-pixel);
-	font-size: clamp(1.375rem, 3.5vw, 1.75rem);
-	line-height: var(--lh-h1);
-	letter-spacing: var(--tracking-widest);
-	color: var(--fg);
-	transition: color var(--t-fast) var(--ease);
+	font-size: var(--card-title-size);
+	line-height: var(--lh-display);
+	letter-spacing: -0.02em;
+	max-width: 16ch;
+	color: inherit;
+
+	@media (width >= 40rem) {
+		font-size: var(--card-title-size-sm);
+	}
 }
 
-.rowDescription {
+.cardMetaTop {
+	font-family: var(--ff-mono);
+	font-size: var(--t-nano);
+	line-height: var(--lh-nano);
+	letter-spacing: var(--tracking-wider);
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--ink-fixed) 65%, transparent);
+}
+
+/* es el texto que de verdad se lee del cartel: peso 500 para que aguante
+ * sobre fondos saturados, y medida corta para que no se desparrame */
+.cardDescription {
 	font-family: var(--ff-rubik);
-	font-size: var(--t-body);
-	line-height: var(--lh-body);
-	color: var(--fg-2);
-	max-width: var(--maxw-prose);
+	font-size: var(--t-h3);
+	font-weight: 500;
+	line-height: var(--lh-h4);
+	letter-spacing: 0;
+	max-width: 38ch;
+	text-wrap: pretty;
 }
 
-.rowMeta {
+.cardRule {
+	display: block;
+	height: var(--sp-05);
+	background-color: var(--ink-fixed);
+}
+
+.cardFoot {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sp-4);
+}
+
+/* dato de servicio: baja un punto respecto a la descripción para que no
+ * compita, pero sin irse al gris ilegible de antes */
+.cardMeta {
 	font-family: var(--ff-mono);
 	font-size: var(--t-micro);
 	line-height: var(--lh-micro);
+	letter-spacing: var(--tracking-wider);
 	text-transform: uppercase;
-	letter-spacing: var(--tracking-eyebrow);
-	color: var(--fg-3);
-	text-align: right;
-	grid-column: 2;
-
-	@media (width >= 48rem) {
-		grid-column: auto;
-	}
+	color: color-mix(in srgb, var(--ink-fixed) 75%, transparent);
 }
 
-.rowArrow {
-	display: none;
+/* Botón en negativo: caja de tinta con el color de la sección dentro. El
+ * borde va desde el estado base —del mismo color que el fondo, así que no
+ * se ve— para que al invertir no baile el layout. */
+.cardCta {
+	padding: var(--sp-2) var(--sp-4);
+	border: var(--wdth) solid var(--ink-fixed);
+	background-color: var(--ink-fixed);
+	color: var(--card-color);
 	font-family: var(--ff-mono);
-	font-size: var(--t-h4);
-	color: var(--fg-3);
-	transform: translateX(0);
+	font-size: var(--t-micro);
+	letter-spacing: var(--tracking-widest);
+	text-transform: uppercase;
 	transition:
-		color var(--t-fast) var(--ease),
-		transform var(--t-base) var(--ease);
+		background-color var(--t-fast) var(--ease),
+		color var(--t-fast) var(--ease);
 
-	@media (width >= 48rem) {
-		display: block;
+	/* al invertir, la tinta pasa al texto: negro sobre blanco, que es el
+	 * contraste máximo disponible y no depende del color de la sección */
+	&:hover {
+		background-color: var(--paper-fixed);
+		color: var(--ink-fixed);
+	}
+
+	&:focus-visible {
+		outline: var(--sp-05) solid var(--ink-fixed);
+		outline-offset: var(--sp-05);
 	}
 }
 
-.row:nth-of-type(1) .rowInner:hover {
-	& .rowIndex,
-	& .rowArrow {
-		color: var(--c-bias);
-	}
-
-	& .rowName {
-		color: var(--c-bias);
-	}
-
-	& .rowArrow {
-		transform: translateX(var(--sp-1));
-	}
-}
-
-.row:nth-of-type(2) .rowInner:hover {
-	& .rowIndex,
-	& .rowArrow {
-		color: var(--c-mental-model);
-	}
-
-	& .rowName {
-		color: var(--c-mental-model);
-	}
-
-	& .rowArrow {
-		transform: translateX(var(--sp-1));
-	}
+/* texto que solo leen lectores de pantalla y buscadores */
+.srOnly {
+	position: absolute;
+	width: var(--wdth);
+	height: var(--wdth);
+	margin: calc(var(--wdth) * -1);
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.rowIndex,
-	.rowName,
-	.rowArrow {
+	.card,
+	.railItem,
+	.railName,
+	.cardCta {
 		transition: none;
 	}
-}
-
-/* ---- Nota al margen: archivo --------------------------------- */
-
-/* El sumario de arriba es contenido escrito; el cajón de abajo es un
- * archivo. En vez de flotar bajo el sumario, se ancla por una etiqueta
- * vertical mono en su filo izquierdo —letras apiladas, tipo lomo de
- * carpeta—, que lo lee como objeto deliberado y no como tarjeta suelta.
- * Toda la separación vertical vive aquí (el cajón ya no aporta margin). */
-.archive {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: var(--sp-4);
-	margin-top: var(--sp-14);
-}
-
-.archiveRail {
-	flex: none;
-	writing-mode: vertical-rl;
-	text-orientation: upright;
-	padding-top: var(--sp-1);
-	border-right: var(--hairline-2);
-	padding-right: var(--sp-3);
-	font-family: var(--ff-mono);
-	font-size: var(--t-micro);
-	line-height: 1;
-	text-transform: uppercase;
-	letter-spacing: var(--sp-1);
-	color: var(--fg-3);
-	user-select: none;
-}
-
-/* el cajón se queda con el ancho que le sobra al lado de la etiqueta,
- * hasta su tope propio (34rem lo pone sources-disk) */
-.archive > :global(aside) {
-	flex: 1 1 auto;
-	min-width: 0;
 }
