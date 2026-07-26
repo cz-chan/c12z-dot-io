@@ -1,16 +1,9 @@
 ---
 /**
- * /behavior/fuentes/<topic> — the sources of one bias or mental model, a
- * file (folded corner) each, barely overlapped: they are almost fully
- * visible and with a mouse the hovered one comes to the front, but to read
- * one you have to click it (viewer + slider). Files and not folders:
- * here you are already inside the topic's folder.
+ * /behavior/fuentes/<topic> — the sources (folders that contains the files -sources).
  *
  * Grain: 1 file = 1 SOURCE (in the drawer, 1 folder = 1 topic).
  *
- * The `width` on `.topicPage` is not decorative: without it the stack
- * overlap has no width to resolve against and the page overflows on
- * mobile. See §"El ancho explícito" in .docs/features/sources.md.
  */
 import styles from "./sources.module.css";
 
@@ -30,14 +23,7 @@ interface Props {
 }
 
 const { topic } = Astro.props;
-const {
-	id,
-	// kind,
-	name,
-	href,
-	// state,
-	sources,
-} = topic;
+const { id, name, href, sources } = topic;
 
 const byType = countSourceTypes(sources);
 
@@ -48,8 +34,7 @@ const tally = buildTally(byType);
 // the title column never shifts between topics
 const count = String(sources.length).padStart(2, "0");
 
-// only offer toggles for the types this topic actually keeps — with a
-// single type there is nothing to filter, so the whole nav is dropped
+// with a single type there is nothing to filter, so the whole nav is dropped
 const TYPE_FILTERS = [...byType.keys()];
 ---
 
