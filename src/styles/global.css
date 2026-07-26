@@ -124,9 +124,10 @@
 
 	/* Content section colors */
 	--c-behavior: #e22ef6;
+	--c-design: #96b5ec;
 	--c-bias: #a58faa;
-	--c-mental-model: #ed6164;
-	--c-source: #e34a85;
+	--c-mental-model: #e66c54;
+	--c-source: #88ee8b;
 	--c-essay: #33ffe8;
 	--c-library: #ffa424;
 	--c-project: #ff3838;
@@ -160,6 +161,12 @@
 	--ok: #6a9e6a;
 	--warn: #c8a24a;
 	--err: #c86a5c;
+
+	/* Tinta y papel fijos: NO cambian con el tema. Para superficies que ya
+	 * traen su propio color claro (carteles de sección, chips en negativo),
+	 * donde --fg/--fg-inverse invertirían y romperían el contraste. */
+	--ink-fixed: #16171b;
+	--paper-fixed: #ffffff;
 
 	/* ---- Type families ---------------------------------- */
 	--ff-pixel: "Tamago", sans-serif;
