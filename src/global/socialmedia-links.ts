@@ -21,8 +21,8 @@ export const SOCIAL_LINKS: SocialLinksInterface = {
 	},
 	substack: {
 		name: "Substack",
-		url: "https://chemaferrandez.substack.com",
-		userName: "@chemaferrandez",
+		url: "https://czchan.substack.com",
+		userName: "@czchan",
 		title: "ir a Substack de Chema Ferrández - cz",
 	},
 	goodreads: {
