@@ -1,6 +1,6 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 
-import { parseSourceDate } from "./parse-source-date.ts";
+import { parseDate } from "@utils/validating-date.ts";
 import type { Source } from "./source-types.ts";
 
 /**
@@ -108,7 +108,7 @@ const disambiguateSlugs = (topics: Topic[]): Topic[] => {
  */
 const byStudyingThenNewest = (a: Topic, b: Topic) => {
 	if (a.state !== b.state) return a.state === "estudiando" ? -1 : 1;
-	return parseSourceDate(b.date).getTime() - parseSourceDate(a.date).getTime();
+	return parseDate(b.date).getTime() - parseDate(a.date).getTime();
 };
 
 /**
