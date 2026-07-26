@@ -1,8 +1,7 @@
 /**
- * What the two filters of the feature have in common — the drawer's
- * (sources-filters.ts) and a topic's (topic-filters.ts). Both are the same
- * mechanism over different `data-*`: a set of toggles that never re-renders
- * anything, it only hides.
+ * the drawer's (sources-filters.ts) and a topic's (topic-filters.ts).
+ * Both are the same * mechanism over different `data-*`: a set of toggles
+ * that never re-renders anything, it only hides.
  *
  * Two rules hold for both, and they are the reason this file exists:
  *
@@ -36,6 +35,10 @@ export const passes = (selected: Set<string>, value = "") =>
  * `attribute` is the full name ("data-filter-kind") and the value is read
  * with `getAttribute`, which keeps it identical to the markup — no
  * dataset camelCase to convert.
+ *
+ * This btn/filter connect types with apply filter. For each btn/filter read the
+ * attribute, if the Set contains the attribute, all of them switch the data set
+ * to "data-off"
  */
 export const bindToggles = (
 	root: HTMLElement,

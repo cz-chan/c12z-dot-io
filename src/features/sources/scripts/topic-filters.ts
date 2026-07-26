@@ -15,8 +15,13 @@ export const initTopicFilters = () => {
 	const root = claimRoot("[data-topic-root]");
 	if (!root) return;
 
-	const items = [...root.querySelectorAll<HTMLLIElement>("[data-source-item]")];
-	const slides = [...root.querySelectorAll<HTMLDivElement>("[data-slide]")];
+	const items = [
+		...root.querySelectorAll<HTMLLIElement>("[data-source-item]"),
+	]; /* the "files" in /source/*.astro page */
+	const slides = [
+		...root.querySelectorAll<HTMLDivElement>("[data-slide]"),
+	]; /* the filters in the page -source types*/
+
 	const types = new Set<string>();
 
 	const apply = () => {
