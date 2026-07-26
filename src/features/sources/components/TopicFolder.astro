@@ -16,7 +16,7 @@
 import styles from "./sources.module.css";
 import { pluralize } from "@utils/pluralize.ts";
 
-import SourceSheets from "./SourceSheets.astro";
+import SourceFiles from "./SourceFiles.astro";
 import type { Topic } from "../data/get-topics.ts";
 
 interface Props {
@@ -51,7 +51,7 @@ const { id, slug, kind, name, state, sources } = topic;
 		</span>
 	</button>
 
-	<SourceSheets
+	<SourceFiles
 		id={id}
 		title={name}
 		titleHref={`/behavior/fuentes/${slug}`}

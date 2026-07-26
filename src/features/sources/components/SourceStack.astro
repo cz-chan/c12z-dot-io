@@ -23,7 +23,7 @@
  * It renders its own SourceSheets viewer, linked by `id`.
  */
 import styles from "./sources.module.css";
-import SourceSheets from "./SourceSheets.astro";
+import SourceFiles from "./SourceFiles.astro";
 import { TYPE_LABELS, type Source } from "../data/source-types.ts";
 
 interface Props {
@@ -93,7 +93,7 @@ const { id, label, title, loose = false, file = false, sources } = Astro.props;
 		}
 	</ul>
 
-	<SourceSheets
+	<SourceFiles
 		id={id}
 		title={title}
 		file={file}
