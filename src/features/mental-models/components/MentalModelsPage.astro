@@ -4,12 +4,12 @@ import { getCollection } from "astro:content";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
 
-import { parseSourceDate } from "@/features/sources/data/parse-source-date.ts";
+import { parseDate } from "@utils/validating-date.ts";
 
 const models = (await getCollection("mentalModels")).sort(
 	(a, b) =>
-		parseSourceDate(b.data.publishDate).getTime() -
-		parseSourceDate(a.data.publishDate).getTime(),
+		parseDate(b.data.publishDate).getTime() -
+		parseDate(a.data.publishDate).getTime(),
 );
 ---
 
