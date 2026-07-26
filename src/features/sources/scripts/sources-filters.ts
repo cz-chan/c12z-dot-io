@@ -2,8 +2,8 @@ import { bindToggles, claimRoot, passes } from "./filter-toggles.ts";
 
 /**
  * Filters the folders in the drawer (/behavior/fuentes) by name and by kind
- * of topic (bias or mental model). The kinds are toggles: you can turn both
- * on, or leave both off = everything goes through. The source type (book,
+ * of topic (bias, design or mental model). The kinds are toggles: you can turn all
+ * on, or leave off = everything goes through. The source type (book,
  * quote...) is filtered within each topic, not here.
  *
  * The toggle machinery and the `data-*` rules live in ./filter-toggles.ts;
@@ -27,11 +27,15 @@ export const initSourcesFilters = () => {
 
 		for (const cell of cells) {
 			const okName = (cell.dataset.name ?? "").includes(query);
+			/* check if the name of bias/mental/design exist in the user query */
 			cell.hidden = !(okName && passes(kinds, cell.dataset.kind));
+			/* add hidden if query doesn't exist */
 			if (!cell.hidden) visible++;
+			/* add visible count */
 		}
 
 		if (noResults) noResults.hidden = visible > 0;
+		/* to show or not the empty folder message: "Nada en el cajón con esos filtros" */
 	};
 
 	search?.addEventListener("input", () => {
