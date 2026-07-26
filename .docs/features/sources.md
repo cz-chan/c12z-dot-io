@@ -162,9 +162,9 @@ src/features/sources/
 │   ├── sources-filters.ts         search box + topic-type toggles (drawer)
 │   └── topic-filters.ts           source-type toggles (topic page)
 ├── data/
-│   ├── get-topics.ts            builds the "topics" by reading bias + mentalModels
+│   ├── get-topics.ts            builds the "topics" by reading bias + mentalModels + designPatterns
 │   ├── source-types.ts          `Source` type + `TYPE_LABELS`
-│   └── parse-source-date.ts     "DD/MM/YYYY" → Date (for sorting)
+│   └── count-source-types.ts    the per-type tally of the topic header
 └── seo/
     ├── SourcesSEO.content.astro static OG shared by all views
     └── sources.keywords.ts
@@ -182,9 +182,11 @@ src/pages/behavior/fuentes/
 └── [...id].astro    → TopicPage (getStaticPaths over getTopics())
 ```
 
-And, outside the feature, `parse-source-date.ts` is reused by
-`features/mental-models/components/MentalModelsPage.astro` to sort its
-cards: **it isn't code exclusive to sources**, be careful when touching it.
+Dates are NOT parsed here: `parseDate` in `src/utils/validating-date.ts` is
+the only place that turns "DD/MM/YYYY" into a `Date`, and both `get-topics.ts`
+and `features/mental-models/components/MentalModelsPage.astro` sort with it.
+`new Date()` must never be used on a frontmatter date — it reads them as
+MM/DD/YYYY.
 
 ---
 
