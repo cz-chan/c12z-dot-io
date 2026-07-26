@@ -405,6 +405,34 @@ a {
 
 /* ========================= */
 
+/* ---- Paper texture ------------------------------------------------
+   Two stacked SVG noise layers (in `public/textures/`) rendered as a fixed
+   overlay behind the content — see `body::before` / `body::after`.
+
+   - `--texture-grain`   fine noise: the "tooth" of the paper
+   - `--texture-fleck`   sparse blotches: recycled-pulp specks
+   Per-theme knobs: opacity + blend mode. Dark reads as grey carbon dust,
+   light reads as recycled paper fibre.
+------------------------------------------------------------------- */
+:root {
+	--texture-grain: url("/textures/paper-grain.svg");
+	--texture-fleck: url("/textures/paper-fleck.svg");
+	--texture-grain-size: 180px 180px;
+	--texture-fleck-size: 320px 320px;
+
+	/* dark: light noise screened over carbon -> grey dust */
+	--texture-grain-opacity: 0.09;
+	--texture-fleck-opacity: 0.06;
+	--texture-blend: screen;
+}
+
+[data-theme="light"] {
+	/* light: noise multiplied into the paper -> fibre + pulp specks */
+	--texture-grain-opacity: 0.12;
+	--texture-fleck-opacity: 0.09;
+	--texture-blend: multiply;
+}
+
 html,
 body {
 	background: var(--bg);
@@ -422,6 +450,8 @@ body {
 }
 
 body {
+	/* the colour lives on <html>; the texture layers sit on top of it */
+	background: none;
 	margin-inline: auto;
 	padding: var(--sp-4);
 	padding-inline: var(--sp-3);
@@ -434,6 +464,29 @@ body {
 	&::selection {
 		background-color: var(--accent-selection-bg);
 		color: var(--accent-selection-fg);
+	}
+
+	/* grain + flecks, fixed so the paper doesn't scroll with the content */
+	&::before,
+	&::after {
+		content: "";
+		position: fixed;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		mix-blend-mode: var(--texture-blend);
+	}
+
+	&::before {
+		background-image: var(--texture-grain);
+		background-size: var(--texture-grain-size);
+		opacity: var(--texture-grain-opacity);
+	}
+
+	&::after {
+		background-image: var(--texture-fleck);
+		background-size: var(--texture-fleck-size);
+		opacity: var(--texture-fleck-opacity);
 	}
 }
 

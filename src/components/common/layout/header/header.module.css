@@ -6,15 +6,22 @@
 	z-index: 50;
 	background-color: var(--bg);
 
-	&::after {
+	/* Same paper texture as the page (tokens in global.css).
+	   `background-attachment: fixed` anchors the tiles to the viewport so the
+	   grain lines up with the body layer instead of restarting at the header. */
+	&::before {
 		content: "";
 		position: absolute;
-		top: 100%;
-		left: 0;
-		right: 0;
-		height: 1rem;
-		background: linear-gradient(to bottom, var(--bg), transparent);
+		inset: 0;
+		/* stacking context comes from the header's own z-index, so -1 lands
+		   above the header background but under the nav content */
+		z-index: -1;
 		pointer-events: none;
+		background-image: var(--texture-grain), var(--texture-fleck);
+		background-size: var(--texture-grain-size), var(--texture-fleck-size);
+		background-attachment: fixed, fixed;
+		opacity: var(--texture-grain-opacity);
+		mix-blend-mode: var(--texture-blend);
 	}
 
 	& .navbar {

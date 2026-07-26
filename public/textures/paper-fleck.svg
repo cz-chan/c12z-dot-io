@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320">
+	<!-- Sparse pulp specks. The discrete alpha transfer quantises the noise into
+	     scattered blotches instead of a smooth gradient. Tiled at 320x320. -->
+	<filter id="fleck">
+		<feTurbulence
+			type="fractalNoise"
+			baseFrequency="0.045"
+			numOctaves="2"
+			stitchTiles="stitch"
+		/>
+		<feColorMatrix type="saturate" values="0" />
+		<feComponentTransfer>
+			<feFuncA type="discrete" tableValues="0 0 0 0 0 0 0 0 0 0 0 1" />
+		</feComponentTransfer>
+	</filter>
+	<rect width="100%" height="100%" filter="url(#fleck)" />
+</svg>
