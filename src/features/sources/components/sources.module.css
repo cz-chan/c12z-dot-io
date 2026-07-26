@@ -1330,6 +1330,18 @@
 	line-clamp: 2;
 }
 
+/* A quote IS the source (there is no other title to fall back on), so it gets
+ * twice the room before the ellipsis: at two lines even a short one was being
+ * cut mid-sentence. Same ceiling as the folder card, which already announces
+ * that "the full title lives in the enlarged folder". */
+.clamp4 {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	-webkit-line-clamp: 4;
+	line-clamp: 4;
+}
+
 .sheetTitle {
 	font-family: var(--ff-pixel);
 	font-size: var(--t-h2);
@@ -1401,6 +1413,20 @@
 		#000 calc(100% - 2.5rem),
 		transparent
 	);
+}
+
+/* ...except in the FOLDER viewer, where the excerpt is a preview and not the
+ * reading itself: a folder holds every source of a topic, so scrolling one of
+ * them inside a slider you also scroll is one gesture too many. Three lines
+ * and an ellipsis; the whole note is read in the file (the topic page) or at
+ * the source. Scrolling is dropped with it — SourceSheets only marks
+ * `data-excerpt` in file mode, so no fade and no tab stop are added here. */
+.sheetInner:not(.sheetFile) .sheetExcerpt {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+	overflow: hidden;
 }
 
 /* Stuck to the bottom of the slide (which fills the whole cell): with little
