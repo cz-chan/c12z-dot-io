@@ -36,13 +36,13 @@ feature**, only the `.mdx` of the bias/model (§3).
 
 ## 2. The three views
 
-| Route                             | What it shows                                                                                               | Root component      |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------- |
-| `/behavior/fuentes`              | **One folder per topic** (a bias or a model). Dense grid + filter panel. Designed for ~140 topics.           | `SourcesPage.astro` |
-| `/behavior/fuentes/<slug>`       | The sources **of one topic**, each one a **sheet** with a folded corner, barely overlapping.                 | `TopicPage.astro`   |
-| `/behavior/modelos-mentales/<id>` | **"Behind this post"** block at the end of the post, with its sources stacked like folders.                 | `PostSources.astro` |
+| Route                             | What it shows                                                                                      | Root component      |
+| --------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------- |
+| `/behavior/fuentes`               | **One folder per topic** (a bias or a model). Dense grid + filter panel. Designed for ~140 topics. | `SourcesPage.astro` |
+| `/behavior/fuentes/<slug>`        | The sources **of one topic**, each one a **sheet** with a folded corner, barely overlapping.       | `TopicPage.astro`   |
+| `/behavior/modelos-mentales/<id>` | **"Behind this post"** block at the end of the post, with its sources stacked like folders.        | `PostSources.astro` |
 
-All three share the same **viewer** (`SourceSheets.astro`: the enlarged
+All three share the same **viewer** (`SourceFiles.astro`: the enlarged
 folder or sheet, with a slider).
 
 The granularity of each view — important not to mix up:
@@ -67,7 +67,7 @@ semantic, not decorative:
   already **inside** a folder: a topic's page. Inside a folder there are
   files, not more folders.
 
-It's toggled with the `file` prop of `SourceStack` / `SourceSheets`, which
+It's toggled with the `file` prop of `SourceStack` / `SourceFiles`, which
 adds the classes `.file` / `.sheetFile`. They are **modifiers**: they only
 override the silhouette (`--folder-clip`) and reposition the type label;
 box, stack, hover and viewer are the same.
@@ -154,7 +154,7 @@ src/features/sources/
 │   ├── TopicPage.astro            /behavior/fuentes/<slug> — header + toggles + stack
 │   ├── SourceStack.astro          the STACK: 1 piece = 1 SOURCE (adaptive overlap)
 │   ├── PostSources.astro          "Behind this post" block (wraps SourceStack)
-│   ├── SourceSheets.astro         THE VIEWER: <dialog> with one sheet per source
+│   ├── SourceFiles.astro         THE VIEWER: <dialog> with one sheet per source
 │   ├── FolderDialogScript.astro   loads the viewer script (once per page)
 │   └── sources.module.css       ALL of the feature's styling
 ├── scripts/                     the feature's only JS (~200 lines in total)
@@ -228,7 +228,7 @@ Three things it does that are worth knowing:
 
 It's a **native `<dialog>`**, no React and no client state.
 
-- `SourceSheets.astro` paints **one `<dialog>` per folder** with **all**
+- `SourceFiles.astro` paints **one `<dialog>` per folder** with **all**
   its sources inside: one `<div data-slide="i">` per source, all `hidden`
   except the first.
 - `scripts/folder-dialog.ts` is the viewer script (~100 lines). It listens
@@ -261,7 +261,7 @@ Details that look like magic and aren't:
 **no component paints that button** (and the `.sheetClose` CSS class is
 unused). Today the viewer is closed with `Esc` or with the backdrop. If you
 want a visible close button, the JS and the CSS are already there, only the
-markup in `SourceSheets.astro` is missing.
+markup in `SourceFiles.astro` is missing.
 
 ---
 
@@ -349,11 +349,11 @@ invades the next, and that's where the overlap comes from.
 `style="--n: 8"`, **with a minimum of 2** because the formula divides by
 `--n - 1`. The `clamp` produces the three behaviors you see:
 
-| Situation                                | Resulting `--step`          | Looks like this                                                          |
-| ---------------------------------------- | --------------------------- | ------------------------------------------------------------------------ |
-| Few sources / wide screen                | high cap: `folder-w + gap`  | whole and separated, **no overlap**                                      |
-| They don't fit whole                     | the middle value            | they overlap **just enough** to fit in the row                           |
-| They don't fit even overlapped (mobile + many) | low cap: `min-step`   | maximum overlap (the tab always peeks out) and **they wrap to the row below** |
+| Situation                                      | Resulting `--step`         | Looks like this                                                               |
+| ---------------------------------------------- | -------------------------- | ----------------------------------------------------------------------------- |
+| Few sources / wide screen                      | high cap: `folder-w + gap` | whole and separated, **no overlap**                                           |
+| They don't fit whole                           | the middle value           | they overlap **just enough** to fit in the row                                |
+| They don't fit even overlapped (mobile + many) | low cap: `min-step`        | maximum overlap (the tab always peeks out) and **they wrap to the row below** |
 
 **To make the pieces bigger/smaller → `--folder-w`. To make them stack more
 → lower `--min-step`.**
@@ -364,11 +364,11 @@ invades the next, and that's where the overlap comes from.
 
 There are **three calibrations** of the same stack:
 
-| Class         | Where                         | `--folder-w` / `--min-step` | Effect                                              |
-| ------------- | ----------------------------- | --------------------------- | --------------------------------------------------- |
-| `.stack`      | "Behind this post"            | 10.5rem / 5rem              | landscape folders, heavily stacked                  |
-| `.stackLoose` | topic page (prop `loose`)     | — / 8.5rem                  | they barely overlap; with a mouse, the hovered one comes forward |
-| `.stackFiles` | topic page (prop `file`)      | 8.5rem / 7rem               | vertical A4 sheets (`aspect-ratio: 210/297`)        |
+| Class         | Where                     | `--folder-w` / `--min-step` | Effect                                                           |
+| ------------- | ------------------------- | --------------------------- | ---------------------------------------------------------------- |
+| `.stack`      | "Behind this post"        | 10.5rem / 5rem              | landscape folders, heavily stacked                               |
+| `.stackLoose` | topic page (prop `loose`) | — / 8.5rem                  | they barely overlap; with a mouse, the hovered one comes forward |
+| `.stackFiles` | topic page (prop `file`)  | 8.5rem / 7rem               | vertical A4 sheets (`aspect-ratio: 210/297`)                     |
 
 ⚠️ The topic page uses **both** (`loose` **and** `file`), and both declare
 `--min-step`. `.stackFiles` wins because it comes **later** in the file
@@ -486,22 +486,22 @@ contradict each other:
 
 ## 9. Recipes: what to touch in order to…
 
-| I want to…                                 | File                                                         | What                                                                             |
-| ------------------------------------------ | ------------------------------------------------------------ | -------------------------------------------------------------------------------- |
-| Add a source to a post                     | `src/content/{bias,mental-models}/<x>.mdx`                   | add an item to `sources:`                                                        |
-| A new source type                          | `content.config.ts` + `data/source-types.ts`                 | the `z.enum` and `TYPE_LABELS` (both, §3.3)                                      |
-| See "Behind this post" on biases           | `src/pages/behavior/sesgos/[...id].astro`                    | uncomment the import and the `<PostSources />`                                   |
-| Change the size of the pieces              | `sources.module.css`                                         | `--folder-w` in `.stack`/`.stackFiles` (stack) / `minmax()` in `.topicGrid`      |
-| Make them stack more or less               | `sources.module.css`                                         | `--min-step` in `.stack` / `.stackLoose` / `.stackFiles`                         |
-| Change the tab's shape                     | `sources.module.css`                                         | `--tab-h`, `--tab-w`, `--tab-slope` of whichever class                           |
-| Turn folders into sheets (or vice versa)   | whoever uses `SourceStack`                                   | the `file` prop (and `loose` for the loose overlap)                              |
-| Change the drawer's order                  | `data/get-topics.ts`                                         | the final `.sort()`                                                              |
-| Keep a post OUT of the drawer              | its `.mdx`                                                   | remove its `sources` array                                                       |
-| Change what the closed piece shows         | `TopicFolder.astro` (drawer) / `SourceStack.astro` (sources) | the `<button>` markup                                                            |
-| Change what the open piece shows           | `SourceSheets.astro`                                         | the `<div data-slide>` markup                                                    |
-| Add a close button to the viewer           | `SourceSheets.astro`                                         | a `<button data-folder-close class={styles.sheetClose}>` (JS and CSS already exist) |
-| Add a new filter to the drawer             | `TerminalSearch.astro` + `scripts/sources-filters.ts`        | a control + a `data-*` in `TopicFolder` + a branch in `apply()`                  |
-| Change colors                              | `src/styles/global.css`                                      | the tokens (`--surface-*`, `--c-behavior`); **never hardcode a hex here**        |
+| I want to…                               | File                                                         | What                                                                                |
+| ---------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| Add a source to a post                   | `src/content/{bias,mental-models}/<x>.mdx`                   | add an item to `sources:`                                                           |
+| A new source type                        | `content.config.ts` + `data/source-types.ts`                 | the `z.enum` and `TYPE_LABELS` (both, §3.3)                                         |
+| See "Behind this post" on biases         | `src/pages/behavior/sesgos/[...id].astro`                    | uncomment the import and the `<PostSources />`                                      |
+| Change the size of the pieces            | `sources.module.css`                                         | `--folder-w` in `.stack`/`.stackFiles` (stack) / `minmax()` in `.topicGrid`         |
+| Make them stack more or less             | `sources.module.css`                                         | `--min-step` in `.stack` / `.stackLoose` / `.stackFiles`                            |
+| Change the tab's shape                   | `sources.module.css`                                         | `--tab-h`, `--tab-w`, `--tab-slope` of whichever class                              |
+| Turn folders into sheets (or vice versa) | whoever uses `SourceStack`                                   | the `file` prop (and `loose` for the loose overlap)                                 |
+| Change the drawer's order                | `data/get-topics.ts`                                         | the final `.sort()`                                                                 |
+| Keep a post OUT of the drawer            | its `.mdx`                                                   | remove its `sources` array                                                          |
+| Change what the closed piece shows       | `TopicFolder.astro` (drawer) / `SourceStack.astro` (sources) | the `<button>` markup                                                               |
+| Change what the open piece shows         | `SourceFiles.astro`                                          | the `<div data-slide>` markup                                                       |
+| Add a close button to the viewer         | `SourceFiles.astro`                                          | a `<button data-folder-close class={styles.sheetClose}>` (JS and CSS already exist) |
+| Add a new filter to the drawer           | `TerminalSearch.astro` + `scripts/sources-filters.ts`        | a control + a `data-*` in `TopicFolder` + a branch in `apply()`                     |
+| Change colors                            | `src/styles/global.css`                                      | the tokens (`--surface-*`, `--c-behavior`); **never hardcode a hex here**           |
 
 ---
 
