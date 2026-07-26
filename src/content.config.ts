@@ -2,7 +2,31 @@ import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
-import { isValidDateFormat } from "@/utils/validating-date.ts";
+import { isValidDateFormat, parseDate } from "@/utils/validating-date.ts";
+
+/** DD/MM/YYYY. `isValidDateFormat` throws if the format or the date is wrong. */
+const dateField = z.string().refine(isValidDateFormat);
+
+/**
+ * A post cannot be edited before it was published. Both dates go through
+ * `parseDate` and not `new Date()`, which would read DD/MM/YYYY as the US
+ * MM/DD/YYYY — and return an Invalid Date from day 13 on, making the whole
+ * check silently pass or fail for the wrong reason.
+ *
+ * Applied with `.refine()` AFTER the object, because it needs two fields at
+ * once. Collections with no `lastTimeEdited` written simply skip it.
+ */
+const editedAfterPublished = (data: {
+	publishDate: string;
+	lastTimeEdited?: string;
+}) =>
+	!data.lastTimeEdited ||
+	parseDate(data.lastTimeEdited) >= parseDate(data.publishDate);
+
+const editedAfterPublishedError = {
+	message: "The field { lastTimeEdited } cannot be earlier than { publishDate }.",
+	path: ["lastTimeEdited"], // Indicates the field where the error is displayed
+};
 
 const essayCollection = defineCollection({
 	loader: glob({
@@ -46,80 +70,74 @@ const libraryCollection = defineCollection({
 		base: "./src/content/library",
 	}),
 	schema: ({ image }) =>
-		z.object({
-			title: z.string().max(60),
-			cover: z.object({
-				src: image(),
-				alt: z.string(),
-			}),
-			titleTag: z.string().max(60),
-			description: z.string().min(110).max(160),
-			abstract: z.string().min(250).max(410),
-			backlog: z.enum(["wip", "upload"]),
-			quote: z.string().max(150),
-			category: z.enum([
-				"health",
-				"product",
-				"culture",
-				"psychology",
-				"economics",
-				"creativity",
-				"philosophy",
-				"other",
-			]),
-			score: z
-				.number()
-				.min(1, {
-					message: "The minimum score value is 1",
-				})
-				.max(5, {
-					message: "The maximum score value is 5",
-				})
-				.int("The numbers must be integer"),
-			publishDate: z.string().refine(isValidDateFormat),
-			lastTimeEdited: z
-				.string()
-				.refine(isValidDateFormat)
-				.refine((val) => (val ? isValidDateFormat(val) : true))
-				.transform((val, ctx) => {
-					const publishDate = ctx;
-					return val ?? publishDate;
-				})
-				.optional(),
-			authors: z.union([
-				z.object({
-					name: z.string(),
-					link: z
-						.string()
-						.refine(
-							(link) =>
-								link.startsWith("https://www.") || link.startsWith("https://"),
-							{
-								message:
-									"The author's URL must start with 'https://www.' or 'https://'",
-							},
-						),
+		z
+			.object({
+				title: z.string().max(60),
+				cover: z.object({
+					src: image(),
+					alt: z.string(),
 				}),
-				z.array(
+				titleTag: z.string().max(60),
+				description: z.string().min(110).max(160),
+				abstract: z.string().min(250).max(410),
+				backlog: z.enum(["wip", "upload"]),
+				quote: z.string().max(150),
+				category: z.enum([
+					"health",
+					"product",
+					"culture",
+					"psychology",
+					"economics",
+					"creativity",
+					"philosophy",
+					"other",
+				]),
+				score: z
+					.number()
+					.min(1, {
+						message: "The minimum score value is 1",
+					})
+					.max(5, {
+						message: "The maximum score value is 5",
+					})
+					.int("The numbers must be integer"),
+				publishDate: dateField,
+				lastTimeEdited: dateField.optional(),
+				authors: z.union([
 					z.object({
 						name: z.string(),
 						link: z
 							.string()
 							.refine(
 								(link) =>
-									link.startsWith("https://www.") ||
-									link.startsWith("https://"),
+									link.startsWith("https://www.") || link.startsWith("https://"),
 								{
 									message:
 										"The author's URL must start with 'https://www.' or 'https://'",
 								},
 							),
 					}),
-				),
-			]),
-			readingTime: z.number().optional(),
-			keywords: z.array(z.string()),
-		}),
+					z.array(
+						z.object({
+							name: z.string(),
+							link: z
+								.string()
+								.refine(
+									(link) =>
+										link.startsWith("https://www.") ||
+										link.startsWith("https://"),
+									{
+										message:
+											"The author's URL must start with 'https://www.' or 'https://'",
+									},
+								),
+						}),
+					),
+				]),
+				readingTime: z.number().optional(),
+				keywords: z.array(z.string()),
+			})
+			.refine(editedAfterPublished, editedAfterPublishedError),
 });
 
 const projectCollection = defineCollection({
@@ -128,29 +146,23 @@ const projectCollection = defineCollection({
 		base: "./src/content/project",
 	}),
 	schema: ({ image }) =>
-		z.object({
-			projectTitle: z.string().max(80),
-			projectDescription: z.string().min(110).max(160),
-			projectUrl: z.string().startsWith("https://"),
-			cover: z.object({
-				src: image(),
-				alt: z.string(),
-			}),
-			why: z.string().max(20),
-			backlog: z.enum(["wip", "upload"]),
-			publishDate: z.string().refine(isValidDateFormat),
-			lastTimeEdited: z
-				.string()
-				.refine(isValidDateFormat)
-				.refine((val) => (val ? isValidDateFormat(val) : true))
-				.transform((val, ctx) => {
-					const publishDate = ctx;
-					return val ?? publishDate;
-				})
-				.optional(),
-			keywords: z.array(z.string()),
-			styleClass: z.string().optional(),
-		}),
+		z
+			.object({
+				projectTitle: z.string().max(80),
+				projectDescription: z.string().min(110).max(160),
+				projectUrl: z.string().startsWith("https://"),
+				cover: z.object({
+					src: image(),
+					alt: z.string(),
+				}),
+				why: z.string().max(20),
+				backlog: z.enum(["wip", "upload"]),
+				publishDate: dateField,
+				lastTimeEdited: dateField.optional(),
+				keywords: z.array(z.string()),
+				styleClass: z.string().optional(),
+			})
+			.refine(editedAfterPublished, editedAfterPublishedError),
 });
 
 /**
@@ -181,7 +193,7 @@ const sourceSchema = z.object({
 	]),
 	author: z.string().optional(),
 	url: z.string().startsWith("https://").optional(),
-	date: z.string().refine(isValidDateFormat).optional(),
+	date: dateField.optional(),
 	excerpt: z.string().optional(),
 });
 
@@ -202,16 +214,8 @@ const biasCollection = defineCollection({
 				description: z.string().min(110).max(160),
 				biasQuestion: z.string().min(50).max(120),
 				backlog: z.enum(["wip", "upload"]),
-				publishDate: z.string().refine(isValidDateFormat),
-				lastTimeEdited: z
-					.string()
-					.refine(isValidDateFormat)
-					.refine((val) => (val ? isValidDateFormat(val) : true))
-					.transform((val, ctx) => {
-						const publishDate = ctx;
-						return val ?? publishDate;
-					})
-					.optional(),
+				publishDate: dateField,
+				lastTimeEdited: dateField.optional(),
 				keywords: z.array(z.string()),
 				readingTime: z.number().optional(),
 				category: z.array(
@@ -219,21 +223,7 @@ const biasCollection = defineCollection({
 				),
 				sources: z.array(sourceSchema).default([]),
 			})
-			.refine(
-				(data) => {
-					if (data.lastTimeEdited && data.publishDate) {
-						const publishDateObj = new Date(data.publishDate);
-						const lastTimeEditedObj = new Date(data.lastTimeEdited);
-						return lastTimeEditedObj >= publishDateObj;
-					}
-					return true; // If `lastTimeEdited` is missing, the validation isn't applied in the frontmatter, but when the component is created, it's added to the `{book/bias/essay}SEO.astro` component for the meta tags.
-				},
-				{
-					message:
-						"The field { lastTimeEdited } cannot be earlier than { publishDate }.",
-					path: ["lastTimeEdited"], // Indicates the field where the error is displayed
-				},
-			),
+			.refine(editedAfterPublished, editedAfterPublishedError),
 });
 
 const mentalModelsCollection = defineCollection({
@@ -253,35 +243,13 @@ const mentalModelsCollection = defineCollection({
 				description: z.string().min(110).max(160),
 				modelQuestion: z.string().min(50).max(120),
 				backlog: z.enum(["wip", "upload"]),
-				publishDate: z.string().refine(isValidDateFormat),
-				lastTimeEdited: z
-					.string()
-					.refine(isValidDateFormat)
-					.refine((val) => (val ? isValidDateFormat(val) : true))
-					.transform((val, ctx) => {
-						const publishDate = ctx;
-						return val ?? publishDate;
-					})
-					.optional(),
+				publishDate: dateField,
+				lastTimeEdited: dateField.optional(),
 				keywords: z.array(z.string()),
 				readingTime: z.number().optional(),
 				sources: z.array(sourceSchema).default([]),
 			})
-			.refine(
-				(data) => {
-					if (data.lastTimeEdited && data.publishDate) {
-						const publishDateObj = new Date(data.publishDate);
-						const lastTimeEditedObj = new Date(data.lastTimeEdited);
-						return lastTimeEditedObj >= publishDateObj;
-					}
-					return true;
-				},
-				{
-					message:
-						"The field { lastTimeEdited } cannot be earlier than { publishDate }.",
-					path: ["lastTimeEdited"],
-				},
-			),
+			.refine(editedAfterPublished, editedAfterPublishedError),
 });
 const designPatternsCollection = defineCollection({
 	loader: glob({
@@ -299,35 +267,13 @@ const designPatternsCollection = defineCollection({
 				titleTag: z.string().max(60),
 				description: z.string().min(110).max(160),
 				backlog: z.enum(["wip", "upload"]),
-				publishDate: z.string().refine(isValidDateFormat),
-				lastTimeEdited: z
-					.string()
-					.refine(isValidDateFormat)
-					.refine((val) => (val ? isValidDateFormat(val) : true))
-					.transform((val, ctx) => {
-						const publishDate = ctx;
-						return val ?? publishDate;
-					})
-					.optional(),
+				publishDate: dateField,
+				lastTimeEdited: dateField.optional(),
 				keywords: z.array(z.string()),
 				readingTime: z.number().optional(),
 				sources: z.array(sourceSchema).default([]),
 			})
-			.refine(
-				(data) => {
-					if (data.lastTimeEdited && data.publishDate) {
-						const publishDateObj = new Date(data.publishDate);
-						const lastTimeEditedObj = new Date(data.lastTimeEdited);
-						return lastTimeEditedObj >= publishDateObj;
-					}
-					return true;
-				},
-				{
-					message:
-						"The field { lastTimeEdited } cannot be earlier than { publishDate }.",
-					path: ["lastTimeEdited"],
-				},
-			),
+			.refine(editedAfterPublished, editedAfterPublishedError),
 });
 
 const notesCollection = defineCollection({
@@ -336,37 +282,31 @@ const notesCollection = defineCollection({
 		base: "./src/content/notes",
 	}),
 	schema: ({ image }) =>
-		z.object({
-			title: z.string().max(80),
-			excerpt: z.string().min(50).max(300),
-			keywords: z.array(z.string()),
-			publishDate: z.string().refine(isValidDateFormat),
-			lastTimeEdited: z
-				.string()
-				.refine(isValidDateFormat)
-				.refine((val) => (val ? isValidDateFormat(val) : true))
-				.transform((val, ctx) => {
-					const publishDate = ctx;
-					return val ?? publishDate;
-				})
-				.optional(),
-			sources: z
-				.array(
-					z.object({
-						label: z.string(),
-						url: z.string(),
-					}),
-				)
-				.default([]),
-			illustration: z
-				.array(
-					z.object({
-						src: image(),
-						alt: z.string(),
-					}),
-				)
-				.default([]),
-		}),
+		z
+			.object({
+				title: z.string().max(80),
+				excerpt: z.string().min(50).max(300),
+				keywords: z.array(z.string()),
+				publishDate: dateField,
+				lastTimeEdited: dateField.optional(),
+				sources: z
+					.array(
+						z.object({
+							label: z.string(),
+							url: z.string(),
+						}),
+					)
+					.default([]),
+				illustration: z
+					.array(
+						z.object({
+							src: image(),
+							alt: z.string(),
+						}),
+					)
+					.default([]),
+			})
+			.refine(editedAfterPublished, editedAfterPublishedError),
 });
 
 export const collections = {
