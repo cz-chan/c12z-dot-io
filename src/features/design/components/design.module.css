@@ -1,0 +1,20 @@
+/* ---- Header ------------------------------------------------- */
+
+.designHeader {
+	max-width: var(--screen-md);
+	margin-bottom: var(--sp-4);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-2);
+
+	& .title {
+		margin-bottom: var(--sp-2);
+	}
+
+	& .question {
+		text-decoration: underline;
+		text-underline-offset: var(--sp-05);
+		text-decoration-color: var(--c-design);
+		display: inline-block;
+	}
+}
