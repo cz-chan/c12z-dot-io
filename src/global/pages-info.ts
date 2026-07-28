@@ -14,20 +14,19 @@ import { z } from "astro/zod";
 
 import { SITE_DEFAULT_CONFIG } from "./site-info";
 
-// Servidas tal cual desde public/ (sin pasar por astro:assets): ya vienen
-// pre-renderizadas a 1200x630, no necesitan optimización/resize.
 const OG_IMAGE_DEFAULT = "/og/og-image.avif";
 const OG_IMAGE_LIBRARY = "/og/pages/og-image-library.avif";
 const OG_IMAGE_BEHAVIOR = "/og/pages/og-image-behavior.avif";
 const OG_IMAGE_SOURCES = "/og/pages/og-image-sources.avif";
 const OG_IMAGE_BIAS = "/og/pages/og-image-bias.avif";
 const OG_IMAGE_MENTAL_MODEL = "/og/pages/og-image-mental-models.avif";
+const OG_IMAGE_DESIGN = "/og/pages/og-image-design.avif";
 const OG_IMAGE_ESSAY = "/og/pages/og-image-essay.avif";
 const OG_IMAGE_PROJECTS = "/og/pages/og-image-projects.avif";
 const OG_IMAGE_NOTES = "/og/pages/og-image-notes.avif";
 
 const PAGE_INFO_SCHEMA = z.object({
-	title: z.string().min(50).max(60),
+	title: z.string().max(60),
 	description: z.string().min(110).max(160),
 	ogImage: z.string().optional(),
 	ogImageAlt: z.string().optional(),
@@ -38,8 +37,9 @@ export type PagesInfo = z.infer<typeof PAGE_INFO_SCHEMA>;
 
 export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
 	context: {
-		title: "Mi contexto: quién soy, qué hago y por qué - c12z ✌🏽",
-		description: SITE_DEFAULT_CONFIG.description,
+		title: "Quién soy, qué hago y por qué - cz ✌🏽",
+		description:
+			"Growth, producto y economía conductual. Quién soy, cómo trabajo y por qué me obsesiona entender la mente de quien usa lo que construimos.",
 		ogImage: OG_IMAGE_DEFAULT,
 		ogImageAlt: "Chema Ferrandez - c12z",
 		keywords: [
@@ -54,9 +54,9 @@ export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
 		],
 	},
 	library: {
-		title: "Biblioteca y Notas de Libros que voy leyendo - c12z",
+		title: "Biblioteca: libros leídos, subrayados y sus notas - c12z",
 		description:
-			"Notas y reflexiones de los libros que voy leyendo sobre growth, startups, psicología del comportamiento y crecimiento personal.",
+			"Notas y reflexiones de los libros que voy leyendo sobre growth, psicología del comportamiento, y crecimiento personal entre otros.",
 		ogImage: OG_IMAGE_LIBRARY,
 		ogImageAlt: "Biblioteca y notas de libros - c12z",
 		keywords: [
@@ -71,9 +71,9 @@ export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
 		],
 	},
 	behavior: {
-		title: "Behavioral economics aplicado a Growth y Producto - c12z",
+		title: "Behavior: cómo decide la gente que usa tu producto",
 		description:
-			"Entiende mejor a tus usuarios y crea mejores productos (y más sticky) sabiendo cómo funciona la mente humana a través de behavioral economics.",
+			"Sesgos, modelos mentales y patrones de diseño en un mismo sitio. Entender la mente humana para construir productos que se usan de verdad.",
 		ogImage: OG_IMAGE_BEHAVIOR,
 		ogImageAlt: "Behavioral economics aplicado a growth y producto - c12z",
 		keywords: [
@@ -88,9 +88,9 @@ export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
 		],
 	},
 	bias: {
-		title: "Sesgos y heurísticas: por qué hacemos lo que hacemos? - c12z",
+		title: "Sesgos y heurísticas: atajos que usa tu cerebro - c12z",
 		description:
-			"Sesgos cognitivos y heurísticas explicados con ejemplos y aplicados al mundo de producto y growth para aumentar adquisición y retención de usuarios en startups.",
+			"Los atajos mentales que usamos sin darnos cuenta, explicados con ejemplos y aplicados a producto y a las decisiones del día a día.",
 		ogImage: OG_IMAGE_BIAS,
 		ogImageAlt: "Sesgos y heurísticas cognitivas - c12z",
 		keywords: [
@@ -105,9 +105,9 @@ export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
 		],
 	},
 	mentalModel: {
-		title: "Modelos mentales aplicados a growth y producto - c12z",
+		title: "Modelos mentales para pensar y decidir mejor - c12z",
 		description:
-			"Modelos mentales explicados con ejemplos para pensar con más claridad, tomar mejores decisiones y aplicarlos al mundo de growth y producto.",
+			"Las herramientas de pensamiento que uso para ver problemas con más claridad, explicadas con ejemplos y aplicadas a producto, y a la vida en general.",
 		ogImage: OG_IMAGE_MENTAL_MODEL,
 		ogImageAlt: "Modelos mentales aplicados a growth y producto - c12z",
 		keywords: [
@@ -121,10 +121,27 @@ export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
 			"cómo pensar mejor con modelos mentales",
 		],
 	},
+	design: {
+		title: "Patrones y leyes de diseño aplicados a producto - c12z",
+		description:
+			"Cómo guiar el comportamiento de quien usa tu producto sin manipularlo: patrones, leyes de diseño y sus efectos reales en conversión y confianza.",
+		ogImage: OG_IMAGE_DESIGN,
+		ogImageAlt: "Patrones de diseño aplicados a producto y growth - c12z",
+		keywords: [
+			"patrones de diseño",
+			"design patterns",
+			"patrones de diseño con ejemplos",
+			"patrones de diseño aplicados a producto",
+			"patrones de diseño aplicados a growth",
+			"leyes de diseño de producto",
+			"diseño de producto y comportamiento del usuario",
+			"behavioral design aplicado a interfaces",
+		],
+	},
 	sources: {
 		title: "Fuentes usadas detrás del contenido de behavior - c12z",
 		description:
-			"Contenido de otros autores que voy consultando para aprender y escribir sobre sesgos, modelos mentales y diseño.",
+			"Libros, papers, charlas y artículos que hay detrás de cada post de sesgos, modelos mentales y diseño. Todo lo que leo, en un solo sitio.",
 		ogImage: OG_IMAGE_SOURCES,
 		ogImageAlt: "Fuentes y notas en crudo de behavior - c12z",
 		keywords: [
@@ -138,9 +155,9 @@ export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
 		],
 	},
 	essay: {
-		title: "Guias sobre Growth, Behavioral Economics y Producto - c12z",
+		title: "GEnsayos sobre growth, producto y comportamiento - c12z",
 		description:
-			"Ensayos y reflexiones sobre growth, behavioral economics y desarrollo. Ideas propias y recopiladas de mis pares del mundo startup y producto.",
+			"Textos largos donde pienso en voz alta: growth, producto, economía conductual y todo lo que aprendo construyendo y trabajando con equipos.",
 		ogImage: OG_IMAGE_ESSAY,
 		ogImageAlt: "Ensayos sobre growth, behavioral economics y producto - c12z",
 		keywords: [
@@ -155,9 +172,9 @@ export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
 		],
 	},
 	notes: {
-		title: "Notas: apuntes cortos de growth, producto y diseño - c12z",
+		title: "Notas: apuntes cortos para guardar - c12z",
 		description:
-			"Notas cortas y apuntes rápidos sobre growth, producto y behavioral economics. Ideas sueltas que voy capturando antes de que se conviertan en ensayos.",
+			"El cajón de las ideas a medio cocer: notas breves sobre producto, economía conductual o cosas de la vida que me interesan y que considero interesante guardar.",
 		ogImage: OG_IMAGE_NOTES,
 		ogImageAlt: "Notas y apuntes cortos - c12z",
 		keywords: [
@@ -174,7 +191,7 @@ export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
 	projects: {
 		title: "Proyectos y cosas que voy construyendo poco a poco - c12z",
 		description:
-			"Proyectos personales de Chema (yo 🙃) explicados paso a paso: cómo los he construido, qué herramientas he usado y el porqué detrás de cada decisión.",
+			"Lo que voy construyendo por mi cuenta, contado por dentro: qué problema resuelve, con qué lo he hecho y el porqué de cada decisión.",
 		ogImage: OG_IMAGE_PROJECTS,
 		ogImageAlt: "Proyectos personales de Chema - c12z",
 		keywords: [
