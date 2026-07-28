@@ -4,7 +4,7 @@
 	left: 50%;
 	transform: translateX(-50%);
 	width: min(calc(100vw - var(--sp-6)), calc(var(--screen-n) - var(--sp-5)));
-	max-width: none;
+	max-width: var(--screen-md);
 
 	/* custom token */
 	--rail-w: var(--wdth-12);
