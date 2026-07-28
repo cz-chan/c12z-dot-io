@@ -162,7 +162,7 @@ src/features/sources/
 │   ├── sources-filters.ts         search box + topic-type toggles (drawer)
 │   └── topic-filters.ts           source-type toggles (topic page)
 ├── data/
-│   ├── get-topics.ts            builds the "topics" by reading bias + mentalModels + designPatterns
+│   ├── get-topics.ts            builds the "topics" by reading bias + mentalModels + designLaws
 │   ├── source-types.ts          `Source` type + `TYPE_LABELS`
 │   └── count-source-types.ts    the per-type tally of the topic header
 └── seo/
