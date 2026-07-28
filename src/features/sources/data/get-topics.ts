@@ -25,7 +25,7 @@ export interface Topic {
 type SourcedEntry =
 	| CollectionEntry<"bias">
 	| CollectionEntry<"mentalModels">
-	| CollectionEntry<"designPatterns">;
+	| CollectionEntry<"designLaws">;
 
 /**
  * There is no `status` field in the frontmatter: the state of a topic is
@@ -68,7 +68,7 @@ const modelToTopic = (entry: CollectionEntry<"mentalModels">) =>
 		"/behavior/modelos-mentales",
 	);
 
-const designToTopic = (entry: CollectionEntry<"designPatterns">) =>
+const designToTopic = (entry: CollectionEntry<"designLaws">) =>
 	buildTopic(entry, "diseño", entry.data.designPatternName, "/behavior/diseño");
 
 /**
@@ -126,7 +126,7 @@ export const getTopics = async (): Promise<Topic[]> => {
 	const [biases, models, design] = await Promise.all([
 		getCollection("bias"),
 		getCollection("mentalModels"),
-		getCollection("designPatterns"),
+		getCollection("designLaws"),
 	]);
 
 	const topics = [

@@ -1,0 +1,90 @@
+---
+import styles from "./behavior.module.css";
+import getBehaviorSection from "../data/getBehaviorSections.ts";
+
+const num = (i: number) => String(i + 1).padStart(2, "0");
+
+const SECTIONS = await getBehaviorSection();
+---
+
+<section class={styles.module}>
+	<section
+		class={styles.rail}
+		role="radiogroup"
+		aria-label="Elige una sección para verla"
+	>
+		<p class={styles.railHead}>Índice · {num(SECTIONS.length - 1)}</p>
+
+		{
+			SECTIONS.map((section, i) => (
+				<Fragment>
+					<input
+						class={styles.railRadio}
+						type="radio"
+						name="behavior-section"
+						id={`behavior-section-${i}`}
+						checked={i === 0}
+					/>
+					<label
+						class={styles.railItem}
+						for={`behavior-section-${i}`}
+					>
+						<span class={styles.railName}>{section.name}</span>
+					</label>
+				</Fragment>
+			))
+		}
+	</section>
+
+	<section class={styles.stack}>
+		{
+			SECTIONS.map((section, i) => (
+				<article class={styles.card}>
+					<span
+						class={styles.watermark}
+						aria-hidden="true"
+					>
+						{num(i)}
+					</span>
+
+					<section class={styles.cardTop}>
+						<p class={styles.cardEyebrow}>
+							<span class={styles.cardChip}>{num(i)}</span>
+							{section.eyebrow}
+						</p>
+						<div class={styles.cardHeading}>
+							<h2
+								class={styles.cardTitle}
+								transition:name={section.transitionName}
+							>
+								{section.title}
+							</h2>
+							<p class={styles.cardMetaTop}>
+								{num(i)} · {section.meta}
+							</p>
+						</div>
+					</section>
+
+					<section class={styles.cardBottom}>
+						<p class={styles.cardDescription}>{section.description}</p>
+						<span
+							class={styles.cardRule}
+							aria-hidden="true"
+						/>
+						<p class={styles.cardFoot}>
+							<span class={styles.cardMeta}>
+								{section.meta} · {section.href}
+							</span>
+							<a
+								class={styles.cardCta}
+								href={section.href}
+							>
+								Entrar <span aria-hidden="true">→</span>
+							</a>
+						</p>
+					</section>
+				</article>
+			))
+		}
+	</section>
+</section>

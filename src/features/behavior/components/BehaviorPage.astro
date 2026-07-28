@@ -1,94 +1,8 @@
 ---
-/**
- * /behavior — hub de la sección. Es un lugar de paso: se entra, se mira
- * qué hay en cada sección y se sale hacia ella. Aquí no se lee contenido.
- *
- * Módulo único: rail de índice a la izquierda (siempre visible) y cartel
- * a color a la derecha con el detalle de la sección apuntada. El cartel es
- * la única zona de color de la página; el color identifica el tipo de
- * contenido, no decora.
- *
- * Los cuatro carteles se renderizan a la vez y se apilan en la misma celda
- * del grid: el que se ve lo decide un grupo de radios ocultos, así que el
- * módulo entero funciona sin una línea de JS.
- *
- * El rail NO navega: solo elige qué cartel se mira. Lo único que lleva a la
- * sección es el «Entrar» del cartel. En móvil esto es lo que evita que un
- * toque te meta dentro sin haber visto qué hay.
- */
 import styles from "./behavior.module.css";
-import { getCollection } from "astro:content";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
-
-const [biases, models, patterns] = await Promise.all([
-	getCollection("bias"),
-	getCollection("mentalModels"),
-	getCollection("designPatterns"),
-]);
-
-// el cajón agrega las fuentes del frontmatter de sesgos, modelos y patterns
-const withSources = [...biases, ...models, ...patterns].filter(
-	(entry) => entry.data.sources.length > 0,
-);
-const totalSources = withSources.reduce(
-	(sum, entry) => sum + entry.data.sources.length,
-	0,
-);
-
-const count = (num: number, singular: string, plural: string) =>
-	`${num} ${num === 1 ? singular : plural}`;
-
-/**
- * `name` es la etiqueta corta del rail; `title` es el titular del cartel y
- * tiene que decir lo mismo, palabra por palabra, que el `<h1>` de la página
- * de destino: el view transition morfea un texto en el otro y cualquier
- * diferencia se ve como un salto.
- */
-const SECTIONS = [
-	{
-		href: "/behavior/sesgos",
-		name: "Sesgos cognitivos",
-		title: "Sesgos cognitivos",
-		eyebrow: "Sección 01 / Sesgos",
-		transitionName: "bias-header-page-h1-transition-name",
-		description:
-			"Inclinaciones desproporcionadas a favor o en contra de una idea o cosa, por lo general de forma inexacta, prejuiciosa o injusta.",
-		meta: count(biases.length, "publicado", "publicados"),
-	},
-	{
-		href: "/behavior/modelos-mentales",
-		name: "Modelos mentales",
-		title: "Modelos mentales",
-		eyebrow: "Sección 02 / Modelos",
-		transitionName: "mental-models-header-page-h1-transition-name",
-		description:
-			"Formas simplificadas de explicar de cómo funcionan las cosas.",
-		meta: count(models.length, "publicado", "publicados"),
-	},
-	{
-		href: "/behavior/diseño",
-		name: "Patrones de diseño",
-		title: "Patrones de diseño",
-		eyebrow: "Sección 03 / Patterns",
-		transitionName: undefined,
-		description:
-			"Un campo que combina la psicología, la economía conductual y el diseño para entender las acciones humanas e influir en ellas.",
-		meta: "En curso",
-	},
-	{
-		href: "/behavior/fuentes",
-		name: "Fuentes",
-		title: "Las fuentes.",
-		eyebrow: "Sección 04 / Archivo",
-		transitionName: "sources-header-page-h1-transition-name",
-		description:
-			"El cajón donde guardo todas las fuentes en las que me he basado para escribir sobre los temas de esta sección.",
-		meta: `${count(totalSources, "fuente", "fuentes")} · ${count(withSources.length, "tema", "temas")}`,
-	},
-] as const;
-
-const num = (i: number) => String(i + 1).padStart(2, "0");
+import BehaviorSections from "./BehaviorSections.astro";
 ---
 
 <section class={styles.behaviorPage}>
@@ -98,7 +12,7 @@ const num = (i: number) => String(i + 1).padStart(2, "0");
 	/>
 
 	<header class={styles.pageHeader}>
-		<h1 class={styles.title}>The Behavior Page.</h1>
+		<h1 class={styles.title}>La Behavior Page.</h1>
 		<p>
 			Aquí te vas a encontrar contenido relacionado a cómo la mente humana
 			funciona y cómo afecta a nuestro comportamiento de simples simios con un
@@ -108,87 +22,5 @@ const num = (i: number) => String(i + 1).padStart(2, "0");
 		</p>
 	</header>
 
-	<div class={styles.module}>
-		<div
-			class={styles.rail}
-			role="radiogroup"
-			aria-label="Elige una sección para verla"
-		>
-			<p class={styles.railHead}>Índice · {num(SECTIONS.length - 1)}</p>
-
-			{
-				SECTIONS.map((section, i) => (
-					<Fragment>
-						<input
-							class={styles.railRadio}
-							type="radio"
-							name="behavior-section"
-							id={`behavior-section-${i}`}
-							checked={i === 0}
-						/>
-						<label
-							class={styles.railItem}
-							for={`behavior-section-${i}`}
-						>
-							<span class={styles.railName}>{section.name}</span>
-						</label>
-					</Fragment>
-				))
-			}
-		</div>
-
-		<div class={styles.stack}>
-			{
-				SECTIONS.map((section, i) => (
-					<article class={styles.card}>
-						<span
-							class={styles.watermark}
-							aria-hidden="true"
-						>
-							{num(i)}
-						</span>
-
-						<div class={styles.cardTop}>
-							<p class={styles.cardEyebrow}>
-								<span class={styles.cardChip}>{num(i)}</span>
-								{section.eyebrow}
-							</p>
-							<div class={styles.cardHeading}>
-								<h2
-									class={styles.cardTitle}
-									transition:name={section.transitionName}
-								>
-									{section.title}
-								</h2>
-								{/* el contador que antes vivía en el rail: pegado al titular,
-								    donde se lee junto a lo que cuenta */}
-								<p class={styles.cardMetaTop}>
-									{num(i)} · {section.meta}
-								</p>
-							</div>
-						</div>
-
-						<div class={styles.cardBottom}>
-							<p class={styles.cardDescription}>{section.description}</p>
-							<span
-								class={styles.cardRule}
-								aria-hidden="true"
-							/>
-							<p class={styles.cardFoot}>
-								<span class={styles.cardMeta}>
-									{section.meta} · {section.href}
-								</span>
-								<a
-									class={styles.cardCta}
-									href={section.href}
-								>
-									Entrar <span aria-hidden="true">→</span>
-								</a>
-							</p>
-						</div>
-					</article>
-				))
-			}
-		</div>
-	</div>
+	<BehaviorSections />
 </section>
