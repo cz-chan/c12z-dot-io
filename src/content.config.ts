@@ -24,7 +24,8 @@ const editedAfterPublished = (data: {
 	parseDate(data.lastTimeEdited) >= parseDate(data.publishDate);
 
 const editedAfterPublishedError = {
-	message: "The field { lastTimeEdited } cannot be earlier than { publishDate }.",
+	message:
+		"The field { lastTimeEdited } cannot be earlier than { publishDate }.",
 	path: ["lastTimeEdited"], // Indicates the field where the error is displayed
 };
 
@@ -110,7 +111,8 @@ const libraryCollection = defineCollection({
 							.string()
 							.refine(
 								(link) =>
-									link.startsWith("https://www.") || link.startsWith("https://"),
+									link.startsWith("https://www.") ||
+									link.startsWith("https://"),
 								{
 									message:
 										"The author's URL must start with 'https://www.' or 'https://'",
@@ -251,7 +253,7 @@ const mentalModelsCollection = defineCollection({
 			})
 			.refine(editedAfterPublished, editedAfterPublishedError),
 });
-const designPatternsCollection = defineCollection({
+const designLawsCollection = defineCollection({
 	loader: glob({
 		pattern: "**/*.{md,mdx}",
 		base: "./src/content/design-patterns",
@@ -315,6 +317,6 @@ export const collections = {
 	projects: projectCollection,
 	notes: notesCollection,
 	mentalModels: mentalModelsCollection,
-	designPatterns: designPatternsCollection,
+	designLaws: designLawsCollection,
 };
 // essay: essayCollection,
