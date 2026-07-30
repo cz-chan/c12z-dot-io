@@ -1,0 +1,16 @@
+import type { PageKeywords } from "@interfaces/keywords.interface.ts";
+
+export const designKeywords: PageKeywords = {
+	keywords: [
+		"patrones de diseño",
+		"design patterns",
+		"leyes de diseño",
+		"diseño de producto",
+		"fricción intencional",
+		"defaults inteligentes",
+		"patrones de diseño aplicados a producto",
+		"patrones de diseño aplicados a growth",
+		"behavioral design",
+		"diseño y comportamiento del usuario",
+	],
+};
