@@ -98,7 +98,8 @@
 	text-align: left;
 	cursor: pointer;
 	padding: var(--sp-3) var(--sp-4);
-	background-color: var(--surface-1);
+	/* inactive cells sit at page level: no contrast jump against the bg */
+	background-color: var(--bg);
 	border-bottom: var(--wdth) solid var(--border-3);
 	border-left: var(--sp-1) solid transparent;
 	transition:
