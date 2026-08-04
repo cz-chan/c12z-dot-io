@@ -11,6 +11,7 @@ const SECTIONS = await getBehaviorSection();
 	<section
 		class={styles.rail}
 		role="radiogroup"
+		id="behavior-rail"
 		aria-label="Elige una sección para verla"
 	>
 		<p class={styles.railHead}>Índice · {num(SECTIONS.length - 1)}</p>
@@ -24,6 +25,7 @@ const SECTIONS = await getBehaviorSection();
 						name="behavior-section"
 						id={`behavior-section-${i}`}
 						checked={i === 0}
+						data-href={section.href}
 					/>
 					<label
 						class={styles.railItem}
@@ -88,3 +90,68 @@ const SECTIONS = await getBehaviorSection();
 		}
 	</section>
 </section>
+
+{
+	/*
+	  MEMORIA DE SECCIÓN DEL RAIL
+
+	  Qué hace: si entras en una sección y vuelves a /behavior, el cartel
+	  sigue en esa sección en vez de resetearse al 00. Se olvida al recargar
+	  o al salir de la web, que es justo lo que queremos: nada de localStorage.
+
+	  Dónde vive el dato: en `window`. Suena sucio, pero su ciclo de vida es
+	  exactamente el pedido — ClientRouter navega sin recargar el documento,
+	  así que `window` sobrevive entre páginas del sitio y muere con un F5 o
+	  al salir del dominio. Ningún almacén persistente hace eso.
+
+	  Por qué is:inline: un `script` normal se empaqueta como módulo y corre
+	  tarde. Aquí hace falta llegar antes del paint (ver abajo).
+
+	  Por qué dos eventos:
+	  - after-swap corre justo tras meter el DOM nuevo y ANTES de pintar. Si
+	    marcáramos el radio más tarde, el navegador ya habría hecho la foto
+	    de la view transition con el cartel 00 visible y los <h2> de las demás
+	    secciones ocultos (visibility:hidden), así que solo animaría el de
+	    sesgos. Llegando antes, entra el correcto y de paso no parpadea.
+	  - after-swap NO dispara en la carga inicial, solo al navegar. De ahí
+	    page-load, que cubre las dos.
+	  En una navegación restore corre dos veces: es idempotente, marcar un
+	  radio ya marcado no hace nada. listen va solo en page-load porque sí
+	  acumularía listeners.
+
+	  Los guards: ambos handlers viven en `document`, que sobrevive a los
+	  swaps, así que se disparan en TODAS las páginas del sitio. En las que
+	  no tienen rail, el return temprano es el camino normal.
+	*/
+}
+<script is:inline>
+	function restoreBehaviorSection() {
+		const radios = document.querySelectorAll("input[name='behavior-section']");
+		if (radios.length === 0) return;
+
+		const savedIndex = window.__behaviorSection;
+		if (savedIndex === undefined) return;
+
+		radios[savedIndex].checked = true;
+	}
+
+	function listenBehaviorSection() {
+		const rail = document.getElementById("behavior-rail");
+		if (!rail) return;
+
+		const radios = document.querySelectorAll("input[name='behavior-section']");
+
+		// El listener va en el rail y no en cada radio: el evento burbujea
+		// hasta aquí y `target` dice cuál se pulsó.
+		rail.addEventListener("change", (event) => {
+			window.__behaviorSection = [...radios].indexOf(event.target);
+		});
+	}
+
+	document.addEventListener("astro:after-swap", restoreBehaviorSection);
+
+	document.addEventListener("astro:page-load", () => {
+		restoreBehaviorSection();
+		listenBehaviorSection();
+	});
+</script>
