@@ -2,9 +2,8 @@
 import styles from "./mental-models.module.css";
 import { getCollection } from "astro:content";
 
-import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
-
 import { parseDate } from "@utils/validating-date.ts";
+import MentalModelsHeader from "./MentalModelsHeader.astro";
 
 const models = (await getCollection("mentalModels")).sort(
 	(a, b) =>
@@ -14,27 +13,7 @@ const models = (await getCollection("mentalModels")).sort(
 ---
 
 <section class={styles.modelsPage}>
-	<GoBackInTop
-		headPage="/behavior"
-		title="ir a la página de behavior"
-	/>
-
-	<header class={styles.pageHeader}>
-		<h1
-			class={styles.title}
-			transition:name="mental-models-header-page-h1-transition-name"
-		>
-			Modelos mentales
-		</h1>
-		<p>
-			Los modelos mentales son atajos que todos usamos para entender cómo
-			funciona el mundo: una forma de simplificar problemas complejos y ver lo
-			que de verdad importa. Aquí voy recopilando los que más me han servido
-			para pensar con claridad y tomar mejores decisiones. Cada uno arranca de
-			una pregunta y termina siendo una herramienta que puedes robar y aplicar a
-			tu propio contexto.
-		</p>
-	</header>
+	<MentalModelsHeader />
 
 	{
 		models.length > 0 ? (
