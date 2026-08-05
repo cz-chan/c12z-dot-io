@@ -1,0 +1,34 @@
+---
+import styles from "./mental-models.module.css";
+
+import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
+import MapIcon from "../icons/MapIcon.astro";
+---
+
+<GoBackInTop
+	headPage="/behavior"
+	title="ir a la página de behavior"
+/>
+
+<header class={styles.pageHeader}>
+	<div class={styles.mapIcon}>
+		<MapIcon />
+	</div>
+
+	<section class={styles.desc}>
+		<h1
+			class={styles.title}
+			transition:name="mental-models-header-page-h1-transition-name"
+		>
+			Modelos mentales
+		</h1>
+		<p>
+			<span class={styles.mmUnderline}
+				>Atajos que usamos para entender cómo funciona el mundo y simplificar
+				problemas complejos y ver lo que de verdad importa.</span
+			>
+			<br /> Aquí recopilo lo que voy aprendiendo sobre ellos y los que más me han
+			servido para pensar con claridad y tomar mejores decisiones.
+		</p>
+	</section>
+</header>
