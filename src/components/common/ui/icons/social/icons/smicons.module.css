@@ -1,19 +1,19 @@
 .substack {
-	color: var(--fg);
+	color: inherit;
 	width: var(--wdth-1);
 }
 
 .x {
-	color: var(--fg);
+	color: inherit;
 	width: 1.25rem;
 }
 
 .github {
-	color: var(--fg);
+	color: inherit;
 	width: 1.25rem;
 }
 
 .linkedin {
-	color: var(--fg);
+	color: inherit;
 	width: 1.25rem;
 }
