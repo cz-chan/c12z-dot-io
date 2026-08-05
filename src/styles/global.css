@@ -133,6 +133,10 @@
 	--c-project: #ff3838;
 	--c-note: #7f80e1;
 
+	--c-design-ink: var(--c-design);
+	--c-mental-model-ink: var(--c-mental-model);
+	--c-source-ink: var(--c-source);
+
 	/* Cognitive bias category colors */
 	--c-bias-category-speed: #e72424;
 	--c-bias-category-memory: #8b5cce;
@@ -314,6 +318,12 @@
 	--c-library: #d0a01c;
 	--c-project: #ac0a0a;
 	--c-note: #4649e0;
+	--c-bias: #7a5680;
+
+	/* ...-ink because i would like to keep the following drak theme colors in some structrues */
+	--c-design-ink: #2c5fbe;
+	--c-mental-model-ink: #b1442f;
+	--c-source-ink: #1e7422;
 }
 
 /* === RESET ====================== */
