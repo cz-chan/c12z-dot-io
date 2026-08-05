@@ -1,15 +1,22 @@
 ---
 import styles from "./design.module.css";
+
+import SplitScreenIcon from "../icons/SplitScreenIcon.astro";
 ---
 
 <header class={styles.designHeader}>
-	<h1
-		class={styles.title}
-		transition:name="design-law-header-page-h1-transition-name"
-	>
-		Leyes de diseño
-	</h1>
-	<p>
+	<div class={styles.splitScreenIcon}>
+		<SplitScreenIcon />
+	</div>
+
+	<section class={styles.desc}>
+		<h1
+			class={styles.title}
+			transition:name="design-law-header-page-h1-transition-name"
+		>
+			Leyes de diseño
+		</h1>
+		<p>
 		<span class={styles.question}
 			>¿Por qué unas interfaces se usan solas y otras se abandonan a los tres
 			clics?</span
@@ -17,5 +24,6 @@ import styles from "./design.module.css";
 		actúa dentro de un producto: por qué funcionan, cuándo se cruza la línea hacia
 		la manipulación y cómo aplicarlos sin romper la confianza de quien está al otro
 		lado.
-	</p>
+		</p>
+	</section>
 </header>
