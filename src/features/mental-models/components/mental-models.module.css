@@ -14,12 +14,51 @@
 .pageHeader {
 	max-width: var(--screen-md);
 	margin-bottom: var(--sp-4);
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: repeat(1, minmax(0, 1fr));
 	gap: var(--sp-2);
+
+	& .mapIcon {
+		display: none;
+
+		@media (width >= 28.75rem) {
+			display: block;
+		}
+	}
+
+	& .desc {
+		display: flex;
+		flex-direction: column;
+		gap: var(--sp-2);
+	}
 
 	& .title {
 		margin-bottom: var(--sp-2);
+	}
+
+	& .mmUnderline {
+		text-decoration: underline;
+		text-decoration-color: var(--c-mental-model);
+	}
+
+	@media (width >= 28.75rem) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		align-items: center;
+	}
+}
+
+.mapIcon {
+	width: fit-content;
+	max-width: var(--wdth-12);
+	margin: auto;
+
+	& .icon {
+		color: var(--c-mental-model);
+		padding-inline: var(--sp-2);
+		width: 100%;
+		height: auto;
+		flex-shrink: 0;
+		stroke-width: 1;
 	}
 }
 
