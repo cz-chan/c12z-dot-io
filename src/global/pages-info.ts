@@ -12,8 +12,6 @@
 
 import { z } from "astro/zod";
 
-import { SITE_DEFAULT_CONFIG } from "./site-info";
-
 const OG_IMAGE_DEFAULT = "/og/og-image.avif";
 const OG_IMAGE_LIBRARY = "/og/pages/og-image-library.avif";
 const OG_IMAGE_BEHAVIOR = "/og/pages/og-image-behavior.avif";
