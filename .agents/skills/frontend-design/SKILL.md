@@ -12,10 +12,10 @@ This skill guides creation of new UI components and pages for **c12z.io** — a 
 **File conventions:**
 
 - Use `.astro` components by default — only `.tsx` when interactivity is required
-- Feature-scoped styles go in `src/features/<name>/styles/*.module.css`
+- Feature-scoped styles go in `src/paths/<name>/styles/*.module.css`
 - Tailwind utilities for layout/spacing; CSS Modules for component-level styles
 - Animations in React components use the **Motion** library (`motion/react`)
-- Path aliases: `@/*` → `src/*`, `@/common/*` → `src/components/common/*`, `@/ui/*` → `src/components/ui/*`, `@/features/*` → `src/features/*`
+- Path aliases: `@/*` → `src/*`, `@/common/*` → `src/components/common/*`, `@/ui/*` → `src/components/ui/*`, `@/paths/*` → `src/paths/*`
 
 ## Design System — ALWAYS follow this
 

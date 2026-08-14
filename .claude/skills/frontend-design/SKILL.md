@@ -10,11 +10,12 @@ This skill guides creation of new UI components and pages for **c12z.io** — a 
 **Stack:** Astro 6 + React 19 + TailwindCSS v4 (Vite plugin) + MDX. Deployed on Vercel (static output).
 
 **File conventions:**
+
 - Use `.astro` components by default — only `.tsx` when interactivity is required
-- Feature-scoped styles go in `src/features/<name>/styles/*.module.css`
+- Feature-scoped styles go in `src/paths/<name>/styles/*.module.css`
 - Tailwind utilities for layout/spacing; CSS Modules for component-level styles
 - Animations in React components use the **Motion** library (`motion/react`)
-- Path aliases: `@/*` → `src/*`, `@/common/*` → `src/components/common/*`, `@/ui/*` → `src/components/ui/*`, `@/features/*` → `src/features/*`
+- Path aliases: `@/*` → `src/*`, `@/common/*` → `src/components/common/*`, `@/ui/*` → `src/components/ui/*`, `@/paths/*` → `src/paths/*`
 
 ## Design System — ALWAYS follow this
 
@@ -23,12 +24,14 @@ All tokens are CSS variables in `src/styles/global.css`. **Never hardcode colors
 ### Palette
 
 **Dark mode (default):**
+
 - `--color-bg` `#111` | `--color-surface` `#1a1a1a` | `--color-surface-alt` `#2e2e2e`
 - `--color-border` `#242424`
 - Text: `--color-text-header` `#fcf8f1` | `--color-text` `#dfdbd5` | `--color-text-relaxed` `#9d9b98`
 - Accents: `--color-primary` `#ff2f92` (hot pink) | `--color-secondary` `#904fe7` (purple)
 
 **Light mode:**
+
 - `--color-bg` `#f5f2ee` | `--color-surface` `#eae6e1` | `--color-surface-alt` `#cfcac3`
 - Text: `--color-text-header` `#0c0c0b` | `--color-text` `#1f1e1d` | `--color-text-relaxed` `#595856`
 
@@ -44,13 +47,14 @@ All tokens are CSS variables in `src/styles/global.css`. **Never hardcode colors
 
 ### Typography
 
-| Role | Font | Tailwind class |
-|------|------|---------------|
+| Role              | Font                   | Tailwind class               |
+| ----------------- | ---------------------- | ---------------------------- |
 | Headers / display | **Tamago** (pixel art) | `font-pixel tracking-widest` |
-| Body | **Rubik** (300–700) | `font-rubik` |
-| Code | **Cascadia** | `font-mono` |
+| Body              | **Rubik** (300–700)    | `font-rubik`                 |
+| Code              | **Cascadia**           | `font-mono`                  |
 
 ### Recurring visual motifs
+
 - Left/bottom border with `rounded-bl` on list items
 - Hot-pink underline decoration on links (`decoration-primary`)
 - WIP sections: red-border box + 🚧 badge using `border-error`

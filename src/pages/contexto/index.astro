@@ -1,29 +1,32 @@
 ---
-import styles from "@/features/context/components/context.module.css"
+import styles from "@/paths/context/components/context.module.css";
 import MainLayout from "@layouts/MainLayout.astro";
 import PagesSEO from "@/seo/PagesSEO.astro";
 
 import { PAGES } from "@/global/pages-info";
 
-import { contextKeywords } from "@/features/context/seo/contextKeywords";
+import { contextKeywords } from "@/paths/context/seo/contextKeywords";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
-import Context from "@/features/context/components/context.mdx";
+import Context from "@/paths/context/components/context.mdx";
 ---
 
 <MainLayout>
-  <PagesSEO
-    slot="head"
-    pageTitle={PAGES.context.title}
-    pageDescription={PAGES.context.description}
-    ogImage={PAGES.context.ogImage}
-    ogImageAlt={PAGES.context.ogImageAlt}
-    pageKeywords={contextKeywords}
-  />
-  <section class={styles.contextPage}>
-    <GoBackInTop headPage="/" title="ir a la home" />
-    <article class="lettering">
-      <Context />
-    </article>
-  </section>
+	<PagesSEO
+		slot="head"
+		pageTitle={PAGES.context.title}
+		pageDescription={PAGES.context.description}
+		ogImage={PAGES.context.ogImage}
+		ogImageAlt={PAGES.context.ogImageAlt}
+		pageKeywords={contextKeywords}
+	/>
+	<section class={styles.contextPage}>
+		<GoBackInTop
+			headPage="/"
+			title="ir a la home"
+		/>
+		<article class="lettering">
+			<Context />
+		</article>
+	</section>
 </MainLayout>

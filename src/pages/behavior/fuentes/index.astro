@@ -1,16 +1,16 @@
 ---
 /**
  * /behavior/fuentes — the drawer index. Just layout + SEO: everything the
- * page does lives in `features/sources/components/SourcesPage.astro`,
+ * page does lives in `paths/sources/components/SourcesPage.astro`,
  * which is also the one that reads the content.
  */
 import MainLayout from "@layouts/MainLayout.astro";
-import SourcesSEO from "@/features/sources/seo/SourcesSEO.content.astro";
+import SourcesSEO from "@/paths/sources/seo/SourcesSEO.content.astro";
 
 import { PAGES } from "@/global/pages-info";
 
-import SourcesPage from "@/features/sources/components/SourcesPage.astro";
-import { sourcesKeywords } from "@/features/sources/seo/sources.keywords";
+import SourcesPage from "@/paths/sources/components/SourcesPage.astro";
+import { sourcesKeywords } from "@/paths/sources/seo/sources.keywords";
 ---
 
 <MainLayout>

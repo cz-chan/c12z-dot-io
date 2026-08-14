@@ -33,20 +33,20 @@ import ImgAndCap from "@/components/common/ui/content/ImgAndCap.astro";
 import AlleeGraph from "./population-graph-with-Allee-threshold-in-c12z.webp";
 import ChartNetworkSize from "./chart-network-size-vs-important-parameters-in-uber-c12.webp";
 import PyramidCreators from "./pyramid-comparison-creators-synthesizers-and-consumers-c12z.webp";
-import DomainPrice from "./cz-dot-io-domain-price.webp"
-import ToolNetworkGraph from "./come-for-the-tool-stay-for-the-network-graph-in-c12z.webp"
-import FlinstoneFamily from "./the-flintstones-on-the-flintmobile-in-c12z.webp"
-import EscapeVelocity from "./escape-velocity-graph-c12z.webp"
-import RetentionCurves from "./retention-curves-comparation-c12z.webp"
-import kfactorCompa from "./comparison-k-factor-c12z.webp"
-import TheMoat from "./the-moat-c12z.webp"
-import SocialMediaLoop from "./social-media-creator-loop.webp"
-import MarketplaceLoop from "./marketplace-amazon-flywheel-c12z.webp"
-import UseCasesCurves from "./use-cases-s-curve.webp"
-import TippingPoint from "./tipping-point-c12z.webp"
-import ColdStart from "./cold-start-c12z.webp"
-import Roof from "./the-roof-c12z.webp"
-import StravaLoop from "./strava-metrics-loops.webp"
+import DomainPrice from "./cz-dot-io-domain-price.webp";
+import ToolNetworkGraph from "./come-for-the-tool-stay-for-the-network-graph-in-c12z.webp";
+import FlinstoneFamily from "./the-flintstones-on-the-flintmobile-in-c12z.webp";
+import EscapeVelocity from "./escape-velocity-graph-c12z.webp";
+import RetentionCurves from "./retention-curves-comparation-c12z.webp";
+import kfactorCompa from "./comparison-k-factor-c12z.webp";
+import TheMoat from "./the-moat-c12z.webp";
+import SocialMediaLoop from "./social-media-creator-loop.webp";
+import MarketplaceLoop from "./marketplace-amazon-flywheel-c12z.webp";
+import UseCasesCurves from "./use-cases-s-curve.webp";
+import TippingPoint from "./tipping-point-c12z.webp";
+import ColdStart from "./cold-start-c12z.webp";
+import Roof from "./the-roof-c12z.webp";
+import StravaLoop from "./strava-metrics-loops.webp";
 
 <OwnThoughts
 	paragraphs={[
@@ -109,7 +109,7 @@ Esta ley narra que _el valor de una red aumenta proporcionalmente al cuadrado de
 
 Es decir, cada vez que un número _n_ de usuarios se une a un producto con efectos de red, el valor de la red crece _n^2_. Por ejemplo, si tu app tiene una red de 100 nodos y la duplicas a 200, el número de nodos se duplica 2x, pero el valor de la red crece 4x.
 
-Es una ley bonita **en papel** (y en la época de los 2000) pero tiene carencias que se vieron a posteriori  (nadie pudo predecir qué podría pasar... 👀):
+Es una ley bonita **en papel** (y en la época de los 2000) pero tiene carencias que se vieron a posteriori (nadie pudo predecir qué podría pasar... 👀):
 
 - Solo se basaba en el número de dispositivos conectados a la red
 - No servía cuando no había nadie en la red al inicio
@@ -150,7 +150,7 @@ Pero ¿qué pasaría si hubiera más conductores que pasajeros? ¿Y si hubiera m
 
 Los inicios siempre son lo más jodido y en los productos con efectos de red, lo son todavía más: la mayoría cae antes incluso de su salida al mercado, Go-To-Market, no llegan al umbral.
 
-<ImgAndCap 
+<ImgAndCap
 	src={ColdStart}
 	alt="gráfica de la primera parte del problema de arrancar en frío"
 	caption="Primera parte: Arrancar en frío"
@@ -178,9 +178,9 @@ Para calcular esto de manera **aproximada**, y por ahora, de forma **cualitativa
 	caption="Red de Uber: tamaño de red vs. parámetros clave (ejemplo)"
 />
 
-Cuantos más parámetros y/o features añadas más fácil te será encontrar el punto de inflexión y ver cuál es la mínima densidad de la red para llegar el umbral y para aumentar el uso.
+Cuantos más parámetros y/o paths añadas más fácil te será encontrar el punto de inflexión y ver cuál es la mínima densidad de la red para llegar el umbral y para aumentar el uso.
 
-En este caso ficticio de Uber, con precios/viaje de aproximadamente 12$, el tiempo de espra de 9 minutos y aumentando el número de conductores para que esto pase, empieza a aparecer un punto de inflexión en la red de pasajeros donde aumenta rápidamente de 400 a 1000, y a partir de ahí aún mejorando las features y la cantidad de conductores, las mejoras en la red de pasajeros se vuelve marginal.
+En este caso ficticio de Uber, con precios/viaje de aproximadamente 12$, el tiempo de espra de 9 minutos y aumentando el número de conductores para que esto pase, empieza a aparecer un punto de inflexión en la red de pasajeros donde aumenta rápidamente de 400 a 1000, y a partir de ahí aún mejorando las paths y la cantidad de conductores, las mejoras en la red de pasajeros se vuelve marginal.
 
 Este umbral es sumamente importante y difícil de calcular y más en los inicios que tienes que hacer suposiciones.
 
@@ -199,7 +199,7 @@ Consiguiendo esto, habrás creado una **red atómica**. La mínima red estable a
 **Todo** producto exitoso con efectos de red en sus inicios comparte rasgos, a priori, antiintuitivos:
 
 - Una escala pequeña. Buscaban tener la mínima cantidad de usuarios posibles, y
-- Una propuesta de valor simple. Una o dos features clave.
+- Una propuesta de valor simple. Una o dos paths clave.
 
 El objetivo es:
 
@@ -269,7 +269,7 @@ Algunas preguntas que te pueden dar pistas tanto para encontrarlos como para sat
 	title_asset="Burning Questions de Amplitude"
 />
 
-Responder estas preguntas requiere un conocimiento profundo tanto del comportamiento y motivaciones de tus posibles usuarios como de tu producto y del problema que resuelves. 
+Responder estas preguntas requiere un conocimiento profundo tanto del comportamiento y motivaciones de tus posibles usuarios como de tu producto y del problema que resuelves.
 
 Qué es lo que quieren, esperan y por qué. No se trata tanto de entender qué hacen, eso te lo da la analítica de producto (en nuestro caso Amplitude) sino de entender el por qué lo hacen. Entender las motivaciones detrás de las acciones. Sus modelos mentales. Sesgos.
 
@@ -279,7 +279,7 @@ Para sacar información y no datos, hay un libro que te recomiendo que leas y de
 
 #### El lado duro de las Redes Sociales (RRSS)
 
-En las RRSS es especialmente interesante el lado duro. Si te paras a pensar, estas no son más que tres funcionalidades juntas: crear, compartir y consumir. Todo lo demás gira en torno a esto pero no todos los usuarios ni todas las features contribuyen por igual.
+En las RRSS es especialmente interesante el lado duro. Si te paras a pensar, estas no son más que tres funcionalidades juntas: crear, compartir y consumir. Todo lo demás gira en torno a esto pero no todos los usuarios ni todas las paths contribuyen por igual.
 
 Bradley Horowitz, ex-VP de Producto de Google, explicó en un ensayo cómo funcionan estas dinámicas:
 
@@ -371,7 +371,7 @@ Es solo cuando este ciclo se vuelve repetitivo, cuando alcanzas el punto de infl
 
 El _tipping point_ es la segunda parte de la teoría de Chen.
 
-<ImgAndCap 
+<ImgAndCap
 	src={TippingPoint}
 	alt="gráfica de la velocidad del punto de inflexión"
 	caption="Segunda parte: Tipping Point"
@@ -398,7 +398,7 @@ Lo que la mueve no es solo el miedo a quedarse fuera (_FOMO - Fear Of Missing Ou
 
   Imagina que tu mejor amigo te invita a un bar que acaba de abrir. Cuando llegáis, él conoce a mucha gente pero tú a nadie. Sin embargo, como has ido con él, te presenta y te introduce en la conversación. Al cabo de unas horas sales con más amigos que antes, habiéndotelo pasado bien, y quizá en un futuro traigas a algún amigo tuyo que sabes que encajaría.
 
-	Ahora imagina el escenario contrario: quedáis en el mismo bar pero tu amigo te dice que vayas entrando, que él llega tarde. Aun siendo extrovertido, llegar a un lugar de la mano de alguien que te presenta es mucho más sencillo y placentero que partir de cero con desconocidos.
+  Ahora imagina el escenario contrario: quedáis en el mismo bar pero tu amigo te dice que vayas entrando, que él llega tarde. Aun siendo extrovertido, llegar a un lugar de la mano de alguien que te presenta es mucho más sencillo y placentero que partir de cero con desconocidos.
 
   Redes como LinkedIn, Slack o Facebook, en sus inicios, hicieron algo parecido. Encontraron a personas bien conectadas, que pudieran y quisieran invitar a sus amigos a formar parte de sus propias rede, la premisa de aquel entonces eran que cuanto mejor conectada estuviera una persona, antes sería invitada y a su vez, invitaría a más gente igual de bien conectada, creando un círculo virtuoso.
 
@@ -408,14 +408,16 @@ Lo que la mueve no es solo el miedo a quedarse fuera (_FOMO - Fear Of Missing Ou
 
   La escasez crea deseo. No porque el producto sea mejor, sino porque no todo el mundo puede tenerlo. Quien tiene acceso se siente especial; quien no lo tiene, lo quiere. Y ese deseo se contagia.
 
-	Los que están dentro publican sus opiniones, comparten sus primeras impresiones, generan conversación. Los que están fuera piden invitación, hacen ruido, amplifican el producto sin que tú hagas nada. La escasez hace el trabajo de marketing por ti, con lista de espera incluida.
+  Los que están dentro publican sus opiniones, comparten sus primeras impresiones, generan conversación. Los que están fuera piden invitación, hacen ruido, amplifican el producto sin que tú hagas nada. La escasez hace el trabajo de marketing por ti, con lista de espera incluida.
 
-	Y lo que mantiene viva esa tensión es el **estatus**. ¿Por qué unos sí y otros no? ¿Qué tiene esa persona que está dentro y tú no? Llegar primero da ventaja: en las redes sociales, el nombre corto y limpio, _@jack_. En la web, el dominio _.com_. La escasez no solo genera deseo, sino que convierte el acceso en una señal de quién eres.
+  Y lo que mantiene viva esa tensión es el **estatus**. ¿Por qué unos sí y otros no? ¿Qué tiene esa persona que está dentro y tú no? Llegar primero da ventaja: en las redes sociales, el nombre corto y limpio, _@jack_. En la web, el dominio _.com_. La escasez no solo genera deseo, sino que convierte el acceso en una señal de quién eres.
 
-	<OwnThoughts
-		paragraphs={[
-			"en mi caso, me gustaría tener el dominio cz.com o cz.io pero mira lo que me costaría comprarlo por no haber sido el primero. ambos posicionan igual, c12z que cz, pero es cuestión de estatus.", "pd: si me lo queres regalar no seré yo el que te diga que no :)"
-		]}/>
+  <OwnThoughts
+  	paragraphs={[
+  		"en mi caso, me gustaría tener el dominio cz.com o cz.io pero mira lo que me costaría comprarlo por no haber sido el primero. ambos posicionan igual, c12z que cz, pero es cuestión de estatus.",
+  		"pd: si me lo queres regalar no seré yo el que te diga que no :)",
+  	]}
+  />
 
 <ImgAndCap
 	src={DomainPrice}
@@ -425,20 +427,22 @@ Lo que la mueve no es solo el miedo a quedarse fuera (_FOMO - Fear Of Missing Ou
 
 - **Selecciona y mejora una red de alta calidad**
 
-	Las invitaciones también siguen el principio de _"Garbage In, Garbage Out"_ o _"Quality In, Quality Out"_. 
-	
-	La calidad de un producto con efectos de red depende directamente de la calidad de su red inicial.  Por eso las primeras incorporaciones no se dejan al azar. Los compañías que lo saben, eligen a los primeros usuarios a dedo, especialmente al lado duro. A veces a través de una _waitlist_ donde los candidatos explican qué esperan del producto, lo que permite filtrarlos manualmente u otras, es más directo aún: vas tú a buscarlos.
+  Las invitaciones también siguen el principio de _"Garbage In, Garbage Out"_ o _"Quality In, Quality Out"_.
 
-	Son acciones que no escalan, y no tienen por qué hacerlo. Su función es asegurarte una red inicial sólida, de personas que entienden el producto y que, por su perfil, atraerán a otras personas igual de buenas.
+  La calidad de un producto con efectos de red depende directamente de la calidad de su red inicial. Por eso las primeras incorporaciones no se dejan al azar. Los compañías que lo saben, eligen a los primeros usuarios a dedo, especialmente al lado duro. A veces a través de una _waitlist_ donde los candidatos explican qué esperan del producto, lo que permite filtrarlos manualmente u otras, es más directo aún: vas tú a buscarlos.
 
-	<OwnThoughts
-		paragraphs={[
-			"me ha tocado hablar y llamar a usuarios más de una vez en las startups en las que he trabajado y es duro pero gratificante cuando empieza a traccionar", "esto es un gran dicho que tienen en YCombinator: do things that don't scale. antes, en la parte de 'La red atómica' te he dejado un escrito de Paul Graham, co-founder de YCombinator, ahora te dejo un video de Gary Tan, actual presidente y CEO de YC explicando el porqué de esto:"]}
-			asset
-			href_link="https://www.youtube.com/watch?v=IjPDIjge81o&t=19s"
-			title_link="video de youtube donde se discute el make something do not scale"
-			title_asset="Video de YouTube donde lo explica"
-		/>
+  Son acciones que no escalan, y no tienen por qué hacerlo. Su función es asegurarte una red inicial sólida, de personas que entienden el producto y que, por su perfil, atraerán a otras personas igual de buenas.
+
+  <OwnThoughts
+  	paragraphs={[
+  		"me ha tocado hablar y llamar a usuarios más de una vez en las startups en las que he trabajado y es duro pero gratificante cuando empieza a traccionar",
+  		"esto es un gran dicho que tienen en YCombinator: do things that don't scale. antes, en la parte de 'La red atómica' te he dejado un escrito de Paul Graham, co-founder de YCombinator, ahora te dejo un video de Gary Tan, actual presidente y CEO de YC explicando el porqué de esto:",
+  	]}
+  	asset
+  	href_link="https://www.youtube.com/watch?v=IjPDIjge81o&t=19s"
+  	title_link="video de youtube donde se discute el make something do not scale"
+  	title_asset="Video de YouTube donde lo explica"
+  />
 
 ### Ven por la herramienta, quédate por la red - Caso Instagram
 
@@ -450,7 +454,7 @@ En 2009 Ryan Dorshorst y Lucas Buick publicaron en la App Store _Hipstamatic_, u
 
 Por esa misma época, al otro lado de Estados Unidos, Kevin Systrom y Mike Krieger, creaban _Burbn_. Una aplicación para registrar lugares, hacer planes con amigos y compartir fotos.
 
-Era funcional pero estaba empezando a ser costosa de entender por la cantidad de features y elementos que tenía y decidieron hacer una nueva versión, dejando solo las funcionalidades más importantes: subir fotos, comentar y dar _likes_. Con esta simplificación llevaron la app a 100.000 descargas en la primera semana.
+Era funcional pero estaba empezando a ser costosa de entender por la cantidad de paths y elementos que tenía y decidieron hacer una nueva versión, dejando solo las funcionalidades más importantes: subir fotos, comentar y dar _likes_. Con esta simplificación llevaron la app a 100.000 descargas en la primera semana.
 
 Pero ese éxito no era por las funcionalidades "importantes" que ellos esperaban sino porque tenía un mejor diseño y era más fácil de usar que Hipstamatic.
 
@@ -460,14 +464,15 @@ Hipstamatic era una buena herramienta pero con el pivot de Burbn, la única defe
 
 <OwnThoughts
 	paragraphs={[
-		"este es el artículo del que saca Chen el 'Ven por la herramienta, quédate por la red'"]}
+		"este es el artículo del que saca Chen el 'Ven por la herramienta, quédate por la red'",
+	]}
 	asset
 	href_link="https://cdixon.org/2015/01/31/come-for-the-tool-stay-for-the-network"
 	title_link="link donde se explica el concepto 'ven por la herramienta'"
 	title_asset="Post de CDixon"
 />
 
-<ImgAndCap 
+<ImgAndCap
 	src={ToolNetworkGraph}
 	alt="imagen de la gráfica de ven por la herramienta y quédate por la red"
 	caption="Intersección entre tool/network"
@@ -479,7 +484,7 @@ Necesitas construir un puente **desde producto**, que reduzca la brecha y fricci
 
 Muchos productos que han resuelto estas preguntas siguen el patrón de _subir contenido - interactuar con el contenido_:
 
-| Patrón                                       | Red                             |
+| Patrón                                            | Red                             |
 | :------------------------------------------------ | :------------------------------ |
 | Crear + compartir con otros                       | Instagram, YouTube, Strava      |
 | Organizar + colaborar con otros                   | Pinterest, Figma, Notion        |
@@ -514,11 +519,11 @@ Usa las palancas financieras como forma de crecimiento solo en el momento adecua
 
 ### Picapedreando - Caso Reddit
 
-Este concepto viene de la serie _Los Picapiedra_, concretamente de su coche, _el troncomóvil_, un coche hecho de piedra, troncos y pieles pero que funcionaba con tracción animal. Concretamente las piernas de Pedro, el protagonista, que para hacerlo funcionar tenía que correr. 
+Este concepto viene de la serie _Los Picapiedra_, concretamente de su coche, _el troncomóvil_, un coche hecho de piedra, troncos y pieles pero que funcionaba con tracción animal. Concretamente las piernas de Pedro, el protagonista, que para hacerlo funcionar tenía que correr.
 
 Ineficiente, pero útil.
 
-<ImgAndCap 
+<ImgAndCap
 	src={FlinstoneFamily}
 	alt="imagen de la familia picapiedra en el troncomovil"
 	caption="Picapiedras en el troncomóvil"
@@ -548,7 +553,7 @@ El reto en esta fase no es llegar a la velocidad de escape **es mantenerla** lo 
 
 En este punto es cuando los efectos de red pasan a ser el motor principal de crecimiento del producto, y la definición clásica y de alto nivel como es _a más usuarios, más valor_ se queda corta y necesitar conceptos de bajo nivel, en los que puedas ejercer una acción real. Para Chen, los efectos de red se descomponen en tres subefectos: retención, adquisición y monetización.
 
-<ImgAndCap 
+<ImgAndCap
 	src={EscapeVelocity}
 	alt="gráfica de la velocidad de escape"
 	caption="Tercera parte: Velocidad de Escape"
@@ -590,7 +595,7 @@ Donde ARPU es _Average Revenue per User_ o ingreso promedio por usuario.
 
 #### Efectos de retención
 
-La **retención es la métrica más importante** para entender el valor real de un producto pero la realidad es dura: el 70% de los usuarios que instalan una app por primera vez no vuelven al día siguiente. Y a los tres meses, el 96% ya no está activo. 
+La **retención es la métrica más importante** para entender el valor real de un producto pero la realidad es dura: el 70% de los usuarios que instalan una app por primera vez no vuelven al día siguiente. Y a los tres meses, el 96% ya no está activo.
 
 Son curvas con pendiente negativa que no se aplanan, tienen de a cero cuando retención sana debería frenar esa caída en algún punto antes de llegar a ese punto.
 
@@ -612,7 +617,8 @@ Pero recuerda que **si un usuario no está retenido es porque no ha conseguido v
 
 <OwnThoughts
 	paragraphs={[
-		"los productos que sí consiguen retener bien tampoco lo hacen por intuición, apostaría lo que fuera, y estoy seguro de que no me equivocaría, a que gran parte de estos outliers de a16z tienen al menos 1 de los 4 fits que Brian Balfour nombra en su ensayo:"]}
+		"los productos que sí consiguen retener bien tampoco lo hacen por intuición, apostaría lo que fuera, y estoy seguro de que no me equivocaría, a que gran parte de estos outliers de a16z tienen al menos 1 de los 4 fits que Brian Balfour nombra en su ensayo:",
+	]}
 	asset
 	href_link="https://brianbalfour.com/four-fits-growth-framework"
 	title_link="link a 4 fits de brian balfour"
@@ -621,7 +627,8 @@ Pero recuerda que **si un usuario no está retenido es porque no ha conseguido v
 
 <OwnThoughts
 	paragraphs={[
-		"también escribió otro ensayo relacionado a los 4 fits pero actualizado para la era de la AI"]}
+		"también escribió otro ensayo relacionado a los 4 fits pero actualizado para la era de la AI",
+	]}
 	asset
 	href_link="https://www.reforge.com/blog/four-fits-growth-framework"
 	title_link="link a 4 fits en la era de la IA de brian balfour"
@@ -640,10 +647,12 @@ Por tanto, la segmentación útil parte de las **métricas que hayas definido co
 
 <OwnThoughts
 	paragraphs={[
-		"sería un ejercicio parecido al de definir la North Star Metric, donde tienes que encontrar una métrica que englobe tanto el valor para el usuario como para tu negocio"
-	]} 
+		"sería un ejercicio parecido al de definir la North Star Metric, donde tienes que encontrar una métrica que englobe tanto el valor para el usuario como para tu negocio",
+	]}
 />
-Encontrar estas métricas y segmentar a los usuarios en cohortes se consigue a través de un conocimiento profundo del producto, del problema que resuelves y, sobre todo, de los usuarios. Por lo general, hablando con ellos.
+Encontrar estas métricas y segmentar a los usuarios en cohortes se consigue a
+través de un conocimiento profundo del producto, del problema que resuelves y,
+sobre todo, de los usuarios. Por lo general, hablando con ellos.
 
 Hablar con usuarios te permite entender por qué ven y hacen lo que hacen, y qué acciones realizan los segmentos con mayor compromiso. Eso es lo que luego puedes extrapolar al resto: mostrarles cómo otros usan el producto, qué les aporta, qué más pueden hacer con él. No como un tutorial forzado, sino de forma natural, a partir de lo que ya funciona. Educándolos.
 
@@ -653,25 +662,26 @@ Para cada producto, e industria hay un loop de retención distinto. No son unive
 
 - **Redes sociales**:
 
-	<ImgAndCap 
-		src={SocialMediaLoop}
-		alt="loop para redes sociales"
-		caption="Loop simple de creadores de contenido"
-	/>
+  <ImgAndCap
+  	src={SocialMediaLoop}
+  	alt="loop para redes sociales"
+  	caption="Loop simple de creadores de contenido"
+  />
 
 - **Marketplaces**:
 
-	<ImgAndCap 
-		src={MarketplaceLoop}
-		alt="loop para marketplace"
-		caption="Loop simple del marketplace de amazon del libro Good To Great"
-	/>
+  <ImgAndCap
+  	src={MarketplaceLoop}
+  	alt="loop para marketplace"
+  	caption="Loop simple del marketplace de amazon del libro Good To Great"
+  />
 
 Conceptualizar los loops de esta forma, bajándolos a tierra, te ayuda a entender, de manera muy básica, cómo funcionan y cómo puedes incidir y mejorar cada una de las etapas.
 
 <OwnThoughts
 	paragraphs={[
-		"un libro muy bueno para indagar más sobre loops y flywheels es 'Good to Great' de Jim C. Collins. estoy pendiente de subir los insights :) pero por ahora te dejo el link a Amazon"]}
+		"un libro muy bueno para indagar más sobre loops y flywheels es 'Good to Great' de Jim C. Collins. estoy pendiente de subir los insights :) pero por ahora te dejo el link a Amazon",
+	]}
 	asset
 	href_link="https://www.amazon.es/Good-Great-Monograf%C3%ADas-Jim-Collins/dp/8417963170/ref=sr_1_1"
 	title_link="link a amazon españa para comprar el libro 'Good to Great' de Jim C. Collins"
@@ -682,7 +692,9 @@ Plasmar el loop es el primer paso, pero no el último. Para trabajar sobre él n
 
 <OwnThoughts
 	paragraphs={[
-		"la experimentación no siempre puede ser un A/B testing. cuando no tienes una masa de usuarios suficiente, no te servirá de nada. el resultado que obtienes es cuestión de azar.", "en casos así es más sencillo, y viable, probar con otros métodos más 'predecibles' como causal impact o before/after."]}
+		"la experimentación no siempre puede ser un A/B testing. cuando no tienes una masa de usuarios suficiente, no te servirá de nada. el resultado que obtienes es cuestión de azar.",
+		"en casos así es más sencillo, y viable, probar con otros métodos más 'predecibles' como causal impact o before/after.",
+	]}
 	asset
 	href_link="https://google.github.io/CausalImpact/CausalImpact.html"
 	title_link="link al repo de google de causal impact"
@@ -697,17 +709,19 @@ Las personas que deciden abandonar un producto, **después de haberlo usado**, s
 
 <OwnThoughts
 	paragraphs={[
-		"hago énfasis en 'después de haberlo usado' porque son las personas que tienen esa decisión formada.", 
-		"puedes agrupar a los usuarios que te abandonan en 3 grupos: los que por algún motivo entraron al producto pero no son el usuario target, usuarios que, siendo el target, abandonan el producto sin hacer ninguna acción relevante en él, y los usuarios que, después de haber experimentado el valor y haber hecho las acciones core, se van.", 
-		"los primeros te deberían darte igual, es ruido. en el segundo caso, tu prioridad es entender cuál ha sido el camino que han seguido dentro del producto y cómo puedes hacerles llegar antes ese 'aha moment' reduciendo el 'time to value'. y en estos últimos es en los que tienes que centrar tu atención, porque han experimentado el valor, saben qué haces y qué problema resuelves y aún así han decidido irse.", "",
-		"necesitas entender los motivos de estos últimos. necesitas poder hablar con ellos, que te concedan una charla, aunque para ello necesites hacer alguna transacción a cambio."]}
+		"hago énfasis en 'después de haberlo usado' porque son las personas que tienen esa decisión formada.",
+		"puedes agrupar a los usuarios que te abandonan en 3 grupos: los que por algún motivo entraron al producto pero no son el usuario target, usuarios que, siendo el target, abandonan el producto sin hacer ninguna acción relevante en él, y los usuarios que, después de haber experimentado el valor y haber hecho las acciones core, se van.",
+		"los primeros te deberían darte igual, es ruido. en el segundo caso, tu prioridad es entender cuál ha sido el camino que han seguido dentro del producto y cómo puedes hacerles llegar antes ese 'aha moment' reduciendo el 'time to value'. y en estos últimos es en los que tienes que centrar tu atención, porque han experimentado el valor, saben qué haces y qué problema resuelves y aún así han decidido irse.",
+		"",
+		"necesitas entender los motivos de estos últimos. necesitas poder hablar con ellos, que te concedan una charla, aunque para ello necesites hacer alguna transacción a cambio.",
+	]}
 />
 
 Y aunque la resurrección es igual de complicada en todos los productos, los que tienen efectos de red tienen una ventaja oculta. Pueden usar el propio producto y la red del usuario "muerto" para resucitarlo.
 
 Y de esta resurrección es donde nacen las curvas de retención con forma de una leve sonrisa. Usuarios que ya tenías registrados y habían hecho churn, vuelven al producto registrando ese leve ascenso.
 
-<ImgAndCap 
+<ImgAndCap
 	src={RetentionCurves}
 	alt="gráfica de comparación entre curvas de retención: mala, buena y mejor"
 	caption="Comparación entre curvas de retención"
@@ -719,7 +733,8 @@ Es la capacidad de un producto de traer nuevos usuarios a medida que este escala
 
 <OwnThoughts
 	paragraphs={[
-		"te vuelvo a insistir, la viralidad SOLO funciona gracias al producto. es gracias a la forma en la que está construido y pensado el producto la que tiene la capacidad de incentivar la viralidad. no marketing. no publicidad. no incentivos. :)"]}
+		"te vuelvo a insistir, la viralidad SOLO funciona gracias al producto. es gracias a la forma en la que está construido y pensado el producto la que tiene la capacidad de incentivar la viralidad. no marketing. no publicidad. no incentivos. :)",
+	]}
 />
 
 Chen distingue entre 2 viralidades: "marketing viral" y la viralidad orientada por el producto. En la primera, marketing toma un producto sin efectos de red y construye una campaña alrededor esperando que se haga viral. En la segunda, la viralidad nace de la propia experiencia: el producto, por cómo está construido, genera adquisición por sí mismo.
@@ -734,7 +749,7 @@ El problema con las _lagging metrics_ es que no puedes actuar sobre ellas direct
 
 La forma más sencilla de encontrarlas es volver a bajar el loop a tierra dibujando el bucle divídelo en los pasos más pequeños posibles (cada uno es una acción única que hace un usuario y que irremediablemente lo lleva al siguiente) hasta cerrar el bucle y que cada conexión entre pasos, encontrar la _leading metric_ que lleve de uno a otro y en la que puedas actuar de manera directa.
 
-<ImgAndCap 
+<ImgAndCap
 	src={StravaLoop}
 	alt="loop viral de adquisición de strava ejemplificado con métricas"
 	caption="Loop viral de adquisición de Strava (ficticio aunque posible)"
@@ -754,7 +769,7 @@ Y aún teniendo todo el _expertise_ y la escala, pueden salir muchas cosas mal.
 
 ## Parte 4 - El techo
 
-<ImgAndCap 
+<ImgAndCap
 	src={Roof}
 	alt="gráfica de la cuarta parte del problema de arrancar en frío, el techo"
 	caption="Cuarta parte: El techo"
@@ -766,7 +781,7 @@ A estas curvas de crecimiento se las conoce como _curvas S_: en un inicio el cre
 
 Son el bendito problema que los equipos de producto deben solventar a través de nuevos productos, casos de uso e innovación para impulsar la siguiente curva de crecimiento y crear esos escalones.
 
-<ImgAndCap 
+<ImgAndCap
 	src={UseCasesCurves}
 	alt="gráfica de comparación entre el caso de uso y el aumento de retención. curvas s"
 	caption="Superposición de casos de uso y curva S"
@@ -789,8 +804,9 @@ Y sumado a esto, para que una startup pueda levantar capital de _VCs_ (venture c
 
 <OwnThoughts
 	paragraphs={[
-		"para que a un VC le salga rentable la inversión, espera que en esos años, como mínimo, le hagas un x10", 
-		"no tienes porqué depender de un VC, puedes ser una startup bootstraped (que se financia con sus propios ingresos o los de los fundadores) pero es una forma más lenta de crecer y cuando se trata de ganar mercados: 'winner takes all'"]}
+		"para que a un VC le salga rentable la inversión, espera que en esos años, como mínimo, le hagas un x10",
+		"no tienes porqué depender de un VC, puedes ser una startup bootstraped (que se financia con sus propios ingresos o los de los fundadores) pero es una forma más lenta de crecer y cuando se trata de ganar mercados: 'winner takes all'",
+	]}
 />
 
 Siendo consciente de estas premisas, necesitas hacer ingeniería inversa y trazar un plan para encontrar cuáles van a ser las métricas y los _Unit Economics_ que necesitas alcanzar año tras año para llegar como mínimo a esa valoración (suponiendo que quieres inversión externa).
@@ -805,33 +821,32 @@ Donde:
 
 - **TR — Target Revenue:** los ingresos a los que tienes que llegar para alcanzar el estatus de unicornio. Cada industria tiene sus estándares: para un SaaS, \$100M de ARR (_Annual Recurring Revenue_); para un marketplace, \$200M en ingresos netos.
 
-	El TR no es un número arbitrario, es el resultado de hacer ingeniería inversa a la valoración que quieres llegar dividiendola por el múltiplo que el mercado aplica a cada modelo de negocio:
+  El TR no es un número arbitrario, es el resultado de hacer ingeniería inversa a la valoración que quieres llegar dividiendola por el múltiplo que el mercado aplica a cada modelo de negocio:
+  - **SaaS — múltiplo sobre ARR**
 
-	 - **SaaS — múltiplo sobre ARR**
+    En el entorno post-2022, el múltiplo sobre ARR para compañías privadas con alto crecimiento se sitúa entre 6x y 10x. Aplicando un múltiplo conservador de 10x:
 
-		En el entorno post-2022, el múltiplo sobre ARR para compañías privadas con alto crecimiento se sitúa entre 6x y 10x. Aplicando un múltiplo conservador de 10x:
+    $$
+    \text{TR}_{\text{SaaS}} = \frac{\$1.000M}{10x} = \$100M \text{ ARR}
+    $$
 
-		$$
-		\text{TR}_{\text{SaaS}} = \frac{\$1.000M}{10x} = \$100M \text{ ARR}
-		$$
+  - **Marketplace — múltiplo sobre ingresos netos**
 
-	- **Marketplace — múltiplo sobre ingresos netos**
+    Los marketplaces no se valoran sobre el GMV (_Gross Merchandise Value_, el volumen total de transacciones), sino sobre sus ingresos netos: el GMV multiplicado por su _take rate_ (la comisión que cobra la plataforma por transacción). Con un múltiplo conservador de 5x:
 
-		Los marketplaces no se valoran sobre el GMV (_Gross Merchandise Value_, el volumen total de transacciones), sino sobre sus ingresos netos: el GMV multiplicado por su _take rate_ (la comisión que cobra la plataforma por transacción). Con un múltiplo conservador de 5x:
+    $$
+    \text{TR}_{\text{Marketplace}} = \frac{\$1.000M}{5x} = \$200M \text{ en ingresos netos}
+    $$
 
-		$$
-		\text{TR}_{\text{Marketplace}} = \frac{\$1.000M}{5x} = \$200M \text{ en ingresos netos}
-		$$
+    Pero aquí hay una trampa. Esos \$200M de ingresos netos implican un GMV muy diferente según el _take rate_ del negocio:
 
-		Pero aquí hay una trampa. Esos \$200M de ingresos netos implican un GMV muy diferente según el _take rate_ del negocio:
+    | Take rate | GMV necesario para \$200M netos |
+    | --------- | ------------------------------- |
+    | 20%       | \$1.000M                        |
+    | 10%       | \$2.000M                        |
+    | 5%        | \$4.000M                        |
 
-		| Take rate | GMV necesario para \$200M netos |
-		|-----------|-------------------------------|
-		| 20%       | \$1.000M                       |
-		| 10%       | \$2.000M                       |
-		| 5%        | \$4.000M                       |
-
-	Esto explica por qué los marketplaces necesitan mercados masivos para ser viables como negocio venture: con un _take rate_ bajo, necesitas mover miles de millones en volumen bruto para llegar al mismo punto de valoración que un SaaS con $100M de ARR.
+  Esto explica por qué los marketplaces necesitan mercados masivos para ser viables como negocio venture: con un _take rate_ bajo, necesitas mover miles de millones en volumen bruto para llegar al mismo punto de valoración que un SaaS con $100M de ARR.
 
 - **IR - Initial Revenue. Ingresos iniciales:** son los ingresos recurrentes anuales con los que partes. Lo puedes calcular únicamente después de haber llegado a _Product Market Fit_, antes de ese punto, no es predecible.
 
@@ -890,11 +905,11 @@ Para seguir creciendo cuando la red llega a este punto, tienes 2 estrategias:
 
 - **Teoría de los Usuarios Adyacentes**
 
-  Esta estrategia la propuso Bangaly Kaba, ex VP de Growth de Instagram, y se basa en la siguiente tesis: 
-	
-	Dentro del producto existen redes cercanas a la red principal que, por alguna razón, tienen una experiencia deficiente o no están del todo integradas. El objetivo es identificar ese cohorte, "olvidarte" de la red core y convertir este nuevo grupo de usuarios en tu foco con tal de igualar la experiencia y engagement.
+  Esta estrategia la propuso Bangaly Kaba, ex VP de Growth de Instagram, y se basa en la siguiente tesis:
 
-  Puede haber varios conjuntos de "nuevos" usuarios y que cada uno de ellos sea deficiente por un motivo. Features que aún no existen. Creadores de contenido o celebridades que aún no se han unido a la red. O incluso el idioma. Y se vuelve aún más complejo cuando esta red adyacente forma parte del lado duro, porque necesitarás evolucionar el producto y la oferta para atender esas nuevas necesidades intentando no romper la red principal.
+  Dentro del producto existen redes cercanas a la red principal que, por alguna razón, tienen una experiencia deficiente o no están del todo integradas. El objetivo es identificar ese cohorte, "olvidarte" de la red core y convertir este nuevo grupo de usuarios en tu foco con tal de igualar la experiencia y engagement.
+
+  Puede haber varios conjuntos de "nuevos" usuarios y que cada uno de ellos sea deficiente por un motivo. paths que aún no existen. Creadores de contenido o celebridades que aún no se han unido a la red. O incluso el idioma. Y se vuelve aún más complejo cuando esta red adyacente forma parte del lado duro, porque necesitarás evolucionar el producto y la oferta para atender esas nuevas necesidades intentando no romper la red principal.
 
   Cada red adyacente trae consigo unas virtudes y problemas que tendrás que tener en cuenta cuando vayas a priorizar el segmento al que atacar.
 
@@ -934,7 +949,7 @@ De 100 usuarios iniciales, solo atraes a 55 nuevos.
 
 Una disminución aproximada del 50% en _k_ en ese canal se traduce en alrededor de 80% menos de nuevos usuarios. El bucle se agota 3x antes. El bucle de _k_ = .75 necesita 14 ciclos para agotarse mientras que para _k_ = .35, solo 4.
 
-<ImgAndCap 
+<ImgAndCap
 	src={kfactorCompa}
 	alt="gráfica de comparación k factors"
 	caption="Comparación entre k-factor"
@@ -961,15 +976,15 @@ Tienes 2 vías:
 
    Algunos usuarios empiezan de forma discreta, vendiendo poco, con pocos seguidores y atrayendo pocos usuarios del otro lado. Con el tiempo escalan, entienden cómo funciona el canal y aprenden el _playbook_. Los más exitosos acaban convirtiéndolo en su trabajo, y algunos llegan a construir marcas o empresas enteras sobre esa red.
 
-	 Para ello, necesitas proporcionarles las herramientas y conocimientos necesarios sobre el producto para que puedan seguir mejorando.
+   Para ello, necesitas proporcionarles las herramientas y conocimientos necesarios sobre el producto para que puedan seguir mejorando.
 
-	 Volvemos al mismo planteamiento de la retención, necesitas **educar** a tu parte dura ya sea a través de tu conocimiento del producto y cómo funciona o a través del de otros usuarios más profesionalizados.
+   Volvemos al mismo planteamiento de la retención, necesitas **educar** a tu parte dura ya sea a través de tu conocimiento del producto y cómo funciona o a través del de otros usuarios más profesionalizados.
 
 2. **Mediante profesionales externos a la red**
 
-   Cuando una red se hace grande, rica y diversa, deja de ser una plataforma y pasa a ser una **Economía**. El ecosistema es lo suficientemente estable como para que actores externos entren y ofrezcan servicios a sus usuarios, algo especialmente valioso cuando la adquisición del lado duro empieza a ralentizarse. 
-	 
-	 El ejemplo más claro es cuando Microsoft empezó a desarrollar apps para iOS o cuando la propia AppStore abrió su plataforma a desarrolladores de todo el mundo.
+   Cuando una red se hace grande, rica y diversa, deja de ser una plataforma y pasa a ser una **Economía**. El ecosistema es lo suficientemente estable como para que actores externos entren y ofrezcan servicios a sus usuarios, algo especialmente valioso cuando la adquisición del lado duro empieza a ralentizarse.
+
+   El ejemplo más claro es cuando Microsoft empezó a desarrollar apps para iOS o cuando la propia AppStore abrió su plataforma a desarrolladores de todo el mundo.
 
 Hay un matiz importante en todo esto y es que los primeros miembros del lado duro llegaron por curiosidad o por diversión. Los siguientes vienen a resolver un problema concreto, y si no los preparas para usar tu producto, se irán. La saturación cambia el perfil del lado duro, y si no evoluciona el producto con él, la red se resiente.
 
@@ -979,7 +994,7 @@ La profesionalización conlleva una simbiosis de poder entre tú, como producto,
 
 Toda red crea en sus inicios una filosofía y una forma de actuar no escrita, una cultura implícita que hace que sus usuarios se sientan parte de algo. Pero con el tiempo, esa cultura puede volverse frágil y susceptible al colapso de contexto: un problema sutil y casi exclusivo de los productos en internet.
 
-Esto ocurre cuando demasiados contextos distintos convergen en un mismo espacio. Lo que antes era una red con normas claras y un ambiente seguro se convierte en un lugar donde los usuarios piensan dos veces antes de hacer algo porque podría volverse en su contra de alguna u otra forma. 
+Esto ocurre cuando demasiados contextos distintos convergen en un mismo espacio. Lo que antes era una red con normas claras y un ambiente seguro se convierte en un lugar donde los usuarios piensan dos veces antes de hacer algo porque podría volverse en su contra de alguna u otra forma.
 
 LinkedIn es el ejemplo más claro, una red donde la gente sube contenido de su trabajo con su nombre real y la empresa en la que trabaja, lo que digan afecta directamente a su reputación.
 
@@ -1017,7 +1032,7 @@ En ese punto necesitas entender el comportamiento de tus usuarios, predecir qué
 
 ## Parte 5 - El moat (foso defensivo)
 
-<ImgAndCap 
+<ImgAndCap
 	src={TheMoat}
 	alt="gráfica del foso defensivo"
 	caption="Quinta Parte: Moat o Foso defensivo"
@@ -1027,9 +1042,9 @@ Y la última pregunta que tienes que resolver es ¿cómo consigo que mi producto
 
 Esto es justo lo que les pasó a la gente de Airbnb en sus inicios con Wimdu. Eran idénticas, una en EE.UU. y la otra, una copia de esta, en Europa. Y aunque es una historia larga y el final es evidente, te doy una frase Brian Chesky, su fundado, con la que deberías quedarte:
 
-> No toda la oferta se crea igual [...] Al principio, cuando éramos nuevos los huéspedes iban con pocas expectativas pero quedaban maravillados por la experiencia. 
+> No toda la oferta se crea igual [...] Al principio, cuando éramos nuevos los huéspedes iban con pocas expectativas pero quedaban maravillados por la experiencia.
 >
-> Necesitas un Net Promoter Score (NPS) alto para que la gente se lo cuente a sus amigos [...] y aunque Wimdu fue capaz de registrar cifras impresionantes, ni el lado duro de la red, los anfitriones, ni el fácil, los huéspedes, reflejaban calidad. 
+> Necesitas un Net Promoter Score (NPS) alto para que la gente se lo cuente a sus amigos [...] y aunque Wimdu fue capaz de registrar cifras impresionantes, ni el lado duro de la red, los anfitriones, ni el fácil, los huéspedes, reflejaban calidad.
 >
 > Priorizaron velocidad, a través de marketing pagado, en vez de calidad [...] Catalizar ambos lados de la red a la vez puede funcionar si las redes atómicas se forman rápido también.
 
@@ -1043,7 +1058,7 @@ Esto es justo lo que les pasó a la gente de Airbnb en sus inicios con Wimdu. Er
 	title_asset="Entrevista a Brian Chesky por Greylock para Blitzscaling"
 />
 
-La historia de Airbnb y Wimdu ilustra exactamente lo que es un _moat_: una red consolidada que defiende su territorio usando los propios efectos de red como barrera. No hace falta bloquear a la competencia, basta con que la calidad de tu red sea tan superior que entrar a competir sea, de entrada, una batalla perdida. 
+La historia de Airbnb y Wimdu ilustra exactamente lo que es un _moat_: una red consolidada que defiende su territorio usando los propios efectos de red como barrera. No hace falta bloquear a la competencia, basta con que la calidad de tu red sea tan superior que entrar a competir sea, de entrada, una batalla perdida.
 
 La teoría del _Cold Start_ lo predice: cuando dos redes compiten, se crea simultáneamente un círculo virtuoso para el ganador y uno vicioso para el perdedor. Y la distancia entre ambos no deja de crecer.
 
@@ -1055,14 +1070,13 @@ Pero todos los _moats_ tienen su _Caballo de Troya_. Las redes dominantes siempr
 
   Todas las redes dominantes, por invencibles que parezcan, tienen puntos ciegos y el principio de red de redes lo predice: siempre existe alguna parte de la red más vulnerable o desatendida. Esta estrategia se basa en encontrarla y quedársela.
 
-  La red atómica a la que entras tiene que cumplir 2 condiciones aparentemente contradictorias: 
-	
-	- tiene que ser lo suficientemente grande para ser rentable y poder crecer, y
-	- lo suficientemente pequeña para que puedas conocerla mejor que nadie.
+  La red atómica a la que entras tiene que cumplir 2 condiciones aparentemente contradictorias:
+  - tiene que ser lo suficientemente grande para ser rentable y poder crecer, y
+  - lo suficientemente pequeña para que puedas conocerla mejor que nadie.
 
   La ventaja de esta estrategia es que no empiezas desde cero. La red ya existe, las personas ya entienden el problema, y están conectadas entre sí. Si llegas con un mensaje, un producto y/o una experiencia mejor que la del incumbente, el _flywheel_ puede arrancar muy pronto porque la reacción ya tiene combustible.
 
-	Pero hay un riesgo: si encuentras esa red y puedes validarla, tienes que independizarte de la plataforma madre cuanto antes. Podría darse cuenta, cortar el acceso y hacer desaparecer tu ventaja competitiva de un día para otro.
+  Pero hay un riesgo: si encuentras esa red y puedes validarla, tienes que independizarte de la plataforma madre cuanto antes. Podría darse cuenta, cortar el acceso y hacer desaparecer tu ventaja competitiva de un día para otro.
 
 - **El lado duro**
 
@@ -1073,12 +1087,12 @@ O también puedes dejar que las grandes ballenas se destruyan solas:
 - **Lanzamientos de _Big Bang_**
 
   Es la estrategia favorita de las grandes empresas consolidadas para entrar en nuevos mercados.
-	
-	Lanzar un producto de golpe, ¿qué puede salir mal? Tienen base de usuarios, canales de distribución y capital para quemar en ingeniería, ventas y marketing. Todo parece una ventaja.
 
-  El problema es que lanzan directamente a una red general, ignorando por completo la lógica de las redes atómicas. 
-	
-	Estos lanzamientos son generalistas por defecto: usuarios de todo tipo, sin nada en común, conectados en papel pero desconectados en la práctica y cuando no encuentran valor real, se van. Quedando atrás un conjunto de métricas infladas, _vanity metrics_, que no dicen nada.
+  Lanzar un producto de golpe, ¿qué puede salir mal? Tienen base de usuarios, canales de distribución y capital para quemar en ingeniería, ventas y marketing. Todo parece una ventaja.
+
+  El problema es que lanzan directamente a una red general, ignorando por completo la lógica de las redes atómicas.
+
+  Estos lanzamientos son generalistas por defecto: usuarios de todo tipo, sin nada en común, conectados en papel pero desconectados en la práctica y cuando no encuentran valor real, se van. Quedando atrás un conjunto de métricas infladas, _vanity metrics_, que no dicen nada.
 
 **Los efectos de red se construyen con calidad, no con cantidad**. La diferencia entre Microsoft Teams y Slack lo ilustra mejor que cualquier explicación: uno es una delicia usarlo, el otro...
 

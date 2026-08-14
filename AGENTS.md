@@ -24,11 +24,11 @@ rm -rf dist && rm -rf .vercel/* && mkdir -p .vercel
 
 Personal blog/portfolio site built with **Astro 7** + **React 19** + **MDX**, deployed to Vercel (static output). **No Tailwind** — styling is plain CSS: design-token CSS variables in `src/styles/global.css` plus CSS Modules per component.
 
-Longer-form docs live in `.docs/` (`start-here.md`, `features/`, `lib/`, `pages/`).
+Longer-form docs live in `.docs/` (`start-here.md`, `paths/`, `lib/`, `pages/`).
 
 ### Key structural patterns
 
-**Feature-based organization** — `src/features/<name>/` encapsulates all domain logic (`404`, `behavior`, `bias`, `books`, `context`, `essay`, `home`, `mental-models`, `notes`, `projects`, `sources`):
+**Feature-based organization** — `src/paths/<name>/` encapsulates all domain logic (`404`, `behavior`, `bias`, `books`, `context`, `essay`, `home`, `mental-models`, `notes`, `projects`, `sources`):
 
 - `components/` — Astro/React components specific to that feature
 - `seo/` — keywords and metadata for that feature
@@ -37,7 +37,7 @@ Longer-form docs live in `.docs/` (`start-here.md`, `features/`, `lib/`, `pages/
 
 **Content Collections** — `src/content/` holds markdown/MDX validated by Zod schemas in `src/content.config.ts`. Registered collections: `bias`, `library` (book reviews), `projects`, `notes`, `mentalModels`. An `essay` collection is defined but commented out of the exports.
 
-**Sources are frontmatter, not a collection** — posts embed a `sources` array (`sourceSchema`: title, type enum, author, url…) in their own frontmatter. Adding a source type takes TWO steps: the `z.enum` in `content.config.ts` AND `TYPE_LABELS` in `features/sources/data/source-types.ts` (build fails if you forget the second — intended). See `.docs/features/sources.md`.
+**Sources are frontmatter, not a collection** — posts embed a `sources` array (`sourceSchema`: title, type enum, author, url…) in their own frontmatter. Adding a source type takes TWO steps: the `z.enum` in `content.config.ts` AND `TYPE_LABELS` in `paths/sources/data/source-types.ts` (build fails if you forget the second — intended). See `.docs/paths/sources.md`.
 
 **Shared globals** — `src/global/`: `site-info.ts`, `header-links.ts`, `pages-info.ts`, `socialmedia-links.ts`.
 
@@ -49,7 +49,7 @@ Longer-form docs live in `.docs/` (`start-here.md`, `features/`, `lib/`, `pages/
 
 ```
 @/*           → src/*
-@/features/*  → src/features/*
+@/paths/*  → src/paths/*
 @/lib/*       → src/lib/*
 @/global/*    → src/global/*
 @/ui/*        → src/components/ui/*
@@ -97,11 +97,11 @@ Dark-first, retro-digital, content-focused personal site. Lime accent on near-bl
 
 ### Typography
 
-| Role | Font | Var |
-|------|------|-----|
-| Display / headers | **Tamago** (pixel art) | `--ff-pixel` |
-| Body | **Rubik** (300–700 + italic) | `--ff-rubik` |
-| Code | **Cascadia** | `--ff-mono` |
+| Role              | Font                         | Var          |
+| ----------------- | ---------------------------- | ------------ |
+| Display / headers | **Tamago** (pixel art)       | `--ff-pixel` |
+| Body              | **Rubik** (300–700 + italic) | `--ff-rubik` |
+| Code              | **Cascadia**                 | `--ff-mono`  |
 
 Type scale (`--t-*`/`--lh-*`), tracking (`--tracking-*`), 4pt spacing (`--sp-*`), widths (`--wdth-*`), radii (`--r-*`), motion (`--ease`, `--t-fast/base/slow`) are all tokenized — use them, don't invent values. Note: `html` font-size is `--t-body` (14px), so `1rem` = 14px.
 
@@ -118,7 +118,7 @@ Type scale (`--t-*`/`--lh-*`), tracking (`--tracking-*`), 4pt spacing (`--sp-*`)
 ### UI conventions when building new components
 
 - Use existing CSS variables — never hardcode colors, sizes, or spacing
-- Styles go in CSS Modules (`*.module.css`) next to the component or in `src/features/<name>/styles/`
+- Styles go in CSS Modules (`*.module.css`) next to the component or in `src/paths/<name>/styles/`
 - React components (`.tsx`) only when interactivity is needed; prefer `.astro` otherwise
 - Motion library (`motion/react`) is available for animations in React components
 - Left/bottom borders as a recurring visual motif for list items

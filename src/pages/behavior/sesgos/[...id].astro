@@ -4,20 +4,20 @@
  */
 // export const prerender = true;
 
-import styles from "@/features/bias/components/bias.module.css"
+import styles from "@/paths/bias/components/bias.module.css"
 
 import { getCollection, render, type CollectionEntry } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
 
-import BiasSEO from "@/features/bias/seo/BiasSEO.content.astro";
+import BiasSEO from "@/paths/bias/seo/BiasSEO.content.astro";
 
-import BiasCategory from "@/features/bias/components/BiasCategory.astro";
+import BiasCategory from "@/paths/bias/components/BiasCategory.astro";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
 import TOC from "@/components/common/ui/toc/toc";
 
-// import PostSources from "@/features/sources/components/PostSources.astro";
+// import PostSources from "@/paths/sources/components/PostSources.astro";
 
 interface Props {
   entry: CollectionEntry<"bias">;

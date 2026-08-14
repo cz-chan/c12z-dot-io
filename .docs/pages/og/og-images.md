@@ -19,7 +19,7 @@ the site. See "Security" (§8) for why that matters.
 ## 2. File map
 
 ```
-src/features/og/                    ← all the logic (no URL of its own)
+src/paths/og/                    ← all the logic (no URL of its own)
   ogAssets.ts                       Reads fonts/background/logo once (bytes + data URI)
   ogTemplates.ts                    The 4 templates (A/B/C/D) + DEFAULT_LAYOUT
   loadCover.ts                      Loads book covers / project hero images
@@ -48,18 +48,19 @@ All four share the 1200×630 canvas, the same background
 (`og-bg-template.png`), and the same two fonts (Tamago for titles/wordmark,
 Cascadia Code Medium for secondary text).
 
-| Template | Function | Collection | Uses cover/hero | Subtitle |
-|---|---|---|---|---|
-| **A** | `textOgTemplate` (no subtitle) | — | no | no |
-| **B** | `textOgTemplate` (with subtitle) | `bias` | no | yes (bias question) |
-| **C** | `coverOgTemplate` | `library` | yes, book cover on the left | yes (author) |
-| **D** | `heroOgTemplate` | `projects` | yes, centered hero/screenshot | no |
+| Template | Function                         | Collection | Uses cover/hero               | Subtitle            |
+| -------- | -------------------------------- | ---------- | ----------------------------- | ------------------- |
+| **A**    | `textOgTemplate` (no subtitle)   | —          | no                            | no                  |
+| **B**    | `textOgTemplate` (with subtitle) | `bias`     | no                            | yes (bias question) |
+| **C**    | `coverOgTemplate`                | `library`  | yes, book cover on the left   | yes (author)        |
+| **D**    | `heroOgTemplate`                 | `projects` | yes, centered hero/screenshot | no                  |
 
 `textOgTemplate` covers both A and B with a single function: pass it a
 `subtitle` and it adds that block; omit it and it's skipped. That's a
 reuse decision, not two separate functions.
 
 ### Template A/B — anatomy
+
 ```
 [logo] breadcrumb                     ← header, y=headerTop
 Big title (Tamago)                    ← y=titleTop, width=titleWidth
@@ -68,6 +69,7 @@ Subtitle (Cascadia, if present)       ← right below
 ```
 
 ### Template C — anatomy
+
 ```
 [logo] c12z.io                        ← header (no breadcrumb, fixed)
 ┌────────┐  Title (Tamago)
@@ -75,12 +77,14 @@ Subtitle (Cascadia, if present)       ← right below
 └────────┘
                     full/path         ← footer
 ```
+
 The cover is anchored by its **top edge** (`coverTop`), not centered
-vertically inside its box — so a square cover (*Steal Like An Artist*) and
-a tall one (*The Cold Start Problem*) both start at the same height. See
+vertically inside its box — so a square cover (_Steal Like An Artist_) and
+a tall one (_The Cold Start Problem_) both start at the same height. See
 `loadCover()` in §4.
 
 ### Template D — anatomy
+
 ```
 [logo] breadcrumb              full/path   ← header and URL, same band
        ┌──────────────┐
@@ -88,6 +92,7 @@ a tall one (*The Cold Start Problem*) both start at the same height. See
        └──────────────┘
         Project title (Tamago, centered)
 ```
+
 Here the full URL goes **top-right** (`heroUrlTop`), not at the bottom —
 that's the only structural difference from the other templates, because
 the hero + title already occupy the bottom band.
@@ -99,14 +104,35 @@ Every coordinate/size used by the 4 templates lives in one object in
 
 ```ts
 export const DEFAULT_LAYOUT = {
-	headerTop: 35, headerLeft: 40, headerGap: 25, logoSize: 68, headerFontSize: 40,
-	titleTop: 180, titleLeft: 48, titleWidth: 1050, titleFontSize: 0, titleLineHeight: 1,
-	subtitleMarginTop: 20, subtitleFontSize: 35,
-	footerBottom: 44, footerRight: 48, footerFontSize: 27,
-	coverTop: 150, coverLeft: 88, coverTextTop: 150, coverTextLeft: 420,
-	coverTextWidth: 700, coverSubtitleMarginTop: 25, coverSubtitleFontSize: 35,
-	heroTop: 135, heroWidth: 850, heroHeight: 360, heroBorderWidth: 2,
-	heroTitleBottom: 40, heroTitleFontSize: 70, heroUrlTop: 60,
+	headerTop: 35,
+	headerLeft: 40,
+	headerGap: 25,
+	logoSize: 68,
+	headerFontSize: 40,
+	titleTop: 180,
+	titleLeft: 48,
+	titleWidth: 1050,
+	titleFontSize: 0,
+	titleLineHeight: 1,
+	subtitleMarginTop: 20,
+	subtitleFontSize: 35,
+	footerBottom: 44,
+	footerRight: 48,
+	footerFontSize: 27,
+	coverTop: 150,
+	coverLeft: 88,
+	coverTextTop: 150,
+	coverTextLeft: 420,
+	coverTextWidth: 700,
+	coverSubtitleMarginTop: 25,
+	coverSubtitleFontSize: 35,
+	heroTop: 135,
+	heroWidth: 850,
+	heroHeight: 360,
+	heroBorderWidth: 2,
+	heroTitleBottom: 40,
+	heroTitleFontSize: 70,
+	heroUrlTop: 60,
 } as const;
 ```
 
@@ -147,7 +173,7 @@ node tree (ogTemplates)
 
 `renderOgImage()` is the only function that knows how to rasterize; every
 endpoint and the playground go through it. See
-`src/features/og/renderOgImage.ts`.
+`src/paths/og/renderOgImage.ts`.
 
 **Why palette PNG and not WebP**: these images are only ever fetched by
 scraper bots (WhatsApp, LinkedIn, iMessage...), never by users browsing the
@@ -212,6 +238,7 @@ editing code blind.
 `/og-playground`.
 
 **How it works**:
+
 - `index.astro` renders one slider per `DEFAULT_LAYOUT` measurement (the
   default values are injected via `define:vars`, so they can never drift
   out of sync with the real code) plus a template selector (A/B/C/D).
@@ -228,9 +255,11 @@ an on-demand route to read `url.searchParams`.
 
 **Production guard**: even if left enabled (without the `_`), the handler
 starts with:
+
 ```ts
 if (import.meta.env.PROD) return new Response("Not found", { status: 404 });
 ```
+
 so it never runs the render pipeline with external input on a real
 deploy, even if someone forgets to remove it before merging. Still, the
 recommended default is to keep it prefixed with `_` except while actively

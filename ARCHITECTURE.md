@@ -9,7 +9,7 @@ Este documento es una **chuleta** para saber **dónde crear o mover cosas** dent
 La raíz de código vive en `src/` y se organiza así:
 
 - **`src/pages`**: Rutas públicas del sitio (incluidas robots.txt y llms.txt).
-- **`src/features`**: Lógica y componentes específicos de cada página o dominio. Cada una tendrá más o menos componentes pero se repiten:
+- **`src/paths`**: Lógica y componentes específicos de cada página o dominio. Cada una tendrá más o menos componentes pero se repiten:
   - `components/`: componentes específicos de esa página.
   - `seo/`: SEO específico, keywords, metadatos.
   - `rules/` o `data/`: reglas o datos que solo aplican a esa sección.

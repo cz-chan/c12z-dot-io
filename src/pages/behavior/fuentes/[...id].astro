@@ -1,9 +1,9 @@
 ---
 import MainLayout from "@layouts/MainLayout.astro";
-import SourcesSEO from "@/features/sources/seo/SourcesSEO.content.astro";
+import SourcesSEO from "@/paths/sources/seo/SourcesSEO.content.astro";
 
-import TopicPage from "@/features/sources/components/TopicPage.astro";
-import { getTopics, type Topic } from "@/features/sources/data/get-topics.ts";
+import TopicPage from "@/paths/sources/components/TopicPage.astro";
+import { getTopics, type Topic } from "@/paths/sources/data/get-topics.ts";
 
 interface Props {
 	topic: Topic;

@@ -5,7 +5,7 @@
 	"compilerOptions": {
 		"paths": {
 			"@/*": ["./src/*"],
-			"@/features/*": ["./src/features/*"],
+			"@/paths/*": ["./src/paths/*"],
 			"@/lib/*": ["./src/lib/*"],
 			"@/global/*": ["./src/global/*"],
 			"@/ui/*": ["./src/components/ui/*"],
