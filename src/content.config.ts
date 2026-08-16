@@ -202,12 +202,14 @@ const sourceSchema = z.object({
 const biasCollection = defineCollection({
 	loader: glob({
 		pattern: "**/*.{md,mdx}",
-		base: "./src/content/bias",
+		base: "./src/content/biases",
 	}),
 	schema: ({ image }) =>
 		z
 			.object({
 				biasName: z.string().max(80),
+				englishBiasName: z.string().max(80),
+				contentCount: z.number().int().min(1).max(999),
 				cover: z.object({
 					src: image().optional(),
 					alt: z.string(),
@@ -237,6 +239,20 @@ const mentalModelsCollection = defineCollection({
 		z
 			.object({
 				modelName: z.string().max(80),
+				englishModelName: z.string().max(80),
+				contentCount: z.number().int().min(1).max(999),
+				category: z.array(
+					z.enum([
+						// provisional categories: https://fs.blog/mental-models/
+						"pensamiento general",
+						"física, química y biología",
+						"sistemas",
+						"matematicas",
+						"economía",
+						"militar y guerra",
+						"humanidad y juicio",
+					]),
+				),
 				cover: z.object({
 					src: image().optional(),
 					alt: z.string(),
@@ -261,7 +277,13 @@ const designLawsCollection = defineCollection({
 	schema: ({ image }) =>
 		z
 			.object({
-				designPatternName: z.string().max(80),
+				designLawName: z.string().max(80),
+				englishDesignLawName: z.string().max(80),
+				contentCount: z.number().int().min(1).max(999),
+				category: z.array(
+					z.enum(["composición visual", "interacción", "percepción"]),
+				),
+				designQuestion: z.string().min(50).max(120),
 				cover: z.object({
 					src: image().optional(),
 					alt: z.string(),
@@ -312,11 +334,11 @@ const notesCollection = defineCollection({
 });
 
 export const collections = {
-	bias: biasCollection,
+	biases: biasCollection,
 	library: libraryCollection,
 	projects: projectCollection,
 	notes: notesCollection,
 	mentalModels: mentalModelsCollection,
 	designLaws: designLawsCollection,
 };
-// essay: essayCollection,
+// essays: essayCollection,
