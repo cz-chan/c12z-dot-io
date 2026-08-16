@@ -5,11 +5,11 @@ import MainLayout from "@layouts/MainLayout.astro";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
 
-import styles from "@/paths/notes/components/notes.module.css";
+import styles from "@notes-path/components/notes.module.css";
 import { convertDateToISO8601 } from "@utils/validating-date.ts";
-import { formatNoteDate } from "@/paths/notes/data/format-note-date.ts";
-import SourceBadges from "@/paths/notes/components/SourceBadges.astro";
-import NotesSEO from "@/paths/notes/seo/NotesSEO.content.astro";
+import { formatNoteDate } from "@notes-path/data/format-note-date.ts";
+import SourceBadges from "@notes-path/components/SourceBadges.astro";
+import NotesSEO from "@notes-path/seo/NotesSEO.content.astro";
 
 interface Props {
 	entry: CollectionEntry<"notes">;
