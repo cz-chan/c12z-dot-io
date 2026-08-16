@@ -1,12 +1,12 @@
 ---
 import MainLayout from "@layouts/MainLayout.astro";
-import SourcesSEO from "@/paths/behavior/paths/sources/seo/SourcesSEO.content.astro";
+import SourcesSEO from "@sources-path/seo/SourcesSEO.content.astro";
 
-import TopicPage from "@/paths/behavior/paths/sources/components/TopicPage.astro";
+import TopicPage from "@sources-path/components/TopicPage.astro";
 import {
 	getTopics,
 	type Topic,
-} from "@/paths/behavior/paths/sources/data/get-topics";
+} from "@sources-path/data/get-topics";
 
 interface Props {
 	topic: Topic;
