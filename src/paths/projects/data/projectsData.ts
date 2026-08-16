@@ -1,4 +1,4 @@
-import type { ProjectData } from "@/paths/projects/rules/projectsData.interface";
+import type { ProjectData } from "@projects-path/rules/projectsData.interface";
 
 export const PROJETCS_DATA: Record<string, ProjectData> = {
 	LVM_es: {
