@@ -132,7 +132,7 @@ post appears. There is no separate `status` field.
 You have to touch **two** places, in this order:
 
 1. `src/content.config.ts` → add it to the `z.enum` of `sourceSchema`.
-2. `src/paths/sources/data/source-types.ts` → add its label to
+2. `src/paths/behavior/paths/sources/data/source-types.ts` → add its label to
    `TYPE_LABELS` (what you read on the folder's tab).
 
 If you forget step 2, TypeScript fails on `pnpm build` (the `Record` stops
@@ -146,7 +146,7 @@ that actually exist in that topic and only paints those.
 ## 4. Feature tree
 
 ```
-src/paths/sources/
+src/paths/behavior/paths/sources/
 ├── components/
 │   ├── SourcesPage.astro        /behavior/fuentes — header + panel + topic grid
 │   ├── TerminalSearch.astro       the filter panel styled like a terminal (<details>)
@@ -184,7 +184,7 @@ src/pages/behavior/fuentes/
 
 Dates are NOT parsed here: `parseDate` in `src/utils/validating-date.ts` is
 the only place that turns "DD/MM/YYYY" into a `Date`, and both `get-topics.ts`
-and `paths/mental-models/components/MentalModelsPage.astro` sort with it.
+and `behavior/paths/mental-models/components/MentalModelsPage.astro` sort with it.
 `new Date()` must never be used on a frontmatter date — it reads them as
 MM/DD/YYYY.
 

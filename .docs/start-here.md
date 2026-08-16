@@ -30,15 +30,39 @@ them the server won't even start. Dummy values work locally.
 ## 2. Organizing principle: feature-based
 
 Each content domain lives in `src/paths/<name>/`, with this internal
-shape (not every feature has all 4 folders):
+shape (not every path has all 4 folders):
 
 ```
 paths/<name>/
-├── components/   Astro/React components for that feature
+├── components/   Astro/React components for that path
 ├── seo/          keywords + SEO component specific to that content
 ├── data/ | rules/  business logic, static data, interfaces
 └── styles/         CSS Modules if it needs its own styling
 ```
+
+Top-level paths: `404`, `behavior`, `books`, `context`, `essays`, `home`,
+`notes`, `projects`.
+
+**Nested paths.** A path that owns child routes keeps them in its own
+`paths/` folder, recursively — same folder name at every level, so there's
+a single rule to remember. Today only `behavior` has children:
+
+```
+src/paths/behavior/
+├── components/   ← behavior's own
+├── seo/
+├── data/
+└── paths/        ← child paths
+    ├── biases/         → /behavior/sesgos
+    ├── mental-models/  → /behavior/modelos-mentales
+    ├── designs/        → /behavior/diseño
+    └── sources/        → /behavior/fuentes
+```
+
+**Naming**: plural when the path is a collection of items (`biases`,
+`essays`, `designs`, `books`, `notes`, `projects`, `sources`,
+`mental-models`); singular when it's a single page or a domain
+(`behavior`, `home`, `context`, `404`).
 
 Everything **cross-cutting** (not belonging to a single domain) lives
 outside `paths/`: layouts, common UI/SEO/analytics components, global
@@ -52,7 +76,7 @@ src/
 ├── components/common/ see §6
 ├── content/            content entries (md/mdx), one folder per collection
 ├── content.config.ts   Zod schemas for the collections — see §5
-├── paths/            see §9 (status of each feature)
+├── paths/             one folder per route domain — see §2 and §9
 ├── global/               site config — see §7
 ├── interfaces/            TS types shared across paths
 ├── layouts/                MainLayout.astro, Layout404Error.astro
@@ -64,9 +88,30 @@ src/
 
 ## 4. Path aliases (`tsconfig.json`)
 
+**One alias per path** — always import a path's files through its alias,
+never with a relative `../../` chain. There is deliberately **no generic
+`@/paths/*` alias**: creating a path means creating its alias, which keeps
+the list in `tsconfig.json` an accurate map of the site.
+
+```
+@biases-path/*        → src/paths/behavior/paths/biases/*
+@mental-models-path/* → src/paths/behavior/paths/mental-models/*
+@designs-path/*       → src/paths/behavior/paths/designs/*
+@sources-path/*       → src/paths/behavior/paths/sources/*
+@behavior-path/*      → src/paths/behavior/*
+@projects-path/*      → src/paths/projects/*
+@essays-path/*        → src/paths/essays/*
+@books-path/*         → src/paths/books/*
+@notes-path/*         → src/paths/notes/*
+@context-path/*       → src/paths/context/*
+@home-path/*          → src/paths/home/*
+@error-path/*         → src/paths/404/*
+```
+
+Cross-cutting aliases:
+
 ```
 @/*           → src/*
-@/paths/*  → src/paths/*
 @/lib/*       → src/lib/*
 @/global/*    → src/global/*
 @/common/*    → src/components/common/*
@@ -188,14 +233,14 @@ the feature's `*SEO.content.astro` component.
 | `home`                   | complete and active                                                                                                                                                                                                                                                 |
 | `books` (biblioteca)     | complete and active, 4 entries                                                                                                                                                                                                                                      |
 | `projects`               | complete and active, 1 entry                                                                                                                                                                                                                                        |
-| `bias` (behavior/sesgos) | **code complete, no content**. If you're going to add a bias, the feature already supports everything (card, SEO, dynamic OG); all that's missing is creating the `.mdx` in `content/bias/`                                                                         |
-| `essay`                  | **ghost**: schema commented out in `content.config.ts`, no content folder, its 3 components (`EssayPage/Card/Header.astro`) are empty, `/ensayos` is a static placeholder. Before "fixing a bug" in essay, confirm whether the plan is to implement it from scratch |
+| `biases` (behavior/sesgos) | **code complete, no content**. If you're going to add a bias, the feature already supports everything (card, SEO, dynamic OG); all that's missing is creating the `.mdx` in `content/bias/`                                                                         |
+| `essays`                 | **ghost**: schema commented out in `content.config.ts`, no content folder, its 3 components (`EssayPage/Card/Header.astro`) are empty, `/ensayos` is a static placeholder. Before "fixing a bug" in essay, confirm whether the plan is to implement it from scratch |
 | `context`                | active, but via direct MDX (`context.mdx`), not via a content collection — `Context.astro` is empty and unused                                                                                                                                                      |
 | `404`                    | active                                                                                                                                                                                                                                                              |
 
 Empty files / files with no consumers detected (don't assume they do
 something if they show up in a `grep`): `PsychologyHeader.astro`,
-`BiasTLDR.astro`, `BookAuthor.astro`, `Context.astro`, the 3 in `essay/`,
+`BiasTLDR.astro`, `BookAuthor.astro`, `Context.astro`, the 3 in `essays/`,
 and `paths/projects/data/projectsData.ts` (replaced by the `projects`
 content collection, with a typo `PROJETCS_DATA` if it's ever touched again).
 
@@ -248,13 +293,13 @@ the site is 100% static, it isn't needed.
   the matching collection under `src/content/`; everything else (card,
   SEO, OG image) already works on its own as long as the Zod schema is met.
 - **Touch SEO/meta tags** → `components/common/seo/` (shared) or
-  `paths/<name>/seo/` (specific to that feature).
+  `paths/<name>/seo/` (specific to that path).
 - **Touch OG images** → `src/lib/og/` + `src/pages/og/` — see
   `og-images.md` before changing anything, it has the reasoning behind
   each decision.
 - **Touch the sources drawer** (`/behavior/fuentes`, the folders, the
-  viewer) → `src/paths/sources/` — see
-  [`paths/sources.md`](./paths/sources.md): it explains where the
+  viewer) → `src/paths/behavior/paths/sources/` (alias `@sources-path`) —
+  see [`paths/sources.md`](./paths/sources.md): it explains where the
   data comes from (it lives in the frontmatter of each bias/model, not in
   its own collection) and why the CSS is written the way it is.
 - **Touch header navigation** → the code exists (`headerMenus/`) but it's

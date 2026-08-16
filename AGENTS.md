@@ -28,16 +28,34 @@ Longer-form docs live in `.docs/` (`start-here.md`, `paths/`, `lib/`, `pages/`).
 
 ### Key structural patterns
 
-**Feature-based organization** — `src/paths/<name>/` encapsulates all domain logic (`404`, `behavior`, `bias`, `books`, `context`, `essay`, `home`, `mental-models`, `notes`, `projects`, `sources`):
+**Path-based organization** — `src/paths/<name>/` encapsulates all domain logic. Top-level paths: `404`, `behavior`, `books`, `context`, `essays`, `home`, `notes`, `projects`.
 
-- `components/` — Astro/React components specific to that feature
-- `seo/` — keywords and metadata for that feature
+Each path holds:
+
+- `components/` — Astro/React components specific to that path
+- `seo/` — keywords and metadata for that path
 - `data/` or `rules/` — business logic or static data
-- `styles/` — CSS Modules scoped to the feature
+- `styles/` — CSS Modules scoped to the path (some paths keep the module next to the component instead)
 
-**Content Collections** — `src/content/` holds markdown/MDX validated by Zod schemas in `src/content.config.ts`. Registered collections: `bias`, `library` (book reviews), `projects`, `notes`, `mentalModels`. An `essay` collection is defined but commented out of the exports.
+**Nested paths** — a path that owns child routes puts them in its own `paths/` folder, recursively. Today only `behavior` has them:
 
-**Sources are frontmatter, not a collection** — posts embed a `sources` array (`sourceSchema`: title, type enum, author, url…) in their own frontmatter. Adding a source type takes TWO steps: the `z.enum` in `content.config.ts` AND `TYPE_LABELS` in `paths/sources/data/source-types.ts` (build fails if you forget the second — intended). See `.docs/paths/sources.md`.
+```
+src/paths/behavior/
+├── components/   ← behavior's own
+├── seo/
+├── data/
+└── paths/        ← child paths
+    ├── biases/         → /behavior/sesgos
+    ├── mental-models/  → /behavior/modelos-mentales
+    ├── designs/        → /behavior/diseño
+    └── sources/        → /behavior/fuentes
+```
+
+Folder names are plural when the path is a collection of items (`biases`, `essays`, `designs`, `books`, `notes`, `projects`, `sources`, `mental-models`) and singular when it's a single page or a domain (`behavior`, `home`, `context`, `404`).
+
+**Content Collections** — `src/content/` holds markdown/MDX validated by Zod schemas in `src/content.config.ts`. Registered collections: `bias`, `library` (book reviews), `projects`, `notes`, `mentalModels`, `designLaws`. An `essay` collection is defined but commented out of the exports.
+
+**Sources are frontmatter, not a collection** — posts embed a `sources` array (`sourceSchema`: title, type enum, author, url…) in their own frontmatter. Adding a source type takes TWO steps: the `z.enum` in `content.config.ts` AND `TYPE_LABELS` in `behavior/paths/sources/data/source-types.ts` (build fails if you forget the second — intended). See `.docs/paths/sources.md`.
 
 **Shared globals** — `src/global/`: `site-info.ts`, `header-links.ts`, `pages-info.ts`, `socialmedia-links.ts`.
 
@@ -47,9 +65,27 @@ Longer-form docs live in `.docs/` (`start-here.md`, `paths/`, `lib/`, `pages/`).
 
 ### Path aliases (tsconfig.json)
 
+Every path has its own `@<name>-path/*` alias — **always import through it**, never through a relative `../../` chain or a raw `src/paths/...` path. There is no generic `@/paths/*` alias on purpose: adding a path means adding its alias.
+
+```
+@biases-path/*        → src/paths/behavior/paths/biases/*
+@mental-models-path/* → src/paths/behavior/paths/mental-models/*
+@designs-path/*       → src/paths/behavior/paths/designs/*
+@sources-path/*       → src/paths/behavior/paths/sources/*
+@behavior-path/*      → src/paths/behavior/*
+@projects-path/*      → src/paths/projects/*
+@essays-path/*        → src/paths/essays/*
+@books-path/*         → src/paths/books/*
+@notes-path/*         → src/paths/notes/*
+@context-path/*       → src/paths/context/*
+@home-path/*          → src/paths/home/*
+@error-path/*         → src/paths/404/*
+```
+
+Cross-cutting aliases:
+
 ```
 @/*           → src/*
-@/paths/*  → src/paths/*
 @/lib/*       → src/lib/*
 @/global/*    → src/global/*
 @/ui/*        → src/components/ui/*
@@ -118,7 +154,7 @@ Type scale (`--t-*`/`--lh-*`), tracking (`--tracking-*`), 4pt spacing (`--sp-*`)
 ### UI conventions when building new components
 
 - Use existing CSS variables — never hardcode colors, sizes, or spacing
-- Styles go in CSS Modules (`*.module.css`) next to the component or in `src/paths/<name>/styles/`
+- Styles go in CSS Modules (`*.module.css`) next to the component or in the path's `styles/` folder
 - React components (`.tsx`) only when interactivity is needed; prefer `.astro` otherwise
 - Motion library (`motion/react`) is available for animations in React components
 - Left/bottom borders as a recurring visual motif for list items
