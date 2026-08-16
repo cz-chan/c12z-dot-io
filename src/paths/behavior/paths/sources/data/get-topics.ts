@@ -23,7 +23,7 @@ export interface Topic {
 
 /** the two collections that carry `sources` in their frontmatter.*/
 type SourcedEntry =
-	| CollectionEntry<"bias">
+	| CollectionEntry<"biases">
 	| CollectionEntry<"mentalModels">
 	| CollectionEntry<"designLaws">;
 
@@ -57,7 +57,7 @@ const buildTopic = (
 	sources: entry.data.sources,
 });
 
-const biasToTopic = (entry: CollectionEntry<"bias">) =>
+const biasToTopic = (entry: CollectionEntry<"biases">) =>
 	buildTopic(entry, "sesgo", entry.data.biasName, "/behavior/sesgos");
 
 const modelToTopic = (entry: CollectionEntry<"mentalModels">) =>
@@ -69,7 +69,7 @@ const modelToTopic = (entry: CollectionEntry<"mentalModels">) =>
 	);
 
 const designToTopic = (entry: CollectionEntry<"designLaws">) =>
-	buildTopic(entry, "diseño", entry.data.designPatternName, "/behavior/diseño");
+	buildTopic(entry, "diseño", entry.data.designLawName, "/behavior/diseño");
 
 /**
  * A topic with no sources never reaches the drawer, so it never shows an
@@ -124,7 +124,7 @@ const byStudyingThenNewest = (a: Topic, b: Topic) => {
  */
 export const getTopics = async (): Promise<Topic[]> => {
 	const [biases, models, design] = await Promise.all([
-		getCollection("bias"),
+		getCollection("biases"),
 		getCollection("mentalModels"),
 		getCollection("designLaws"),
 	]);

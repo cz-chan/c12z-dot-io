@@ -1,18 +1,18 @@
 ---
-import styles from "./bias.module.css"
+import styles from "./bias.module.css";
 import { getCollection, type CollectionEntry } from "astro:content";
 import BiasCategory from "./BiasCategory.astro";
 
 interface Props {
-  entry: CollectionEntry<"bias">;
+	entry: CollectionEntry<"biases">;
 }
 
 export async function getStaticPaths() {
-  const biases = await getCollection("bias");
-  return biases.map((entry) => ({
-    params: { id: entry.id },
-    props: { entry },
-  }));
+	const biases = await getCollection("biases");
+	return biases.map((entry) => ({
+		params: { id: entry.id },
+		props: { entry },
+	}));
 }
 
 const { entry } = Astro.props;
@@ -21,38 +21,46 @@ const { biasQuestion, biasName, category, backlog } = data;
 ---
 
 <section
-  class={backlog === 'wip' ? `${styles.biasCard} ${styles.borderWip}` : `${styles.biasCard} ${styles.borderOnAir}`}
+	class={backlog === "wip"
+		? `${styles.biasCard} ${styles.borderWip}`
+		: `${styles.biasCard} ${styles.borderOnAir}`}
 >
-  {
-    backlog === "wip" ? (
-      <div class={styles.wip}>
-        <article class={styles.biasDesc}>
-          <h2 class={styles.biasName}>{biasName}</h2>
-          <section class={styles.biasQuestion}>
-            <p class={styles.question}>{biasQuestion}</p>
-            <BiasCategory category={category} />
-          </section>
-        </article>
-      </div>
-    ) : (
-      <a href={`/behavior/sesgos/${id}`} class={styles.onAir}>
-        <article class={styles.biasDesc}>
-          <h2 class={styles.biasName} transition:name={`${id}-name`}>
-            {biasName}
-          </h2>
-          <div class={styles.biasQuestion}>
-            <p class={styles.question}>{biasQuestion}</p>
-            <BiasCategory category={category} />
-          </div>
-        </article>
-      </a>
-    )
-  }
-  {
-    backlog === "wip" && (
-      <div class={styles.studying}>
-        <span class={styles.disclaimer}>¡Estoy estudiándolo!</span>
-      </div>
-    )
-  }
+	{
+		backlog === "wip" ? (
+			<div class={styles.wip}>
+				<article class={styles.biasDesc}>
+					<h2 class={styles.biasName}>{biasName}</h2>
+					<section class={styles.biasQuestion}>
+						<p class={styles.question}>{biasQuestion}</p>
+						<BiasCategory category={category} />
+					</section>
+				</article>
+			</div>
+		) : (
+			<a
+				href={`/behavior/sesgos/${id}`}
+				class={styles.onAir}
+			>
+				<article class={styles.biasDesc}>
+					<h2
+						class={styles.biasName}
+						transition:name={`${id}-name`}
+					>
+						{biasName}
+					</h2>
+					<div class={styles.biasQuestion}>
+						<p class={styles.question}>{biasQuestion}</p>
+						<BiasCategory category={category} />
+					</div>
+				</article>
+			</a>
+		)
+	}
+	{
+		backlog === "wip" && (
+			<div class={styles.studying}>
+				<span class={styles.disclaimer}>¡Estoy estudiándolo!</span>
+			</div>
+		)
+	}
 </section>

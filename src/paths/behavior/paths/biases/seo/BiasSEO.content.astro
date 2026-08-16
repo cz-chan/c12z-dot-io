@@ -10,7 +10,7 @@ import { type CollectionEntry } from "astro:content";
 
 const { entry } = Astro.props;
 
-const bias = entry as CollectionEntry<"bias">;
+const bias = entry as CollectionEntry<"biases">;
 const { data, id } = bias;
 const { cover, description, keywords, publishDate, lastTimeEdited, titleTag } =
 	data;

@@ -7,11 +7,11 @@ import { renderOgImage } from "@/lib/og/render-og-image";
 export const prerender = true;
 
 interface Props {
-	entry: CollectionEntry<"bias">;
+	entry: CollectionEntry<"biases">;
 }
 
 export async function getStaticPaths() {
-	const biases = await getCollection("bias");
+	const biases = await getCollection("biases");
 
 	return biases.map((entry) => ({
 		params: { id: entry.id },

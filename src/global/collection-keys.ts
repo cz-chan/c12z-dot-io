@@ -1,7 +1,7 @@
 import type { CollectionKey } from "astro:content";
 
 export const COLLECTION_KEYS = {
-	bias: "bias",
+	biases: "biases",
 	mentalModels: "mentalModels",
 	designLaws: "designLaws",
 	library: "library",

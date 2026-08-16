@@ -10,7 +10,7 @@ export const BehaviorSectionData: BehaviorSectionConfig[] = [
 		transitionName: "bias-header-page-h1-transition-name",
 		description:
 			"Inclinaciones desproporcionadas a favor o en contra de una idea o cosa, por lo general de forma inexacta, prejuiciosa o injusta.",
-		collection: COLLECTION_KEYS.bias,
+		collection: COLLECTION_KEYS.biases,
 	},
 	{
 		href: "/behavior/modelos-mentales",

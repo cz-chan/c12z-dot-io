@@ -11,7 +11,7 @@ const byNewest = (
 
 const [libraryEntries, biasEntries, projectEntries] = await Promise.all([
 	getCollection("library"),
-	getCollection("bias"),
+	getCollection("biases"),
 	getCollection("projects"),
 ]);
 

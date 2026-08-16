@@ -1,29 +1,32 @@
 ---
-import styles from "./bias.module.css"
+import styles from "./bias.module.css";
 import { getCollection } from "astro:content";
 
 import BiasHeader from "./BiasHeader.astro";
 import BiasCard from "./BiasCard.astro";
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
 
-const biases = await getCollection("bias");
+const biases = await getCollection("biases");
 ---
 
 <section class={styles.biasesPage}>
-  <GoBackInTop headPage="/behavior" title="ir a la página de behavior" />
-  <section class={styles.thePage}>
-    <BiasHeader />
+	<GoBackInTop
+		headPage="/behavior"
+		title="ir a la página de behavior"
+	/>
+	<section class={styles.thePage}>
+		<BiasHeader />
 
-      <h2 class={styles.action}>Pincha. Investiga. Aplica.</h2>
-      <section
-        class={styles.biasesGrid}
-      >
-        {
-          biases.map((bias) => (
-            <BiasCard entry={bias} transition:name={`${bias.id}-name`} />
-          ))
-        }
-      </section>
-
-  </section>
+		<h2 class={styles.action}>Pincha. Investiga. Aplica.</h2>
+		<section class={styles.biasesGrid}>
+			{
+				biases.map((bias) => (
+					<BiasCard
+						entry={bias}
+						transition:name={`${bias.id}-name`}
+					/>
+				))
+			}
+		</section>
+	</section>
 </section>
