@@ -256,7 +256,7 @@ const mentalModelsCollection = defineCollection({
 const designLawsCollection = defineCollection({
 	loader: glob({
 		pattern: "**/*.{md,mdx}",
-		base: "./src/content/design-patterns",
+		base: "./src/content/design",
 	}),
 	schema: ({ image }) =>
 		z
