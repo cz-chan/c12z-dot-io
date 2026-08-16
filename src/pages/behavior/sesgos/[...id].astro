@@ -4,15 +4,15 @@
  */
 // export const prerender = true;
 
-import styles from "@/paths/behavior/paths/bias/components/bias.module.css"
+import styles from "@biases-path/components/bias.module.css"
 
 import { getCollection, render, type CollectionEntry } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
 
-import BiasSEO from "@/paths/behavior/paths/bias/seo/BiasSEO.content.astro";
+import BiasSEO from "@biases-path/seo/BiasSEO.content.astro";
 
-import BiasCategory from "@/paths/behavior/paths/bias/components/BiasCategory.astro";
+import BiasCategory from "@biases-path/components/BiasCategory.astro";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
 import TOC from "@/components/common/ui/toc/toc";
