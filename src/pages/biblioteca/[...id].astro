@@ -1,21 +1,21 @@
 ---
-import styles from "@/paths/books/components/book.module.css";
+import styles from "@books-path/components/book.module.css";
 // export const prerender = true;
 
 import type { CollectionEntry } from "astro:content";
 import { getCollection, render } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
-import BookScore from "@/paths/books/components/BookScore.astro";
-import BookCover from "@/paths/books/components/BookCover.astro";
-import BookSpoiler from "@/paths/books/components/BookSpoiler.astro";
-import BooksSEO from "@/paths/books/seo/BooksSEO.content.astro";
+import BookScore from "@books-path/components/BookScore.astro";
+import BookCover from "@books-path/components/BookCover.astro";
+import BookSpoiler from "@books-path/components/BookSpoiler.astro";
+import BooksSEO from "@books-path/seo/BooksSEO.content.astro";
 
 import TOC from "@/components/common/ui/toc/toc";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
 import SummarizeSection from "@/components/common/ui/content/SummarizeSection.astro";
-import BookCategory from "@/paths/books/components/BookCategory.astro";
+import BookCategory from "@books-path/components/BookCategory.astro";
 
 interface Props {
 	entry: CollectionEntry<"library">;
