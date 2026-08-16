@@ -6,6 +6,20 @@
 		"paths": {
 			"@/*": ["./src/*"],
 			"@/paths/*": ["./src/paths/*"],
+
+			"@biases-path/*": ["./src/paths/behavior/paths/biases/*"],
+			"@mental-models-path/*": ["./src/paths/behavior/paths/mental-models/*"],
+			"@designs-path/*": ["./src/paths/behavior/paths/designs/*"],
+			"@sources-path/*": ["./src/paths/behavior/paths/sources/*"],
+			"@behavior-path/*": ["./src/paths/behavior/*"],
+			"@projects-path/*": ["./src/paths/projects/*"],
+			"@essays-path/*": ["./src/paths/essays/*"],
+			"@books-path/*": ["./src/paths/books/*"],
+			"@notes-path/*": ["./src/paths/notes/*"],
+			"@context-path/*": ["./src/paths/context/*"],
+			"@home-path/*": ["./src/paths/home/*"],
+			"@error-path/*": ["./src/paths/404/*"],
+
 			"@/lib/*": ["./src/lib/*"],
 			"@/global/*": ["./src/global/*"],
 			"@/ui/*": ["./src/components/ui/*"],
