@@ -5,7 +5,6 @@
 	"compilerOptions": {
 		"paths": {
 			"@/*": ["./src/*"],
-			"@/paths/*": ["./src/paths/*"],
 
 			"@biases-path/*": ["./src/paths/behavior/paths/biases/*"],
 			"@mental-models-path/*": ["./src/paths/behavior/paths/mental-models/*"],
