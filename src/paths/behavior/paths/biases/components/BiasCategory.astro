@@ -2,28 +2,27 @@
 import styles from "./bias.module.css";
 
 interface Props {
-  category: string[];
+	category: string;
 }
 
 const categoryClasses: Record<string, string> = {
-  velocidad: styles.speed,
-  juicio: styles.judgment,
-  memoria: styles.memory,
-  percepción: styles.perception,
-  contexto: styles.context,
+	velocidad: styles.speed,
+	juicio: styles.judgment,
+	memoria: styles.memory,
+	percepción: styles.perception,
+	contexto: styles.context,
 };
 
 function getCategoryClass(category: string): string {
-  const classes = categoryClasses[category.toLowerCase()];
-  if (!classes) throw new Error(`Unknown bias category: ${category}`);
-  return classes;
+	const classes = categoryClasses[category.toLowerCase()];
+
+	if (!classes) throw new Error(`Unknown bias category: ${category}`);
+	return classes;
 }
 
 const { category } = Astro.props;
 ---
 
 <div class={styles.biasCategory}>
-  {category.map((cat) => (
-    <span class={`${styles.pill} ${getCategoryClass(cat)}`}>{cat}</span>
-  ))}
+	<span class={`${styles.pill} ${getCategoryClass(category)}`}>{category}</span>
 </div>

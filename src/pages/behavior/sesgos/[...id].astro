@@ -15,7 +15,7 @@ import BiasSEO from "@biases-path/seo/BiasSEO.content.astro";
 import BiasCategory from "@biases-path/components/BiasCategory.astro";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
-import TOC from "@/components/common/ui/toc/toc";
+import TOC from "@/components/common/ui/toc/toc.tsx";
 
 // import PostSources from "@sources-path/components/PostSources.astro";
 
@@ -53,11 +53,7 @@ const { Content, headings } = await render(entry);
         </h1>
         <h2 class={styles.biasQuestion}>{question}</h2>
         <section class={styles.categoriesSect}>
-          {
-            category.length > 1
-              ? <p>Categorías del sesgo:</p>
-              : <p>Categoría del sesgo:</p>
-          }
+          <p>Categoría del sesgo:</p>
           <BiasCategory category={category} />
         </section>
         <section class={styles.publish}>

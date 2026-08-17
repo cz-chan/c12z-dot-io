@@ -239,13 +239,17 @@
 
 			& .categoriesSect {
 				display: flex;
-				flex-direction: column;
+				flex-direction: row;
 				justify-content: center;
 				align-items: center;
 				text-align: center;
 				column-gap: var(--sp-2);
 				row-gap: var(--sp-1);
 				margin-bottom: var(--sp-4);
+
+				& p {
+					margin-bottom: 0;
+				}
 			}
 
 			& .publish {
