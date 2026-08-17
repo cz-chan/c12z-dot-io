@@ -8,9 +8,9 @@ import type { CollectionEntry } from "astro:content";
  * `bias` `designLaws` and `mentalModels` share that same schema,
  * so either one would do.
  *
- * It's the same <"bias">, <"mentalModels"> or <"designLaws">
+ * It's the same <"biases">, <"mentalModels"> or <"designLaws">
  */
-export type Source = CollectionEntry<"bias">["data"]["sources"][number];
+export type Source = CollectionEntry<"biases">["data"]["sources"][number];
 
 /**
  * What each type is called in the UI (the folder tab / file label).

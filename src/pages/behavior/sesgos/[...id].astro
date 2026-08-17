@@ -34,7 +34,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { data, id } = entry;
-const { biasName, publishDate, lastTimeEdited, biasQuestion, category } = data;
+const { title, publishDate, lastTimeEdited, question, category } = data;
 
 const { Content, headings } = await render(entry);
 
@@ -43,15 +43,15 @@ const { Content, headings } = await render(entry);
 <MainLayout>
   <BiasSEO slot="head" entry={entry} />
   <section class={styles.bias}>
-    <TOC client:only="react" headings={headings} title={biasName}/>
+    <TOC client:only="react" headings={headings} title={title}/>
     <GoBackInTop headPage="/behavior/sesgos" title="ir a la página de behavior" />
 
     <article class={styles.intro}>
       <section class={styles.textAlign}>
         <h1 transition:name=`${id}-name` class={styles.biasName}>
-          {biasName}
+          {title}
         </h1>
-        <h2 class={styles.biasQuestion}>{biasQuestion}</h2>
+        <h2 class={styles.biasQuestion}>{question}</h2>
         <section class={styles.categoriesSect}>
           {
             category.length > 1

@@ -58,7 +58,7 @@ const buildTopic = (
 });
 
 const biasToTopic = (entry: CollectionEntry<"biases">) =>
-	buildTopic(entry, "sesgo", entry.data.biasName, "/behavior/sesgos");
+	buildTopic(entry, "sesgo", entry.data.title, "/behavior/sesgos");
 
 const modelToTopic = (entry: CollectionEntry<"mentalModels">) =>
 	buildTopic(

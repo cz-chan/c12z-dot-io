@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { data, id } = entry;
-const { biasQuestion, biasName, category, backlog } = data;
+const { question, title, category, backlog } = data;
 ---
 
 <section
@@ -29,9 +29,9 @@ const { biasQuestion, biasName, category, backlog } = data;
 		backlog === "wip" ? (
 			<div class={styles.wip}>
 				<article class={styles.biasDesc}>
-					<h2 class={styles.biasName}>{biasName}</h2>
+					<h2 class={styles.biasName}>{title}</h2>
 					<section class={styles.biasQuestion}>
-						<p class={styles.question}>{biasQuestion}</p>
+						<p class={styles.question}>{question}</p>
 						<BiasCategory category={category} />
 					</section>
 				</article>
@@ -46,10 +46,10 @@ const { biasQuestion, biasName, category, backlog } = data;
 						class={styles.biasName}
 						transition:name={`${id}-name`}
 					>
-						{biasName}
+						{title}
 					</h2>
 					<div class={styles.biasQuestion}>
-						<p class={styles.question}>{biasQuestion}</p>
+						<p class={styles.question}>{question}</p>
 						<BiasCategory category={category} />
 					</div>
 				</article>

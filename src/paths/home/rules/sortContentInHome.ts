@@ -43,7 +43,7 @@ const recentBias: SectionItem[] = uploadedBias
 	.sort(byNewest)
 	.slice(0, 4)
 	.map((entry) => ({
-		text: entry.data.biasName,
+		text: entry.data.title,
 		href: `/behavior/sesgos/${entry.id}`,
 		meta: `/${entry.collection}`,
 	}));
