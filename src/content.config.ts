@@ -1,4 +1,4 @@
-import { defineCollection } from "astro:content";
+import { defineCollection, type ImageFunction } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
@@ -167,6 +167,39 @@ const projectCollection = defineCollection({
 			.refine(editedAfterPublished, editedAfterPublishedError),
 });
 
+const notesCollection = defineCollection({
+	loader: glob({
+		pattern: "**/*.{md,mdx}",
+		base: "./src/content/notes",
+	}),
+	schema: ({ image }) =>
+		z
+			.object({
+				title: z.string().max(80),
+				excerpt: z.string().min(50).max(300),
+				keywords: z.array(z.string()),
+				publishDate: dateField,
+				lastTimeEdited: dateField.optional(),
+				sources: z
+					.array(
+						z.object({
+							label: z.string(),
+							url: z.string(),
+						}),
+					)
+					.default([]),
+				illustration: z
+					.array(
+						z.object({
+							src: image(),
+							alt: z.string(),
+						}),
+					)
+					.default([]),
+			})
+			.refine(editedAfterPublished, editedAfterPublishedError),
+});
+
 /**
  * Sources cited in a post (bias, design or mental model). They are located in the
  * frontmatter of the post itself—no duplicate content—and are
@@ -199,36 +232,81 @@ const sourceSchema = z.object({
 	excerpt: z.string().optional(),
 });
 
+/**
+ * The frontmatter that `biases`, `mentalModels` and `designLaws` share.
+ * The three are the same kind of thing — a post with a card in /behavior —
+ * so they must be described once. Only `category` stays per collection,
+ * because each one has its own enum.
+ *
+ * It is a function and not a plain object because `cover` needs `image()`,
+ * which only exists inside the `schema` callback.
+ */
+
+const behaviorContentBaseSchema = (image: ImageFunction) =>
+	z.object({
+		title: z.string().max(80),
+		englishTitle: z.string().max(80),
+		question: z.string().min(50).max(120),
+		contentCount: z.number().int().min(1).max(999),
+		cover: z.object({
+			src: image().optional(),
+			alt: z.string().optional(),
+		}),
+		titleTag: z.string().max(60),
+		description: z.string().min(110).max(160),
+		backlog: z.enum(["wip", "upload"]),
+		publishDate: dateField,
+		lastTimeEdited: dateField.optional(),
+		keywords: z.array(z.string()),
+		readingTime: z.number().optional(),
+		sources: z.array(sourceSchema).default([]),
+	});
+
 const biasCollection = defineCollection({
 	loader: glob({
 		pattern: "**/*.{md,mdx}",
 		base: "./src/content/biases",
 	}),
 	schema: ({ image }) =>
-		z
-			.object({
-				biasName: z.string().max(80),
-				englishBiasName: z.string().max(80),
-				contentCount: z.number().int().min(1).max(999),
-				cover: z.object({
-					src: image().optional(),
-					alt: z.string(),
-				}),
-				titleTag: z.string().max(60),
-				description: z.string().min(110).max(160),
-				biasQuestion: z.string().min(50).max(120),
-				backlog: z.enum(["wip", "upload"]),
-				publishDate: dateField,
-				lastTimeEdited: dateField.optional(),
-				keywords: z.array(z.string()),
-				readingTime: z.number().optional(),
+		behaviorContentBaseSchema(image)
+			.extend({
 				category: z.array(
 					z.enum(["velocidad", "memoria", "percepción", "contexto", "juicio"]),
 				),
-				sources: z.array(sourceSchema).default([]),
 			})
 			.refine(editedAfterPublished, editedAfterPublishedError),
 });
+
+// const biasCollection = defineCollection({
+// 	loader: glob({
+// 		pattern: "**/*.{md,mdx}",
+// 		base: "./src/content/biases",
+// 	}),
+// 	schema: ({ image }) =>
+// 		z
+// 			.object({
+// 				biasName: z.string().max(80),
+// 				englishBiasName: z.string().max(80),
+// 				contentCount: z.number().int().min(1).max(999),
+// 				cover: z.object({
+// 					src: image().optional(),
+// 					alt: z.string(),
+// 				}),
+// 				titleTag: z.string().max(60),
+// 				description: z.string().min(110).max(160),
+// 				biasQuestion: z.string().min(50).max(120),
+// 				backlog: z.enum(["wip", "upload"]),
+// 				publishDate: dateField,
+// 				lastTimeEdited: dateField.optional(),
+// 				keywords: z.array(z.string()),
+// 				readingTime: z.number().optional(),
+// 				category: z.array(
+// 					z.enum(["velocidad", "memoria", "percepción", "contexto", "juicio"]),
+// 				),
+// 				sources: z.array(sourceSchema).default([]),
+// 			})
+// 			.refine(editedAfterPublished, editedAfterPublishedError),
+// });
 
 const mentalModelsCollection = defineCollection({
 	loader: glob({
@@ -296,39 +374,6 @@ const designLawsCollection = defineCollection({
 				keywords: z.array(z.string()),
 				readingTime: z.number().optional(),
 				sources: z.array(sourceSchema).default([]),
-			})
-			.refine(editedAfterPublished, editedAfterPublishedError),
-});
-
-const notesCollection = defineCollection({
-	loader: glob({
-		pattern: "**/*.{md,mdx}",
-		base: "./src/content/notes",
-	}),
-	schema: ({ image }) =>
-		z
-			.object({
-				title: z.string().max(80),
-				excerpt: z.string().min(50).max(300),
-				keywords: z.array(z.string()),
-				publishDate: dateField,
-				lastTimeEdited: dateField.optional(),
-				sources: z
-					.array(
-						z.object({
-							label: z.string(),
-							url: z.string(),
-						}),
-					)
-					.default([]),
-				illustration: z
-					.array(
-						z.object({
-							src: image(),
-							alt: z.string(),
-						}),
-					)
-					.default([]),
 			})
 			.refine(editedAfterPublished, editedAfterPublishedError),
 });
