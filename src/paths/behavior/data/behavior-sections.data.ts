@@ -1,5 +1,5 @@
-import { COLLECTION_KEYS } from "@/global/collection-keys";
-import type { BehaviorSectionConfig } from "./behavior-sect.types";
+import { COLLECTION_KEYS } from "@/global/collection-keys.ts";
+import type { BehaviorSectionConfig } from "./behavior-sect.types.ts";
 
 export const BehaviorSectionData: BehaviorSectionConfig[] = [
 	{
