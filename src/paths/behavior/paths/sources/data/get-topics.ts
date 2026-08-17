@@ -61,15 +61,10 @@ const biasToTopic = (entry: CollectionEntry<"biases">) =>
 	buildTopic(entry, "sesgo", entry.data.title, "/behavior/sesgos");
 
 const modelToTopic = (entry: CollectionEntry<"mentalModels">) =>
-	buildTopic(
-		entry,
-		"modelo",
-		entry.data.modelName,
-		"/behavior/modelos-mentales",
-	);
+	buildTopic(entry, "modelo", entry.data.title, "/behavior/modelos-mentales");
 
 const designToTopic = (entry: CollectionEntry<"designLaws">) =>
-	buildTopic(entry, "diseño", entry.data.designLawName, "/behavior/diseño");
+	buildTopic(entry, "diseño", entry.data.title, "/behavior/diseño");
 
 /**
  * A topic with no sources never reaches the drawer, so it never shows an

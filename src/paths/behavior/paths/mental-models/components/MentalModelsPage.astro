@@ -18,41 +18,44 @@ const models = (await getCollection("mentalModels")).sort(
 	{
 		models.length > 0 ? (
 			<ol class={styles.index}>
-				{models.map((model, i) => (
-					<li class={styles.row}>
-						{model.data.backlog === "wip" ? (
-							<div class={styles.rowInner}>
-								<span class={styles.rowIndex}>
-									{String(i + 1).padStart(2, "0")}
-								</span>
-								<div class={styles.rowMain}>
-									<h2 class={styles.modelName}>{model.data.modelName}</h2>
-									<p class={styles.modelQuestion}>{model.data.modelQuestion}</p>
+				{models.map((model, i) => {
+					const { title, question, publishDate, backlog } = model.data;
+					return (
+						<li class={styles.row}>
+							{backlog === "wip" ? (
+								<div class={styles.rowInner}>
+									<span class={styles.rowIndex}>
+										{String(i + 1).padStart(2, "0")}
+									</span>
+									<div class={styles.rowMain}>
+										<h2 class={styles.modelName}>{title}</h2>
+										<p class={styles.modelQuestion}>{question}</p>
+									</div>
+									<span class={styles.wipMark}>¡Estoy estudiándolo!</span>
 								</div>
-								<span class={styles.wipMark}>¡Estoy estudiándolo!</span>
-							</div>
-						) : (
-							<a
-								class={styles.rowInner}
-								href={`/behavior/modelos-mentales/${model.id}`}
-							>
-								<span class={styles.rowIndex}>
-									{String(i + 1).padStart(2, "0")}
-								</span>
-								<div class={styles.rowMain}>
-									<h2
-										class={styles.modelName}
-										transition:name={`${model.id}-name`}
-									>
-										{model.data.modelName}
-									</h2>
-									<p class={styles.modelQuestion}>{model.data.modelQuestion}</p>
-								</div>
-								<span class={styles.rowMeta}>{model.data.publishDate}</span>
-							</a>
-						)}
-					</li>
-				))}
+							) : (
+								<a
+									class={styles.rowInner}
+									href={`/behavior/modelos-mentales/${model.id}`}
+								>
+									<span class={styles.rowIndex}>
+										{String(i + 1).padStart(2, "0")}
+									</span>
+									<div class={styles.rowMain}>
+										<h2
+											class={styles.modelName}
+											transition:name={`${model.id}-name`}
+										>
+											{title}
+										</h2>
+										<p class={styles.modelQuestion}>{question}</p>
+									</div>
+									<span class={styles.rowMeta}>{publishDate}</span>
+								</a>
+							)}
+						</li>
+					);
+				})}
 			</ol>
 		) : (
 			<p class={styles.empty}>

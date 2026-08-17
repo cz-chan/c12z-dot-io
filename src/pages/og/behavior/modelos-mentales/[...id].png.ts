@@ -26,8 +26,8 @@ export const GET: APIRoute<Props> = async ({ props }) => {
 	return renderOgImage(
 		textOgTemplate({
 			breadcrumb: "c12z.io/behavior/modelos-mentales",
-			title: entry.data.modelName,
-			subtitle: entry.data.modelQuestion,
+			title: entry.data.title,
+			subtitle: entry.data.question,
 			footerUrl: `c12z.io/behavior/modelos-mentales/${entry.id}`,
 		}),
 	);

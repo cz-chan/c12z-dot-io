@@ -9,7 +9,7 @@ import MentalModelSEO from "@mental-models-path/seo/MentalModelSEO.content.astro
 import PostSources from "@sources-path/components/PostSources.astro";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
-import TOC from "@/components/common/ui/toc/toc";
+import TOC from "@/components/common/ui/toc/toc.tsx";
 
 interface Props {
 	entry: CollectionEntry<"mentalModels">;
@@ -26,7 +26,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { data, id } = entry;
-const { modelName, publishDate, lastTimeEdited, modelQuestion } = data;
+const { title, publishDate, lastTimeEdited, question } = data;
 
 const { Content, headings } = await render(entry);
 ---
@@ -40,7 +40,7 @@ const { Content, headings } = await render(entry);
 		<TOC
 			client:only="react"
 			headings={headings}
-			title={modelName}
+			title={title}
 		/>
 		<GoBackInTop
 			headPage="/behavior/modelos-mentales"
@@ -53,9 +53,9 @@ const { Content, headings } = await render(entry);
 					transition:name={`${id}-name`}
 					class={styles.modelTitle}
 				>
-					{modelName}
+					{title}
 				</h1>
-				<h2 class={styles.modelSubtitle}>{modelQuestion}</h2>
+				<h2 class={styles.modelSubtitle}>{question}</h2>
 				<section class={styles.publish}>
 					{
 						lastTimeEdited && lastTimeEdited !== publishDate ? (

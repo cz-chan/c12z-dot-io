@@ -262,6 +262,45 @@ const behaviorContentBaseSchema = (image: ImageFunction) =>
 		sources: z.array(sourceSchema).default([]),
 	});
 
+const designLawsCollection = defineCollection({
+	loader: glob({
+		pattern: "**/*.{md,mdx}",
+		base: "./src/content/design",
+	}),
+	schema: ({ image }) =>
+		behaviorContentBaseSchema(image)
+			.extend({
+				category: z.array(
+					z.enum(["composición visual", "interacción", "percepción"]),
+				),
+			})
+			.refine(editedAfterPublished, editedAfterPublishedError),
+});
+
+const mentalModelsCollection = defineCollection({
+	loader: glob({
+		pattern: "**/*.{md,mdx}",
+		base: "./src/content/mental-models",
+	}),
+	schema: ({ image }) =>
+		behaviorContentBaseSchema(image)
+			.extend({
+				category: z.array(
+					z.enum([
+						// provisional categories: https://fs.blog/mental-models/
+						"pensamiento general",
+						"física, química y biología",
+						"sistemas",
+						"matematicas",
+						"economía",
+						"militar y guerra",
+						"humanidad y juicio",
+					]),
+				),
+			})
+			.refine(editedAfterPublished, editedAfterPublishedError),
+});
+
 const biasCollection = defineCollection({
 	loader: glob({
 		pattern: "**/*.{md,mdx}",
@@ -308,75 +347,76 @@ const biasCollection = defineCollection({
 // 			.refine(editedAfterPublished, editedAfterPublishedError),
 // });
 
-const mentalModelsCollection = defineCollection({
-	loader: glob({
-		pattern: "**/*.{md,mdx}",
-		base: "./src/content/mental-models",
-	}),
-	schema: ({ image }) =>
-		z
-			.object({
-				modelName: z.string().max(80),
-				englishModelName: z.string().max(80),
-				contentCount: z.number().int().min(1).max(999),
-				category: z.array(
-					z.enum([
-						// provisional categories: https://fs.blog/mental-models/
-						"pensamiento general",
-						"física, química y biología",
-						"sistemas",
-						"matematicas",
-						"economía",
-						"militar y guerra",
-						"humanidad y juicio",
-					]),
-				),
-				cover: z.object({
-					src: image().optional(),
-					alt: z.string(),
-				}),
-				titleTag: z.string().max(60),
-				description: z.string().min(110).max(160),
-				modelQuestion: z.string().min(50).max(120),
-				backlog: z.enum(["wip", "upload"]),
-				publishDate: dateField,
-				lastTimeEdited: dateField.optional(),
-				keywords: z.array(z.string()),
-				readingTime: z.number().optional(),
-				sources: z.array(sourceSchema).default([]),
-			})
-			.refine(editedAfterPublished, editedAfterPublishedError),
-});
-const designLawsCollection = defineCollection({
-	loader: glob({
-		pattern: "**/*.{md,mdx}",
-		base: "./src/content/design",
-	}),
-	schema: ({ image }) =>
-		z
-			.object({
-				designLawName: z.string().max(80),
-				englishDesignLawName: z.string().max(80),
-				contentCount: z.number().int().min(1).max(999),
-				category: z.array(
-					z.enum(["composición visual", "interacción", "percepción"]),
-				),
-				designQuestion: z.string().min(50).max(120),
-				cover: z.object({
-					src: image().optional(),
-					alt: z.string(),
-				}),
-				titleTag: z.string().max(60),
-				description: z.string().min(110).max(160),
-				backlog: z.enum(["wip", "upload"]),
-				publishDate: dateField,
-				lastTimeEdited: dateField.optional(),
-				keywords: z.array(z.string()),
-				readingTime: z.number().optional(),
-				sources: z.array(sourceSchema).default([]),
-			})
-			.refine(editedAfterPublished, editedAfterPublishedError),
-});
+// const mentalModelsCollection = defineCollection({
+// 	loader: glob({
+// 		pattern: "**/*.{md,mdx}",
+// 		base: "./src/content/mental-models",
+// 	}),
+// 	schema: ({ image }) =>
+// 		z
+// 			.object({
+// 				modelName: z.string().max(80),
+// 				englishModelName: z.string().max(80),
+// 				contentCount: z.number().int().min(1).max(999),
+// 				category: z.array(
+// 					z.enum([
+// 						// provisional categories: https://fs.blog/mental-models/
+// 						"pensamiento general",
+// 						"física, química y biología",
+// 						"sistemas",
+// 						"matematicas",
+// 						"economía",
+// 						"militar y guerra",
+// 						"humanidad y juicio",
+// 					]),
+// 				),
+// 				cover: z.object({
+// 					src: image().optional(),
+// 					alt: z.string(),
+// 				}),
+// 				titleTag: z.string().max(60),
+// 				description: z.string().min(110).max(160),
+// 				modelQuestion: z.string().min(50).max(120),
+// 				backlog: z.enum(["wip", "upload"]),
+// 				publishDate: dateField,
+// 				lastTimeEdited: dateField.optional(),
+// 				keywords: z.array(z.string()),
+// 				readingTime: z.number().optional(),
+// 				sources: z.array(sourceSchema).default([]),
+// 			})
+// 			.refine(editedAfterPublished, editedAfterPublishedError),
+// });
+
+// const designLawsCollection = defineCollection({
+// 	loader: glob({
+// 		pattern: "**/*.{md,mdx}",
+// 		base: "./src/content/design",
+// 	}),
+// 	schema: ({ image }) =>
+// 		z
+// 			.object({
+// 				designLawName: z.string().max(80),
+// 				englishDesignLawName: z.string().max(80),
+// 				contentCount: z.number().int().min(1).max(999),
+// 				category: z.array(
+// 					z.enum(["composición visual", "interacción", "percepción"]),
+// 				),
+// 				designQuestion: z.string().min(50).max(120),
+// 				cover: z.object({
+// 					src: image().optional(),
+// 					alt: z.string(),
+// 				}),
+// 				titleTag: z.string().max(60),
+// 				description: z.string().min(110).max(160),
+// 				backlog: z.enum(["wip", "upload"]),
+// 				publishDate: dateField,
+// 				lastTimeEdited: dateField.optional(),
+// 				keywords: z.array(z.string()),
+// 				readingTime: z.number().optional(),
+// 				sources: z.array(sourceSchema).default([]),
+// 			})
+// 			.refine(editedAfterPublished, editedAfterPublishedError),
+// });
 
 export const collections = {
 	biases: biasCollection,
