@@ -270,9 +270,7 @@ const designLawsCollection = defineCollection({
 	schema: ({ image }) =>
 		behaviorContentBaseSchema(image)
 			.extend({
-				category: z.array(
-					z.enum(["composición visual", "interacción", "percepción"]),
-				),
+				category: z.enum(["composición visual", "interacción", "percepción"]),
 			})
 			.refine(editedAfterPublished, editedAfterPublishedError),
 });
@@ -285,18 +283,16 @@ const mentalModelsCollection = defineCollection({
 	schema: ({ image }) =>
 		behaviorContentBaseSchema(image)
 			.extend({
-				category: z.array(
-					z.enum([
-						// provisional categories: https://fs.blog/mental-models/
-						"pensamiento general",
-						"física, química y biología",
-						"sistemas",
-						"matematicas",
-						"economía",
-						"militar y guerra",
-						"humanidad y juicio",
-					]),
-				),
+				category: z.enum([
+					// provisional categories: https://fs.blog/mental-models/
+					"pensamiento general",
+					"física, química y biología",
+					"sistemas",
+					"matematicas",
+					"economía",
+					"militar y guerra",
+					"humanidad y juicio",
+				]),
 			})
 			.refine(editedAfterPublished, editedAfterPublishedError),
 });
@@ -309,9 +305,13 @@ const biasCollection = defineCollection({
 	schema: ({ image }) =>
 		behaviorContentBaseSchema(image)
 			.extend({
-				category: z.array(
-					z.enum(["velocidad", "memoria", "percepción", "contexto", "juicio"]),
-				),
+				category: z.enum([
+					"velocidad",
+					"memoria",
+					"percepción",
+					"contexto",
+					"juicio",
+				]),
 			})
 			.refine(editedAfterPublished, editedAfterPublishedError),
 });
