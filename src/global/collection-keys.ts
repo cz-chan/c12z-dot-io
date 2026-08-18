@@ -7,4 +7,5 @@ export const COLLECTION_KEYS = {
 	library: "library",
 	projects: "projects",
 	notes: "notes",
+	essays: "essays",
 } satisfies Record<CollectionKey, CollectionKey>;
