@@ -356,13 +356,7 @@
 	--c-mental-model-ink: #b1442f;
 	--c-source-ink: #1e7422;
 
-	/* ---- Behavior card categories (light) ----------------
-	 * Same hues, tinted towards paper so that --fg — near-black in this
-	 * theme — clears 4.5:1 on top of them (worst is model-general at 4.55).
-	 *
-	 * Here `band` equals `surface`: on paper the strip and the chip are the
-	 * same tone, as in the reference. Only the dark palette splits them.
-	 */
+	/* ---- Behavior card categories (light) ----------------*/
 
 	/* biases */
 	--c-bias-category-speed-surface: #be6c67;
