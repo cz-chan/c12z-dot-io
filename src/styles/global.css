@@ -137,16 +137,47 @@
 	--c-mental-model-ink: var(--c-mental-model);
 	--c-source-ink: var(--c-source);
 
-	/* Cognitive bias category colors */
-	--c-bias-category-speed: #e72424;
-	--c-bias-category-memory: #8b5cce;
-	--c-bias-category-judgment: #4c9dff;
-	--c-bias-category-context: #2bb639;
-	--c-bias-category-perception: #ce6d12;
-
 	/* Bias neutral scale */
 	--c-bias-soft: #c3b4c6;
 	--c-bias-dark: #756679;
+
+	/* ---- Behavior card categories ------------------*/
+
+	/* biases */
+	--c-bias-category-speed-surface: #a12b24;
+	--c-bias-category-speed-band: #562524;
+	--c-bias-category-memory-surface: #634590;
+	--c-bias-category-memory-band: #3c3052;
+	--c-bias-category-judgment-surface: #3c6fae;
+	--c-bias-category-judgment-band: #2b425f;
+	--c-bias-category-context-surface: #2d7f32;
+	--c-bias-category-context-band: #24492a;
+	--c-bias-category-perception-surface: #90501f;
+	--c-bias-category-perception-band: #4f3522;
+
+	/* mental models */
+	--c-model-category-general-surface: #a04f3a;
+	--c-model-category-general-band: #56342d;
+	--c-model-category-science-surface: #1f7a6b;
+	--c-model-category-science-band: #1e4743;
+	--c-model-category-systems-surface: #7142bd;
+	--c-model-category-systems-band: #422f66;
+	--c-model-category-maths-surface: #386f9f;
+	--c-model-category-maths-band: #294259;
+	--c-model-category-economics-surface: #357c2c;
+	--c-model-category-economics-band: #284827;
+	--c-model-category-war-surface: #7a6a2e;
+	--c-model-category-war-band: #464028;
+	--c-model-category-judgment-surface: #a34468;
+	--c-model-category-judgment-band: #572f41;
+
+	/* design laws */
+	--c-design-category-layout-surface: #3c6fae;
+	--c-design-category-layout-band: #2b425f;
+	--c-design-category-interaction-surface: #8f6520;
+	--c-design-category-interaction-band: #4f3e22;
+	--c-design-category-perception-surface: #6b4a9e;
+	--c-design-category-perception-band: #3f3258;
 
 	/* Books category colors */
 	--c-book-health: #13c985;
@@ -324,6 +355,50 @@
 	--c-design-ink: #2c5fbe;
 	--c-mental-model-ink: #b1442f;
 	--c-source-ink: #1e7422;
+
+	/* ---- Behavior card categories (light) ----------------
+	 * Same hues, tinted towards paper so that --fg — near-black in this
+	 * theme — clears 4.5:1 on top of them (worst is model-general at 4.55).
+	 *
+	 * Here `band` equals `surface`: on paper the strip and the chip are the
+	 * same tone, as in the reference. Only the dark palette splits them.
+	 */
+
+	/* biases */
+	--c-bias-category-speed-surface: #be6c67;
+	--c-bias-category-speed-band: #be6c67;
+	--c-bias-category-memory-surface: #8f79ae;
+	--c-bias-category-memory-band: #8f79ae;
+	--c-bias-category-judgment-surface: #5985ba;
+	--c-bias-category-judgment-band: #5985ba;
+	--c-bias-category-context-surface: #4c9351;
+	--c-bias-category-context-band: #4c9351;
+	--c-bias-category-perception-surface: #a87650;
+	--c-bias-category-perception-band: #a87650;
+
+	/* mental models */
+	--c-model-category-general-surface: #b16f5f;
+	--c-model-category-general-band: #b16f5f;
+	--c-model-category-science-surface: #418e81;
+	--c-model-category-science-band: #418e81;
+	--c-model-category-systems-surface: #9471cd;
+	--c-model-category-systems-band: #9471cd;
+	--c-model-category-maths-surface: #5685ae;
+	--c-model-category-maths-band: #5685ae;
+	--c-model-category-economics-surface: #419134;
+	--c-model-category-economics-band: #419134;
+	--c-model-category-war-surface: #8e804d;
+	--c-model-category-war-band: #8e804d;
+	--c-model-category-judgment-surface: #b76c89;
+	--c-model-category-judgment-band: #b76c89;
+
+	/* design laws */
+	--c-design-category-layout-surface: #5985ba;
+	--c-design-category-layout-band: #5985ba;
+	--c-design-category-interaction-surface: #9f7c42;
+	--c-design-category-interaction-band: #9f7c42;
+	--c-design-category-perception-surface: #9077b6;
+	--c-design-category-perception-band: #9077b6;
 }
 
 /* === RESET ====================== */
