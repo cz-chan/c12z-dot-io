@@ -7,7 +7,7 @@ export interface BehaviorSectionConfig {
 	eyebrow: string;
 	transitionName: string;
 	description: string;
-	collection: CollectionKey | null; // null for sources because is not a collection
+	collection: CollectionKey | null; // null for sources. is not a collection
 }
 
 export interface BehaviorSection extends BehaviorSectionConfig {
