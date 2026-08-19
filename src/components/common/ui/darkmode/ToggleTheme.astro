@@ -4,35 +4,16 @@ import YingYang from "@/icons/YingYang.astro";
 ---
 
 <button
-  id="theme-toggle"
-  class={styles.themeToggle}
-  aria-label="Cambiar tema"
+	id="theme-toggle"
+	class={styles.themeToggle}
+	aria-label="Cambiar tema"
 >
-  <YingYang class={styles.yy} />
+	<YingYang class={styles.yy} />
 </button>
 
 <script>
-  function init() {
-    const btn = document.getElementById("theme-toggle");
-    if (!btn) return;
+	import { initToggleTheme } from "./toggle-theme.ts";
 
-    btn.addEventListener("click", () => {
-      const current = document.documentElement.dataset.theme ?? "dark";
-      const next = current === "light" ? "dark" : "light";
-
-      const apply = () => {
-        document.documentElement.dataset.theme = next;
-        localStorage.setItem("theme", next);
-      };
-
-      if (document.startViewTransition) {
-        document.startViewTransition(apply);
-      } else {
-        apply();
-      }
-    });
-  }
-
-  init();
-  document.addEventListener("astro:page-load", init);
+	initToggleTheme();
+	document.addEventListener("astro:page-load", initToggleTheme);
 </script>
