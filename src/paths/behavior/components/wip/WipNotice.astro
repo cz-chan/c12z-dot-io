@@ -1,0 +1,25 @@
+---
+/**
+ * What a reader gets when they land on a post that is still `backlog: "wip"`.
+ *
+ * The page exists and is indexable on purpose — that is how the entry starts
+ * ranking while it is being written — but the notes themselves live in Notion
+ * until they are worth publishing, so the body is replaced by this instead of
+ * shipping a half-written post.
+ *
+ * The sources still render below: they are real, they are already useful, and
+ * they are the honest part of an unfinished entry.
+ */
+import styles from "./wip-notice.module.css";
+---
+
+<aside class={styles.notice}>
+	<p class={styles.badge}>
+		<span aria-hidden="true">🚧</span> Estoy estudiándolo
+	</p>
+	<p class={styles.text}>
+		Todavía estoy leyendo y tomando notas sobre esto, así que aún no hay nada
+		que merezca la pena publicar. Debajo están las fuentes de las que estoy
+		tirando, por si quieres adelantarte.
+	</p>
+</aside>
