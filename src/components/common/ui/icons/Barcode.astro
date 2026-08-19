@@ -1,0 +1,102 @@
+---
+/**
+ * The barcode printed on the card stub.
+ *
+ * Bars come in two colours, both driven from CSS so the component stays
+ * theme agnostic: `currentColor` for the category ones and `--barcode-ink`
+ * for the rest.
+ *
+ * Every bar thickness is derived from a hash of `code`, so the same code
+ * always draws the same barcode — in every build and on every machine.
+ * Nothing here may read `Math.random()` or the clock, or two builds would
+ * differ.
+ *
+ * The proportions are traced from the barcode icons in
+ * https://icon-sets.iconify.design/?query=barcode — bars are multiples of a
+ * 31 unit across a 1408 wide box, which is what gives the stub its rhythm.
+ */
+
+interface Props {
+	code: string;
+	bars?: number;
+}
+
+const { code, bars = 28 } = Astro.props;
+
+const UNIT = 31;
+const WIDTH = 1408;
+
+/** 1u repeats so thin bars dominate, as in the reference artwork. */
+const BAR_UNITS = [1, 1, 2, 3]; // thickness
+const GAP_UNITS = [1, 1, 2]; // gap
+
+/** Roughly one bar in three carries the category colour; the rest are ink. */
+const ACCENT_ODDS = [0, 0, 1]; // color in rows
+
+/**
+ * FNV-1a: tiny, dependency free and stable across engines.
+ * https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
+ *
+ */
+const hashCode = (value: string) => {
+	let hash = 2166136261;
+	for (let index = 0; index < value.length; index++) {
+		hash ^= value.charCodeAt(index);
+		hash = Math.imul(hash, 16777619);
+	}
+	return hash >>> 0;
+};
+
+/**
+ * Walks the hash one step per draw, so each bar consumes a different slice of
+ * it instead of repeating the same thickness over and over.
+ */
+let seed = hashCode(code);
+
+const pick = (pool: number[]) => {
+	seed = Math.imul(seed ^ (seed >>> 15), 2246822507) >>> 0;
+	return pool[seed % pool.length];
+};
+
+const draw = (pool: number[]) => pick(pool) * UNIT;
+
+const rects: { y: number; height: number; accent: boolean }[] = [];
+let cursor = 0;
+/** Kept outside the loop so the trailing gap can be subtracted below. */
+let gap = 0;
+
+for (let index = 0; index < bars; index++) {
+	const height = draw(BAR_UNITS);
+	const accent = pick(ACCENT_ODDS) === 1;
+	rects.push({ y: cursor, height, accent });
+	gap = draw(GAP_UNITS);
+	cursor += height + gap;
+}
+
+/**
+ * Drop the trailing gap so the barcode ends on a bar. It has to be the gap
+ * that was actually drawn — GAP_UNITS can yield 2u, and assuming 1u left a
+ * sliver of empty box under the last bar on roughly a third of the codes.
+ */
+const totalHeight = cursor - gap;
+---
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox={`0 0 ${WIDTH} ${totalHeight}`}
+	preserveAspectRatio="none"
+	aria-hidden="true"
+	focusable="false"
+>
+	{
+		rects.map((rect) => (
+			<rect
+				x="0"
+				y={rect.y}
+				width={WIDTH}
+				height={rect.height}
+				fill={rect.accent ? "currentColor" : "var(--barcode-ink, currentColor)"}
+			/>
+		))
+	}
+</svg>
