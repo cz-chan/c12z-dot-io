@@ -33,11 +33,8 @@ import GoToIn404 from "./GoToIn404.astro";
 </section>
 
 <script>
-  if (typeof window !== "undefined") {
-    const errorInPath = window.location.pathname;
-    const pathElement = document.getElementById("error-in-path");
-    if (pathElement) {
-      pathElement.textContent = errorInPath;
-    }
-  }
+	import { initErrorPath } from "../scripts/error-path.ts";
+
+	initErrorPath();
+	document.addEventListener("astro:page-load", initErrorPath);
 </script>

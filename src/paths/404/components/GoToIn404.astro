@@ -1,13 +1,31 @@
 ---
-import styles from "./page-error.module.css"
+import styles from "./page-error.module.css";
 ---
 
 <section class={styles.goTo}>
-  <p class={styles.suggestion}>Pero por ahora, te puedo sugerir algunas a mano:</p>
-  <div class={styles.links}>
-    <a href="/" class={`${styles.link} ${styles.linkHome}`}>/home</a>
-    <a href="/biblioteca" class={`${styles.link} ${styles.linkLibrary}`}>/library</a>
-    <a href="/ensayos" class={`${styles.link} ${styles.linkNotes}`}>/notes</a>
-    <a href="/behavior" class={`${styles.link} ${styles.linkBehavior}`}>/behavior</a>
-  </div>
+	<p class={styles.suggestion}>
+		Pero por ahora, te puedo sugerir algunas a mano:
+	</p>
+	<div class={styles.links}>
+		<a
+			href="/"
+			class={`${styles.link} ${styles.linkHome}`}
+			>/home</a
+		>
+		<a
+			href="/biblioteca"
+			class={`${styles.link} ${styles.linkLibrary}`}
+			>/biblioteca</a
+		>
+		<a
+			href="/notas"
+			class={`${styles.link} ${styles.linkNotes}`}
+			>/notas</a
+		>
+		<a
+			href="/behavior"
+			class={`${styles.link} ${styles.linkBehavior}`}
+			>/behavior</a
+		>
+	</div>
 </section>
