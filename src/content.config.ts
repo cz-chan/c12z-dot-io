@@ -145,7 +145,7 @@ const libraryCollection = defineCollection({
 const projectCollection = defineCollection({
 	loader: glob({
 		pattern: "**/*.{md,mdx}",
-		base: "./src/content/project",
+		base: "./src/content/projects",
 	}),
 	schema: ({ image }) =>
 		z
