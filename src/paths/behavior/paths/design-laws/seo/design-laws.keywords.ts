@@ -1,6 +1,6 @@
 import type { PageKeywords } from "@/lib/keywords";
 
-export const designKeywords: PageKeywords = {
+export const designLawsKeywords: PageKeywords = {
 	keywords: [
 		"patrones de diseño",
 		"design patterns",

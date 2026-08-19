@@ -2,7 +2,7 @@
 import { getBehaviorEntries } from "@behavior-path/lib/card/get-behavior-entries.ts";
 
 import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
-import DesignHeader from "./DesignHeader.astro";
+import DesignLawsHeader from "./DesignLawsHeader.astro";
 import BehaviorGrid from "@behavior-path/components/card/BehaviorGrid.astro";
 import { COLLECTION_KEYS } from "@/global/collection-keys.ts";
 
@@ -11,7 +11,7 @@ const designLaws = await getBehaviorEntries("designLaws");
 
 <section>
 	<GoBackInTop headPage="/behavior" />
-	<DesignHeader />
+	<DesignLawsHeader />
 
 	<BehaviorGrid
 		entries={designLaws}

@@ -65,10 +65,10 @@ const essayCollection = defineCollection({
 	}),
 });
 
-const libraryCollection = defineCollection({
+const booksCollection = defineCollection({
 	loader: glob({
 		pattern: "**/*.{md,mdx}",
-		base: "./src/content/library",
+		base: "./src/content/books",
 	}),
 	schema: ({ image }) =>
 		z
@@ -319,7 +319,7 @@ const biasCollection = defineCollection({
 
 export const collections = {
 	biases: biasCollection,
-	library: libraryCollection,
+	books: booksCollection,
 	projects: projectCollection,
 	notes: notesCollection,
 	mentalModels: mentalModelsCollection,

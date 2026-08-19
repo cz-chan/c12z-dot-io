@@ -18,13 +18,13 @@ import SummarizeSection from "@/common/ui/content/SummarizeSection.astro";
 import BookCategory from "@books-path/components/BookCategory.astro";
 
 interface Props {
-	entry: CollectionEntry<"library">;
+	entry: CollectionEntry<"books">;
 }
 
 export async function getStaticPaths() {
-	const library = await getCollection("library");
+	const books = await getCollection("books");
 
-	return library.map((entry) => ({
+	return books.map((entry) => ({
 		params: { id: entry.id },
 		props: { entry },
 	}));

@@ -14,7 +14,7 @@ export interface OgCover {
 const MAX_COVER_WIDTH = 260;
 const MAX_COVER_HEIGHT = 420;
 
-type EntryWithCover = CollectionEntry<"library"> | CollectionEntry<"projects">;
+type EntryWithCover = CollectionEntry<"books"> | CollectionEntry<"projects">;
 
 /**
  * Resuelve la ruta en disco de la imagen `cover.src` de una entrada de
@@ -73,11 +73,11 @@ async function loadCoverImage(entry: EntryWithCover): Promise<OgCover> {
 }
 
 /**
- * Carátula de un post de `library`, con sus dimensiones ya escaladas para
+ * Carátula de un post de `books`, con sus dimensiones ya escaladas para
  * encajar en la caja 260×420 del Template C sin recortes.
  */
 export async function loadCover(
-	entry: CollectionEntry<"library">,
+	entry: CollectionEntry<"books">,
 ): Promise<OgCover> {
 	const cover = await loadCoverImage(entry);
 	const scale = Math.min(

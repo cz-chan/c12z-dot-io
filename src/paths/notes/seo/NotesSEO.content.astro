@@ -18,8 +18,8 @@ const postDescription = excerpt;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-// OG dinámico generado en build time (src/pages/og/notes/[...id].png.ts)
-const ogImageSrc = new URL(`/og/notes/${id}.png`, Astro.site);
+// OG dinámico generado en build time (src/pages/og/notas/[...id].png.ts)
+const ogImageSrc = new URL(`/og/notas/${id}.png`, Astro.site);
 const ogImageAlt = postName;
 
 const publisDateInISO = convertDateToISO8601(publishDate);

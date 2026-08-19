@@ -4,8 +4,8 @@ import PagesSEO from "@/seo/PagesSEO.astro";
 
 import { PAGES } from "@/global/pages-info";
 
-import DesignPage from "@designs-path/components/DesignPage.astro";
-import { designKeywords } from "@designs-path/seo/design.keywords";
+import DesignLawsPage from "@design-laws-path/components/DesignLawsPage.astro";
+import { designLawsKeywords } from "@design-laws-path/seo/design-laws.keywords";
 ---
 
 <MainLayout>
@@ -15,7 +15,7 @@ import { designKeywords } from "@designs-path/seo/design.keywords";
 		pageDescription={PAGES.design.description}
 		ogImage={PAGES.design.ogImage}
 		ogImageAlt={PAGES.design.ogImageAlt}
-		pageKeywords={designKeywords}
+		pageKeywords={designLawsKeywords}
 	/>
-	<DesignPage />
+	<DesignLawsPage />
 </MainLayout>

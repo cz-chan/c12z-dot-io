@@ -4,7 +4,7 @@ export const COLLECTION_KEYS = {
 	biases: "biases",
 	mentalModels: "mentalModels",
 	designLaws: "designLaws",
-	library: "library",
+	books: "books",
 	projects: "projects",
 	notes: "notes",
 	// essays: "essays",

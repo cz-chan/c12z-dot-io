@@ -8,7 +8,7 @@
 
 			"@biases-path/*": ["./src/paths/behavior/paths/biases/*"],
 			"@mental-models-path/*": ["./src/paths/behavior/paths/mental-models/*"],
-			"@designs-path/*": ["./src/paths/behavior/paths/designs/*"],
+			"@design-laws-path/*": ["./src/paths/behavior/paths/design-laws/*"],
 			"@sources-path/*": ["./src/paths/behavior/paths/sources/*"],
 			"@behavior-path/*": ["./src/paths/behavior/*"],
 			"@projects-path/*": ["./src/paths/projects/*"],

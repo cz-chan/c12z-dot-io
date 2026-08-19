@@ -5,7 +5,7 @@ import BookCard from "./BookCard.astro";
 import LibraryHeader from "./LibraryHeader.astro";
 import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
 
-const library = await getCollection("library");
+const library = await getCollection("books");
 
 // Sort by publishDate descending (most recent first)
 library.sort((a, b) => {

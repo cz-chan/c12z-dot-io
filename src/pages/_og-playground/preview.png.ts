@@ -49,7 +49,7 @@ export const GET: APIRoute = async ({ url }) => {
 		q.get("footerUrl") ?? "c12z.io/behavior/sesgos/sesgo-de-anclaje";
 
 	if (template === "C") {
-		const book = await getCollection("library");
+		const book = await getCollection("books");
 		const cover = await loadCover(book[2]);
 		return renderOgImage(
 			coverOgTemplate({ title, subtitle, cover, footerUrl, layout }),

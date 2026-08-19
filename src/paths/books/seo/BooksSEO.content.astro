@@ -8,8 +8,8 @@ import ContentSEO from "@/seo/ContentSEO.astro";
 
 const { entry } = Astro.props;
 
-const library = entry as CollectionEntry<"library">;
-const { data, id } = library;
+const book = entry as CollectionEntry<"books">;
+const { data, id } = book;
 const { cover, title, keywords, publishDate, titleTag } = data;
 
 const postName = `${titleTag} - ${SITE_DEFAULT_CONFIG.title}`;

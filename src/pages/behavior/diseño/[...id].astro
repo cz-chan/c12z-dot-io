@@ -1,11 +1,11 @@
 ---
-import styles from "@designs-path/components/design.module.css";
+import styles from "@design-laws-path/components/design-laws.module.css";
 
 import { getCollection, render, type CollectionEntry } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
 
-import DesignSEO from "@designs-path/seo/DesignSEO.content.astro";
+import DesignLawsSEO from "@design-laws-path/seo/DesignLawsSEO.content.astro";
 import PostSources from "@sources-path/components/PostSources.astro";
 
 import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
@@ -35,7 +35,7 @@ const { Content, headings } = await render(entry);
 ---
 
 <MainLayout>
-	<DesignSEO
+	<DesignLawsSEO
 		slot="head"
 		entry={entry}
 	/>

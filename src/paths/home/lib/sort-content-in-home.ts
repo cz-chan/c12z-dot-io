@@ -16,20 +16,20 @@ const BEHAVIOR_COLLECTIONS = {
 } as const;
 
 const [
-	libraryEntries,
+	booksEntries,
 	biasEntries,
 	mentalModelEntries,
 	designLawEntries,
 	projectEntries,
 ] = await Promise.all([
-	getCollection("library"),
+	getCollection("books"),
 	getCollection("biases"),
 	getCollection("mentalModels"),
 	getCollection("designLaws"),
 	getCollection("projects"),
 ]);
 
-const uploadedLibrary = libraryEntries.filter(
+const uploadedBooks = booksEntries.filter(
 	(entry) => entry.data.backlog === "upload",
 );
 const uploadedBehavior = [
@@ -41,7 +41,7 @@ const uploadedProject = projectEntries.filter(
 	(entry) => entry.data.backlog === "upload",
 );
 
-const recentBook: SectionItem[] = uploadedLibrary
+const recentBook: SectionItem[] = uploadedBooks
 	.sort(byNewest)
 	.slice(0, 4)
 	.map((entry) => {
@@ -80,7 +80,7 @@ const sectionUpdates: Record<
 	string,
 	{ items: SectionItem[]; totalCount: number }
 > = {
-	biblioteca: { items: recentBook, totalCount: uploadedLibrary.length },
+	biblioteca: { items: recentBook, totalCount: uploadedBooks.length },
 	behavior: { items: recentBehavior, totalCount: uploadedBehavior.length },
 	proyectos: { items: recentProject, totalCount: uploadedProject.length },
 };

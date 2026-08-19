@@ -8,13 +8,13 @@ import { renderOgImage } from "@/lib/og/render-og-image";
 export const prerender = true;
 
 interface Props {
-	entry: CollectionEntry<"library">;
+	entry: CollectionEntry<"books">;
 }
 
 export async function getStaticPaths() {
-	const library = await getCollection("library");
+	const books = await getCollection("books");
 
-	return library.map((entry) => ({
+	return books.map((entry) => ({
 		params: { id: entry.id },
 		props: { entry },
 	}));
