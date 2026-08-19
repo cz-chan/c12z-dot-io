@@ -213,7 +213,7 @@ const notesCollection = defineCollection({
  * without sources valid — it simply does not show up in the drawer.
  *
  * Adding a new type takes TWO steps: the `z.enum` below AND `TYPE_LABELS` in
- * behavior/paths/sources/data/source-types.ts (the build fails if you forget the
+ * behavior/paths/sources/lib/source-types.ts (the build fails if you forget the
  * second one — that is intended). See .docs/paths/sources.md.
  */
 const sourceSchema = z.object({

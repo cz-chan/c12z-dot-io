@@ -241,7 +241,7 @@ the feature's `*SEO.content.astro` component.
 Empty files / files with no consumers detected (don't assume they do
 something if they show up in a `grep`): `PsychologyHeader.astro`,
 `BiasTLDR.astro`, `BookAuthor.astro`, `Context.astro`, the 3 in `essays/`,
-and `paths/projects/data/projectsData.ts` (replaced by the `projects`
+and `paths/projects/lib/projectsData.ts` (replaced by the `projects`
 content collection, with a typo `PROJETCS_DATA` if it's ever touched again).
 
 ## 10. Design system

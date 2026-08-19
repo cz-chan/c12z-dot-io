@@ -13,9 +13,9 @@ import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
 
 import { pluralize } from "@utils/pluralize.ts";
 
-import { TYPE_LABELS } from "../data/source-types.ts";
-import { countSourceTypes, buildTally } from "../data/count-source-types.ts";
-import type { Topic } from "../data/get-topics.ts";
+import { TYPE_LABELS } from "../lib/source-types.ts";
+import { countSourceTypes, buildTally } from "../lib/count-source-types.ts";
+import type { Topic } from "../lib/get-topics.ts";
 
 interface Props {
 	/** built by `getTopics()` and handed over by `getStaticPaths` */

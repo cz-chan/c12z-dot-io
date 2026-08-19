@@ -132,7 +132,7 @@ post appears. There is no separate `status` field.
 You have to touch **two** places, in this order:
 
 1. `src/content.config.ts` → add it to the `z.enum` of `sourceSchema`.
-2. `src/paths/behavior/paths/sources/data/source-types.ts` → add its label to
+2. `src/paths/behavior/paths/sources/lib/source-types.ts` → add its label to
    `TYPE_LABELS` (what you read on the folder's tab).
 
 If you forget step 2, TypeScript fails on `pnpm build` (the `Record` stops
@@ -489,7 +489,7 @@ contradict each other:
 | I want to…                               | File                                                         | What                                                                                |
 | ---------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
 | Add a source to a post                   | `src/content/{bias,mental-models}/<x>.mdx`                   | add an item to `sources:`                                                           |
-| A new source type                        | `content.config.ts` + `data/source-types.ts`                 | the `z.enum` and `TYPE_LABELS` (both, §3.3)                                         |
+| A new source type                        | `content.config.ts` + `lib/source-types.ts`                 | the `z.enum` and `TYPE_LABELS` (both, §3.3)                                         |
 | See "Behind this post" on biases         | `src/pages/behavior/sesgos/[...id].astro`                    | uncomment the import and the `<PostSources />`                                      |
 | Change the size of the pieces            | `sources.module.css`                                         | `--folder-w` in `.stack`/`.stackFiles` (stack) / `minmax()` in `.topicGrid`         |
 | Make them stack more or less             | `sources.module.css`                                         | `--min-step` in `.stack` / `.stackLoose` / `.stackFiles`                            |
