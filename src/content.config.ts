@@ -32,7 +32,7 @@ const editedAfterPublishedError = {
 const essayCollection = defineCollection({
 	loader: glob({
 		pattern: "**/*.{md,mdx}",
-		base: "./src/content/essay",
+		base: "./src/content/essays",
 	}),
 	schema: z.object({
 		title: z.string().max(60),
@@ -324,5 +324,5 @@ export const collections = {
 	notes: notesCollection,
 	mentalModels: mentalModelsCollection,
 	designLaws: designLawsCollection,
-	essays: essayCollection,
+	// essays: essayCollection,
 };
