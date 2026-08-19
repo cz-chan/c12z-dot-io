@@ -1,0 +1,40 @@
+---
+import styles from "./behavior-card.module.css";
+
+import type { BehaviorSectionKeys } from "@behavior-path/data/card/behavior-fancycodes.ts";
+import type { BehaviorEntry } from "@behavior-path/data/card/behavior-card.types.ts";
+
+import BehaviorCard from "./BehaviorCard.astro";
+import Neuron from "@/icons/Neuron.astro";
+
+interface Props {
+	entries: BehaviorEntry[];
+	section: BehaviorSectionKeys;
+}
+
+const { entries, section } = Astro.props;
+
+/**
+ * Sections whose watermark is drawn from a <symbol> instead of being inlined
+ * per card. Only the neuron qualifies: its path is 4.2 KB against the 1 KB of
+ * the other two, so it is the only one where N copies in the DOM hurt.
+ *
+ * The sprite has to be on the page for the cards' <use> to resolve, so the
+ * grid emits it — it is the one component that knows a section is about to be
+ * repeated N times.
+ */
+const SPRITE_SECTIONS: BehaviorSectionKeys[] = ["biases"];
+---
+
+{SPRITE_SECTIONS.includes(section) && <Neuron mode="sprite" />}
+
+<ul class={styles.grid}>
+	{
+		entries.map((entry) => (
+			<BehaviorCard
+				entry={entry}
+				section={section}
+			/>
+		))
+	}
+</ul>
