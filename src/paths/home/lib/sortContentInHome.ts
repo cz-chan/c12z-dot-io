@@ -9,18 +9,34 @@ const byNewest = (
 	b: { data: { publishDate: string } },
 ) => parseDate(b.data.publishDate) - parseDate(a.data.publishDate);
 
-const [libraryEntries, biasEntries, projectEntries] = await Promise.all([
+const BEHAVIOR_COLLECTIONS = {
+	biases: { basePath: "/behavior/sesgos", meta: "/sesgos" },
+	mentalModels: { basePath: "/behavior/modelos-mentales", meta: "/modelos" },
+	designLaws: { basePath: "/behavior/diseño", meta: "/diseño" },
+} as const;
+
+const [
+	libraryEntries,
+	biasEntries,
+	mentalModelEntries,
+	designLawEntries,
+	projectEntries,
+] = await Promise.all([
 	getCollection("library"),
 	getCollection("biases"),
+	getCollection("mentalModels"),
+	getCollection("designLaws"),
 	getCollection("projects"),
 ]);
 
 const uploadedLibrary = libraryEntries.filter(
 	(entry) => entry.data.backlog === "upload",
 );
-const uploadedBias = biasEntries.filter(
-	(entry) => entry.data.backlog === "upload",
-);
+const uploadedBehavior = [
+	...biasEntries,
+	...mentalModelEntries,
+	...designLawEntries,
+].filter((entry) => entry.data.backlog === "upload");
 const uploadedProject = projectEntries.filter(
 	(entry) => entry.data.backlog === "upload",
 );
@@ -39,14 +55,17 @@ const recentBook: SectionItem[] = uploadedLibrary
 		};
 	});
 
-const recentBias: SectionItem[] = uploadedBias
+const recentBehavior: SectionItem[] = uploadedBehavior
 	.sort(byNewest)
 	.slice(0, 4)
-	.map((entry) => ({
-		text: entry.data.title,
-		href: `/behavior/sesgos/${entry.id}`,
-		meta: `/${entry.collection}`,
-	}));
+	.map((entry) => {
+		const { basePath, meta } = BEHAVIOR_COLLECTIONS[entry.collection];
+		return {
+			text: entry.data.title,
+			href: `${basePath}/${entry.id}`,
+			meta,
+		};
+	});
 
 const recentProject: SectionItem[] = uploadedProject
 	.sort(byNewest)
@@ -62,7 +81,7 @@ const sectionUpdates: Record<
 	{ items: SectionItem[]; totalCount: number }
 > = {
 	biblioteca: { items: recentBook, totalCount: uploadedLibrary.length },
-	behavior: { items: recentBias, totalCount: uploadedBias.length },
+	behavior: { items: recentBehavior, totalCount: uploadedBehavior.length },
 	proyectos: { items: recentProject, totalCount: uploadedProject.length },
 };
 
