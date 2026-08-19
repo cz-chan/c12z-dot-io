@@ -1,10 +1,3 @@
-/*
- * Ficha de un post de behavior: sesgo, modelo mental o ley de diseño.
- * Los tres son el mismo tipo de contenido, así que comparten un único
- * layout (BehaviorPostLayout.astro) y estos estilos. Antes vivían
- * triplicados en bias/, mental-models/ y design-laws/.
- */
-
 .post {
 	display: grid;
 	margin-inline: auto;
