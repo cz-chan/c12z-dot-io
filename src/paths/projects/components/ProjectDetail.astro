@@ -1,0 +1,63 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { SquareArrowOutUpRight } from "@lucide/astro";
+
+import styles from "./project.module.css";
+import "./project-classes.css";
+
+import ProjectCover from "./ProjectCover.astro";
+
+import TOC from "@/common/ui/toc/Toc";
+import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
+
+interface Props {
+	entry: CollectionEntry<"projects">;
+}
+
+const { entry } = Astro.props;
+const { data, id } = entry;
+const { projectTitle, projectUrl, styleClass } = data;
+
+const { Content, headings } = await render(entry);
+---
+
+<section class={styles.theProject}>
+	<TOC
+		client:only="react"
+		headings={headings}
+		title={projectTitle}
+	/>
+	<GoBackInTop
+		headPage="/proyectos"
+		title="ir a proyectos"
+	/>
+
+	<section class={styles.projSect}>
+		<h1
+			transition:name={`${id}-project-title`}
+			class={styles.projTitle}
+		>
+			{projectTitle}
+		</h1>
+
+		<ProjectCover
+			entry={entry}
+			transition:name={`${id}-project-image`}
+		/>
+
+		<a
+			class={styles.projLink}
+			href={projectUrl}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			{projectTitle}
+			<SquareArrowOutUpRight size={12} />
+		</a>
+	</section>
+
+	<section class:list={["lettering", styleClass]}>
+		<Content />
+	</section>
+</section>

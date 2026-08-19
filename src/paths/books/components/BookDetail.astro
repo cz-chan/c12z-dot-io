@@ -1,0 +1,104 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+
+import styles from "./book.module.css";
+
+import BookCover from "./BookCover.astro";
+import BookScore from "./BookScore.astro";
+import BookCategory from "./BookCategory.astro";
+import BookSpoiler from "./BookSpoiler.astro";
+
+import TOC from "@/common/ui/toc/Toc";
+import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
+import SummarizeSection from "@/common/ui/content/SummarizeSection.astro";
+
+interface Props {
+	entry: CollectionEntry<"books">;
+}
+
+const { entry } = Astro.props;
+const { data, id } = entry;
+
+const {
+	title,
+	score,
+	authors,
+	readingTime,
+	publishDate,
+	quote,
+	lastTimeEdited,
+} = data;
+
+/** El schema acepta un autor suelto o una lista; aquí siempre es lista. */
+const authorsInArry = Array.isArray(authors) ? authors : [authors];
+
+const { Content, headings } = await render(entry);
+---
+
+<article class={styles.bookPage}>
+	<TOC
+		client:only="react"
+		headings={headings}
+		title={title}
+	/>
+	<GoBackInTop
+		headPage="/biblioteca"
+		title="ir a la página biblioteca"
+	/>
+
+	<section class={styles.introSection}>
+		<BookCover entry={entry} />
+
+		<section class={styles.review}>
+			<h1>
+				{title}
+			</h1>
+			<span class={styles.author}>
+				de {authorsInArry[0].name}
+			</span>
+			<BookScore
+				entry={entry}
+				transition:name={`${id}-bookScore-${score}`}
+			/>
+			<section class={styles.history}>
+				<span>Publicado el {publishDate}</span>
+				{lastTimeEdited && <span>Editado: {lastTimeEdited}</span>}
+				<span>Léelo en {readingTime} min.</span>
+			</section>
+		</section>
+		<section class={styles.quote}>
+			<p class={styles.theQuote}>"{quote}"</p>
+		</section>
+	</section>
+
+	<section>
+		<div class={styles.bookCategorySect}>
+			<span>Categoría:</span>
+			<BookCategory entry={entry} />
+		</div>
+		<SummarizeSection />
+		<BookSpoiler entry={entry} />
+	</section>
+
+	<section class="lettering">
+		<Content />
+	</section>
+	<section class="lettering">
+		<h2>Autor(es)</h2>
+		{
+			authorsInArry.map((author) => (
+				<div class={styles.author}>
+					<a
+						class={styles.authorLink}
+						href={author.link}
+						target="_blank"
+						rel="noopener"
+					>
+						{author.name}
+					</a>
+				</div>
+			))
+		}
+	</section>
+</article>

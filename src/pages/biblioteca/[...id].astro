@@ -1,21 +1,9 @@
 ---
-import styles from "@books-path/components/book.module.css";
-// export const prerender = true;
-
-import type { CollectionEntry } from "astro:content";
-import { getCollection, render } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
-import BookScore from "@books-path/components/BookScore.astro";
-import BookCover from "@books-path/components/BookCover.astro";
-import BookSpoiler from "@books-path/components/BookSpoiler.astro";
 import BooksSEO from "@books-path/seo/BooksSEO.content.astro";
-
-import TOC from "@/common/ui/toc/Toc";
-
-import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
-import SummarizeSection from "@/common/ui/content/SummarizeSection.astro";
-import BookCategory from "@books-path/components/BookCategory.astro";
+import BookDetail from "@books-path/components/BookDetail.astro";
 
 interface Props {
 	entry: CollectionEntry<"books">;
@@ -31,20 +19,6 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { data, id } = entry;
-
-const {
-	title,
-	score,
-	authors,
-	readingTime,
-	publishDate,
-	quote,
-	lastTimeEdited,
-} = data;
-const authorsInArry = Array.isArray(authors) ? authors : [authors];
-
-const { Content, headings } = await render(entry);
 ---
 
 <MainLayout>
@@ -52,70 +26,5 @@ const { Content, headings } = await render(entry);
 		slot="head"
 		entry={entry}
 	/>
-	<article class={styles.bookPage}>
-		<TOC
-			client:only="react"
-			headings={headings}
-			title={title}
-		/>
-		<GoBackInTop
-			headPage="/biblioteca"
-			title="ir a la página biblioteca"
-		/>
-
-		<section class={styles.introSection}>
-			<BookCover entry={entry} />
-
-			<section class={styles.review}>
-				<h1>
-					{title}
-				</h1>
-				<span class={styles.author}>
-					de {authorsInArry[0].name}
-				</span>
-				<BookScore
-					entry={entry}
-					transition:name={`${id}-bookScore-${score}`}
-				/>
-				<section class={styles.history}>
-					<span>Publicado el {publishDate}</span>
-					{lastTimeEdited && <span>Editado: {lastTimeEdited}</span>}
-					<span>Léelo en {readingTime} min.</span>
-				</section>
-			</section>
-			<section class={styles.quote}>
-				<p class={styles.theQuote}>"{quote}"</p>
-			</section>
-		</section>
-
-		<section>
-			<div class={styles.bookCategorySect}>
-				<span>Categoría:</span>
-				<BookCategory entry={entry} />
-			</div>
-			<SummarizeSection />
-			<BookSpoiler entry={entry} />
-		</section>
-
-		<section class="lettering">
-			<Content />
-		</section>
-		<section class="lettering">
-			<h2>Autor(es)</h2>
-			{
-				authorsInArry.map((author) => (
-					<div class={styles.author}>
-						<a
-							class={styles.authorLink}
-							href={author.link}
-							target="_blank"
-							rel="noopener"
-						>
-							{author.name}
-						</a>
-					</div>
-				))
-			}
-		</section>
-	</article>
+	<BookDetail entry={entry} />
 </MainLayout>
