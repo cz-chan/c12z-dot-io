@@ -9,6 +9,7 @@ import MentalModelSEO from "@mental-models-path/seo/MentalModelSEO.content.astro
 import PostSources from "@sources-path/components/PostSources.astro";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
+import WipNotice from "@behavior-path/components/wip/WipNotice.astro";
 import TOC from "@/components/common/ui/toc/toc.tsx";
 
 interface Props {
@@ -26,7 +27,9 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { data, id } = entry;
-const { title, publishDate, lastTimeEdited, question } = data;
+const { title, publishDate, lastTimeEdited, question, backlog } = data;
+
+const isWip = backlog === "wip";
 
 const { Content, headings } = await render(entry);
 ---
@@ -69,9 +72,15 @@ const { Content, headings } = await render(entry);
 					}
 				</section>
 			</section>
-			<section class="lettering">
-				<Content />
-			</section>
+			{
+				isWip ? (
+					<WipNotice />
+				) : (
+					<section class="lettering">
+						<Content />
+					</section>
+				)
+			}
 			<PostSources sources={data.sources} />
 		</article>
 	</section>

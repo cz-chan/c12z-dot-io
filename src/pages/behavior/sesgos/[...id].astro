@@ -15,9 +15,10 @@ import BiasSEO from "@biases-path/seo/BiasSEO.content.astro";
 import BiasCategory from "@biases-path/components/BiasCategory.astro";
 
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
+import WipNotice from "@behavior-path/components/wip/WipNotice.astro";
+import PostSources from "@sources-path/components/PostSources.astro";
 import TOC from "@/components/common/ui/toc/toc.tsx";
 
-// import PostSources from "@sources-path/components/PostSources.astro";
 
 interface Props {
   entry: CollectionEntry<"biases">;
@@ -34,7 +35,10 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { data, id } = entry;
-const { title, publishDate, lastTimeEdited, question, category } = data;
+const { title, publishDate, lastTimeEdited, question, category, backlog } =
+  data;
+
+const isWip = backlog === "wip";
 
 const { Content, headings } = await render(entry);
 
@@ -69,10 +73,16 @@ const { Content, headings } = await render(entry);
           }
         </section>
       </section>
-        <section class="lettering">
-          <Content />
-        </section>
-        {/* <PostSources sources={data.sources} /> */}
+        {
+          isWip ? (
+            <WipNotice />
+          ) : (
+            <section class="lettering">
+              <Content />
+            </section>
+          )
+        }
+        <PostSources sources={data.sources} />
     </article>
   </section>
 </MainLayout>
