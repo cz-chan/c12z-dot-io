@@ -266,7 +266,7 @@ const behaviorContentBaseSchema = (image: ImageFunction) =>
 const designLawsCollection = defineCollection({
 	loader: glob({
 		pattern: "**/*.{md,mdx}",
-		base: "./src/content/designLaws",
+		base: "./src/content/design-laws",
 	}),
 	schema: ({ image }) =>
 		behaviorContentBaseSchema(image)
