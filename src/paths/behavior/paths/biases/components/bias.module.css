@@ -178,10 +178,16 @@
 	flex-wrap: wrap;
 	gap: var(--sp-3);
 
+	/* Same treatment as the card chip in the listing: the category colour is
+	 * the background and --fg is the text. The old version painted the colour
+	 * AS text over a 10% tint of itself, which never cleared 4.5:1 — it sat
+	 * between 2.1 and 3.7 in the light theme for all five categories.
+	 *
+	 * It also means a category is now one single colour across the site: the
+	 * chip you clicked in /behavior/sesgos is the pill you land on. */
 	& .pill {
 		font-family: var(--ff-pixel);
-		border: var(--wdth) solid var(--pill-color);
-		padding: var(--sp-05) var(--sp-1);
+		padding: var(--sp-1) var(--sp-2);
 		width: fit-content;
 		border-radius: var(--r-sm);
 		letter-spacing: var(--tracking-widest);
@@ -189,23 +195,23 @@
 		font-size: var(--t-nano);
 		line-height: var(--lh-nano);
 		font-weight: 500;
-		color: var(--pill-color);
-		background-color: color-mix(in srgb, var(--pill-color) 10%, transparent);
+		color: var(--fg);
+		background-color: var(--pill-color);
 	}
 	.speed {
-		--pill-color: var(--c-bias-category-speed);
+		--pill-color: var(--c-bias-category-speed-surface);
 	}
 	.memory {
-		--pill-color: var(--c-bias-category-memory);
+		--pill-color: var(--c-bias-category-memory-surface);
 	}
 	.judgment {
-		--pill-color: var(--c-bias-category-judgment);
+		--pill-color: var(--c-bias-category-judgment-surface);
 	}
 	.context {
-		--pill-color: var(--c-bias-category-context);
+		--pill-color: var(--c-bias-category-context-surface);
 	}
 	.perception {
-		--pill-color: var(--c-bias-category-perception);
+		--pill-color: var(--c-bias-category-perception-surface);
 	}
 }
 

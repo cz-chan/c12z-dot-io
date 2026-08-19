@@ -1,12 +1,14 @@
 ---
 import styles from "./bias.module.css";
-import { getCollection } from "astro:content";
+
+import { getBehaviorEntries } from "@behavior-path/data/card/getBehaviorEntries.ts";
 
 import BiasHeader from "./BiasHeader.astro";
-import BiasCard from "./BiasCard.astro";
+import BehaviorGrid from "@behavior-path/components/card/BehaviorGrid.astro";
 import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
+import { COLLECTION_KEYS } from "@/global/collection-keys.ts";
 
-const biases = await getCollection("biases");
+const biases = await getBehaviorEntries("biases");
 ---
 
 <section class={styles.biasesPage}>
@@ -18,15 +20,9 @@ const biases = await getCollection("biases");
 		<BiasHeader />
 
 		<h2 class={styles.action}>Pincha. Investiga. Aplica.</h2>
-		<section class={styles.biasesGrid}>
-			{
-				biases.map((bias) => (
-					<BiasCard
-						entry={bias}
-						transition:name={`${bias.id}-name`}
-					/>
-				))
-			}
-		</section>
+		<BehaviorGrid
+			entries={biases}
+			section={COLLECTION_KEYS.biases}
+		/>
 	</section>
 </section>
