@@ -69,3 +69,55 @@
 		stroke-width: 1.9;
 	}
 }
+
+/* ---- Detail page --------------------------------------------------------
+ * Mirrors the mental models detail page: same structure, same rhythm. The
+ * shell is duplicated across the three sections for now; if a fourth appears
+ * it is worth pulling out into behavior/components like the card was.
+ */
+
+.designLaw {
+	display: grid;
+	margin-inline: auto;
+	max-width: var(--screen-md);
+}
+
+.intro {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-6);
+}
+
+.textAlign {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-3);
+	margin-bottom: var(--sp-4);
+}
+
+.designTitle {
+	font-family: var(--ff-pixel);
+	font-size: clamp(1.75rem, 4vw, 2.5rem);
+	line-height: var(--lh-h1);
+	letter-spacing: var(--tracking-widest);
+}
+
+.designSubtitle {
+	font-family: var(--ff-rubik);
+	font-weight: 300;
+	font-size: var(--t-h3);
+	line-height: var(--lh-h3);
+	color: var(--fg-2);
+}
+
+.publish {
+	display: flex;
+	gap: var(--sp-4);
+
+	& .text {
+		font-family: var(--ff-mono);
+		font-size: var(--t-micro);
+		line-height: var(--lh-micro);
+		color: var(--fg-3);
+	}
+}
