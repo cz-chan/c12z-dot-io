@@ -1,0 +1,51 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+
+import styles from "./notes.module.css";
+import SourceBadges from "./SourceBadges.astro";
+
+import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
+
+import { convertDateToISO8601 } from "@utils/validating-date.ts";
+import { formatNoteDate } from "../lib/format-note-date.ts";
+
+interface Props {
+	entry: CollectionEntry<"notes">;
+}
+
+const { entry } = Astro.props;
+const { title, publishDate, sources } = entry.data;
+
+const { Content } = await render(entry);
+---
+
+<article class={styles.note}>
+	<GoBackInTop
+		headPage="/notas"
+		title="ir a la página de notas"
+	/>
+
+	<header class={styles.noteIntro}>
+		<p class={styles.meta}>
+			<time datetime={convertDateToISO8601(publishDate)}>
+				{formatNoteDate(publishDate)}
+			</time>
+			<span class={styles.pill}>Nota</span>
+		</p>
+		<h1 transition:name={`${entry.id}-note-title`}>{title}</h1>
+	</header>
+
+	<section class="lettering">
+		<Content />
+	</section>
+
+	{
+		sources.length > 0 && (
+			<footer class={styles.sourcesFooter}>
+				<p class={styles.sourcesLabel}>Fuentes</p>
+				<SourceBadges sources={sources} />
+			</footer>
+		)
+	}
+</article>

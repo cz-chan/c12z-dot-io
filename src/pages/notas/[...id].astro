@@ -1,15 +1,9 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
-
-import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
-
-import styles from "@notes-path/components/notes.module.css";
-import { convertDateToISO8601 } from "@utils/validating-date.ts";
-import { formatNoteDate } from "@notes-path/lib/format-note-date.ts";
-import SourceBadges from "@notes-path/components/SourceBadges.astro";
 import NotesSEO from "@notes-path/seo/NotesSEO.content.astro";
+import NoteDetail from "@notes-path/components/NoteDetail.astro";
 
 interface Props {
 	entry: CollectionEntry<"notes">;
@@ -25,9 +19,6 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, publishDate, sources } = entry.data;
-
-const { Content } = await render(entry);
 ---
 
 <MainLayout>
@@ -35,33 +26,5 @@ const { Content } = await render(entry);
 		slot="head"
 		entry={entry}
 	/>
-	<article class={styles.note}>
-		<GoBackInTop
-			headPage="/notas"
-			title="ir a la página de notas"
-		/>
-
-		<header class={styles.noteIntro}>
-			<p class={styles.meta}>
-				<time datetime={convertDateToISO8601(publishDate)}>
-					{formatNoteDate(publishDate)}
-				</time>
-				<span class={styles.pill}>Nota</span>
-			</p>
-			<h1 transition:name={`${entry.id}-note-title`}>{title}</h1>
-		</header>
-
-		<section class="lettering">
-			<Content />
-		</section>
-
-		{
-			sources.length > 0 && (
-				<footer class={styles.sourcesFooter}>
-					<p class={styles.sourcesLabel}>Fuentes</p>
-					<SourceBadges sources={sources} />
-				</footer>
-			)
-		}
-	</article>
+	<NoteDetail entry={entry} />
 </MainLayout>
