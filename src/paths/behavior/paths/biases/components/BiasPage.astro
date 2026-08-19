@@ -1,11 +1,11 @@
 ---
 import styles from "./bias.module.css";
 
-import { getBehaviorEntries } from "@/paths/behavior/lib/card/get-behavior-entries.ts";
+import { getBehaviorEntries } from "@behavior-path/lib/card/get-behavior-entries.ts";
 
 import BiasHeader from "./BiasHeader.astro";
 import BehaviorGrid from "@behavior-path/components/card/BehaviorGrid.astro";
-import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
+import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
 import { COLLECTION_KEYS } from "@/global/collection-keys.ts";
 
 const biases = await getBehaviorEntries("biases");

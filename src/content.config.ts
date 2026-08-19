@@ -2,7 +2,7 @@ import { defineCollection, type ImageFunction } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
-import { isValidDateFormat, parseDate } from "@/utils/validating-date.ts";
+import { isValidDateFormat, parseDate } from "@utils/validating-date.ts";
 
 /** DD/MM/YYYY. `isValidDateFormat` throws if the format or the date is wrong. */
 const dateField = z.string().refine(isValidDateFormat);

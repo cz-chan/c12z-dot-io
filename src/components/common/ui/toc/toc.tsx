@@ -5,7 +5,7 @@
 import styles from "./toc.module.css";
 import { useEffect, useRef, useState } from "react";
 
-import type { DynamicTocProps } from "@/components/common/ui/toc/toc.interface";
+import type { DynamicTocProps } from "@/common/ui/toc/toc.interface";
 
 import { throttle } from "es-toolkit";
 

@@ -21,7 +21,6 @@
 
 			"@/lib/*": ["./src/lib/*"],
 			"@/global/*": ["./src/global/*"],
-			"@/ui/*": ["./src/components/ui/*"],
 			"@/common/*": ["./src/components/common/*"],
 			"@/icons/*": ["./src/components/common/ui/icons/*"],
 			"@/seo/*": ["./src/components/common/seo/*"],
