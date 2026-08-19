@@ -2,6 +2,22 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## This file and AGENTS.md are the same file
+
+`CLAUDE.md` and `AGENTS.md` must stay byte-identical **except for their first
+three lines** (the `#` heading and the sentence naming the audience). Everything
+from `## Commands` onwards is shared content.
+
+**Editing one without the other is a bug.** Whenever you change either file,
+apply the exact same change to the other in the same commit, then verify:
+
+```bash
+diff <(tail -n +4 CLAUDE.md) <(tail -n +4 AGENTS.md) && echo "in sync"
+```
+
+That command must print `in sync` before you commit. If they have already
+drifted, reconcile them first — do not layer a new edit on top of a divergence.
+
 ## Commands
 
 ```bash
@@ -37,7 +53,8 @@ Each path holds:
 - `lib/` — everything that isn't UI: static data, derivations/queries, and the types they share. One folder, not two — what changes together lives together.
 - `icons/` — icons used only by this path
 - `scripts/` — client-side JS loaded by the path's components (only where there is any)
-- `styles/` — CSS Modules scoped to the path (some paths keep the module next to the component instead)
+
+There is no `styles/` folder: a CSS Module lives next to the component it styles.
 
 Something lives in the path that uses it. Once **2+ paths** need it, it graduates to `src/components/common/`, `src/global/`, or `src/lib/` — not before.
 
@@ -53,21 +70,51 @@ src/paths/behavior/
 └── paths/        ← child paths
     ├── biases/         → /behavior/sesgos
     ├── mental-models/  → /behavior/modelos-mentales
-    ├── designs/        → /behavior/diseño
+    ├── design-laws/    → /behavior/diseño
     └── sources/        → /behavior/fuentes
 ```
 
-Folder names are plural when the path is a collection of items (`biases`, `essays`, `designs`, `books`, `notes`, `projects`, `sources`, `mental-models`) and singular when it's a single page or a domain (`behavior`, `home`, `context`, `404`).
+Folder names are plural when the path is a collection of items (`biases`, `essays`, `design-laws`, `books`, `notes`, `projects`, `sources`, `mental-models`) and singular when it's a single page or a domain (`behavior`, `home`, `context`, `404`).
 
-**Content Collections** — `src/content/` holds markdown/MDX validated by Zod schemas in `src/content.config.ts`. Registered collections: `bias`, `library` (book reviews), `projects`, `notes`, `mentalModels`, `designLaws`. An `essay` collection is defined but commented out of the exports.
+**Content Collections** — `src/content/` holds markdown/MDX validated by Zod schemas in `src/content.config.ts`. Registered collections: `biases`, `books` (book reviews), `projects`, `notes`, `mentalModels`, `designLaws`. An `essays` collection is defined but commented out of the exports.
+
+A collection is named after **the item** it holds, never after the page that shows it — `books`, not `library`. The page keeps the other name: the `books` collection is rendered by `LibraryPage` at `/biblioteca`.
 
 **Sources are frontmatter, not a collection** — posts embed a `sources` array (`sourceSchema`: title, type enum, author, url…) in their own frontmatter. Adding a source type takes TWO steps: the `z.enum` in `content.config.ts` AND `TYPE_LABELS` in `behavior/paths/sources/lib/source-types.ts` (build fails if you forget the second — intended). See `.docs/paths/sources.md`.
 
-**Shared globals** — `src/global/`: `site-info.ts`, `header-links.ts`, `pages-info.ts`, `socialmedia-links.ts`.
+**Shared globals** — `src/global/`: `site-info.ts`, `pages-info.ts`, `socialmedia-links.ts`, `collection-keys.ts`.
 
 **Common UI** — `src/components/common/`: `layout`, `navigation`, `seo`, `analytics`, `ui` (buttons, icons, toc…).
 
 **OG images** — `src/lib/og/` renders social images with `@vercel/og` + `sharp` at build time.
+
+**Icons and MDX components with no importer are not dead code.** `YingYang`,
+`Bulb`, `GoOut`, `Moon`, `Sun`, `LensIcon` and `QuoteCard` are a library to drop
+into a post by hand, so having zero imports is their normal state. Don't delete
+them as unused.
+
+### `src/pages/` only routes
+
+A page file is `getStaticPaths()` plus the SEO component plus one component from
+the path that owns the content. No markup, no data massaging — those belong in
+`paths/<name>/components/`. Every page today is at or under ~30 lines, and new
+ones should stay there (`_og-playground/` is a dev tool and is exempt).
+
+Each path pairs a listing component with a detail one: `LibraryPage` +
+`BookDetail`, `ProjectPage` + `ProjectDetail`, `BiasPage` + `BiasDetail`.
+
+Biases, mental models and design laws are the same kind of post, so their detail
+pages all render through `behavior/components/post/BehaviorPostLayout.astro`,
+which owns the shared markup and stylesheet. A section only adds what is its
+own — biases pass their category pill through the `meta` slot. Change the layout
+once, not three times.
+
+### File naming
+
+- `lib/`, `seo/` and CSS Modules: `kebab-case.ts` / `kebab-case.module.css`
+- Components (`.astro`, `.tsx`): `PascalCase`
+- A CSS Module is named after the component it styles — `go-back-in-top.module.css`,
+  not `gbit.module.css`. No abbreviations.
 
 ### Path aliases (tsconfig.json)
 
@@ -76,7 +123,7 @@ Every path has its own `@<name>-path/*` alias — **always import through it**, 
 ```
 @biases-path/*        → src/paths/behavior/paths/biases/*
 @mental-models-path/* → src/paths/behavior/paths/mental-models/*
-@designs-path/*       → src/paths/behavior/paths/designs/*
+@design-laws-path/*   → src/paths/behavior/paths/design-laws/*
 @sources-path/*       → src/paths/behavior/paths/sources/*
 @behavior-path/*      → src/paths/behavior/*
 @projects-path/*      → src/paths/projects/*
@@ -94,7 +141,6 @@ Cross-cutting aliases:
 @/*           → src/*
 @/lib/*       → src/lib/*
 @/global/*    → src/global/*
-@/ui/*        → src/components/ui/*
 @/common/*    → src/components/common/*
 @/icons/*     → src/components/common/ui/icons/*
 @/seo/*       → src/components/common/seo/*
@@ -104,11 +150,17 @@ Cross-cutting aliases:
 @/assets/*    → src/assets/*
 ```
 
+**Always import through the most specific alias available.** `@/icons/Logo.astro`,
+never `@/common/ui/icons/Logo.astro`; `@/seo/BaseHead.astro`, never
+`@/components/common/seo/BaseHead.astro`. A `@/components/...` or `@/paths/...`
+import means an alias was skipped — or that one is missing.
+
 ### Content collection schemas
 
-- **library** — book reviews; covers, score, authors, Amazon links, `category` enum (`health`, `product`, `culture`, `psychology`, `economics`, `creativity`, `philosophy`, `other`)
-- **bias** — cognitive biases; `category` enum: `velocidad`, `memoria`, `percepción`, `contexto`, `juicio`
-- **projects**, **notes**, **mentalModels** — see `src/content.config.ts`
+- **books** — book reviews; covers, score, authors, Amazon links, `category` enum (`health`, `product`, `culture`, `psychology`, `economics`, `creativity`, `philosophy`, `other`)
+- **biases** — cognitive biases; `category` enum: `velocidad`, `memoria`, `percepción`, `contexto`, `juicio`
+- **projects**, **notes**, **mentalModels**, **designLaws** — see `src/content.config.ts`
+- `biases`, `mentalModels` and `designLaws` share `behaviorContentBaseSchema`. Each needs a `contentCount` unique **within its own collection** — the number feeds the card code (`DSG-001`), and `get-behavior-entries.ts` throws at build time on a duplicate. The three collections number independently.
 - `backlog: z.enum(["wip", "upload"])` gates unpublished entries
 
 ### Markdown pipeline
@@ -130,7 +182,7 @@ See `.env.template` (validated via `envField` in `astro.config.mjs`):
 
 ## Design System
 
-All design tokens live in `src/styles/global.css` as plain CSS variables on `:root` (dark, default — palette "burntpaper") and `[data-theme="light"]` (light — "recycledpaper"). Color notes in `src/styles/global.css.md`.
+All design tokens live in `src/styles/global.css` as plain CSS variables on `:root` (dark, default — palette "burntpaper") and `[data-theme="light"]` (light — "recycledpaper").
 
 ### Aesthetic direction
 
@@ -159,7 +211,7 @@ Type scale (`--t-*`/`--lh-*`), tracking (`--tracking-*`), 4pt spacing (`--sp-*`)
 ### UI conventions when building new components
 
 - Use existing CSS variables — never hardcode colors, sizes, or spacing
-- Styles go in CSS Modules (`*.module.css`) next to the component or in the path's `styles/` folder
+- Styles go in a CSS Module (`*.module.css`) next to the component it styles
 - React components (`.tsx`) only when interactivity is needed; prefer `.astro` otherwise
 - Motion library (`motion/react`) is available for animations in React components
 - Left/bottom borders as a recurring visual motif for list items

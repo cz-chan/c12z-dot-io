@@ -1,16 +1,17 @@
 # c12z.io — architecture and project map
 
-> Entry point to the documentation. Describes how the repo is organized
-> and what each piece does, so a dev or an AI can get oriented without
-> having to read all the code first. For the dynamic OG images system,
-> see [`og-images.md`](./og-images.md) (dedicated, more detailed
-> documentation).
+> Entry point to the documentation. Describes how the repo is organized and what
+> each piece does, so a dev or an AI can get oriented without reading all the
+> code first. `CLAUDE.md` / `AGENTS.md` hold the short version — the rules you
+> must follow. This file holds the long version — the reasoning and the current
+> state. For the OG images system see [`pages/og/og-images.md`](./pages/og/og-images.md)
+> and [`lib/og/og-render.md`](./lib/og/og-render.md); for the sources drawer,
+> [`paths/sources.md`](./paths/sources.md).
 
 ## 1. What it is
 
-Personal blog/portfolio of Chema Ferrandez. **Astro 7** + **React 19**
-(only for interactive islands) + **TailwindCSS v4** + **MDX**, `output:
-"static"`, deployed on **Vercel**.
+Personal blog/portfolio of Chema Ferrandez. **Astro 7** + **React 19** (only for
+interactive islands) + **MDX**, `output: "static"`, deployed on **Vercel**.
 
 ```bash
 pnpm dev      # development server
@@ -18,292 +19,291 @@ pnpm build    # astro check (type-check) + astro build
 pnpm preview  # serves the production build locally
 ```
 
-There is no lint or tests configured. `pnpm build` is the only quality
-gate (it fails on type errors or on the Zod schemas of the collections).
+**There is no Tailwind.** Styling is plain CSS: design tokens as CSS variables in
+`src/styles/global.css`, plus one CSS Module per component.
 
-**Before running `pnpm dev` for the first time**: copy `.env.template`
-to `.env` and fill in the 4 vars (`GA4_MEASUREMENT_ID`, `GTM_MEASUREMENT_ID`,
-`AHRFS_MEASUREMENT_ID`, `OVERTRACKING_MEASUREMENT_ID`). They're declared
-as `optional: false` in the `env.schema` of `astro.config.mjs` — without
-them the server won't even start. Dummy values work locally.
+No lint or tests are configured. `pnpm build` is the only quality gate — it fails
+on type errors and on the Zod schemas of the collections. Clean up after it,
+since the artifacts are never kept:
 
-## 2. Organizing principle: feature-based
+```bash
+rm -rf dist && rm -rf .vercel/* && mkdir -p .vercel
+```
 
-Each content domain lives in `src/paths/<name>/`, with this internal
-shape (not every path has all 4 folders):
+**Before the first `pnpm dev`**: copy `.env.template` to `.env` and fill the 4
+vars. They are `optional: false` in `astro.config.mjs`, so the server won't start
+without them. Dummy values work locally.
+
+## 2. Organizing principle: one folder per domain
+
+Each content domain lives in `src/paths/<name>/`:
 
 ```
 paths/<name>/
 ├── components/   Astro/React components for that path
-├── seo/          keywords + SEO component specific to that content
-├── data/ | rules/  business logic, static data, their types
-└── styles/         CSS Modules if it needs its own styling
+├── seo/          keywords + SEO component for that content
+├── lib/          everything that isn't UI: data, queries, and their types
+├── icons/        icons only this path uses
+└── scripts/      client-side JS, where there is any
 ```
+
+There is **no `styles/` folder**: a CSS Module lives next to the component it
+styles.
 
 Top-level paths: `404`, `behavior`, `books`, `context`, `essays`, `home`,
 `notes`, `projects`.
 
-**Nested paths.** A path that owns child routes keeps them in its own
-`paths/` folder, recursively — same folder name at every level, so there's
-a single rule to remember. Today only `behavior` has children:
+**Nested paths.** A path that owns child routes keeps them in its own `paths/`
+folder, recursively — one rule at every level. Today only `behavior` has them:
 
 ```
 src/paths/behavior/
-├── components/   ← behavior's own
+├── components/
+│   ├── card/     the card shared by the three sections
+│   ├── post/     BehaviorPostLayout — the shared detail page
+│   └── wip/
 ├── seo/
-├── data/
-└── paths/        ← child paths
-    ├── biases/         → /behavior/sesgos
-    ├── mental-models/  → /behavior/modelos-mentales
-    ├── designs/        → /behavior/diseño
-    └── sources/        → /behavior/fuentes
+├── lib/
+└── paths/
+    ├── biases/        → /behavior/sesgos
+    ├── mental-models/ → /behavior/modelos-mentales
+    ├── design-laws/   → /behavior/diseño
+    └── sources/       → /behavior/fuentes
 ```
 
-**Naming**: plural when the path is a collection of items (`biases`,
-`essays`, `designs`, `books`, `notes`, `projects`, `sources`,
-`mental-models`); singular when it's a single page or a domain
+**Naming.** Something lives in the path that uses it; once 2+ paths need it, it
+graduates to `src/components/common/`, `src/global/` or `src/lib/` — not before.
+
+A folder is named after **the item** it holds, in English, plural when it is a
+collection (`biases`, `books`, `design-laws`, `mental-models`, `notes`,
+`projects`, `sources`, `essays`) and singular when it is one page or a domain
 (`behavior`, `home`, `context`, `404`).
 
-Everything **cross-cutting** (not belonging to a single domain) lives
-outside `paths/`: layouts, common UI/SEO/analytics components, global
-site config and utils.
+**The item and the place can have different names, on purpose.** The `books`
+collection holds books; the page that lists them is the Library, so it is
+`LibraryPage` and lives at `/biblioteca`. Both names are right, each for its own
+thing. Routes and user-facing copy are in Spanish; everything internal is in
+English.
 
 ## 3. `src/` tree
 
 ```
 src/
-├── assets/            fonts (Tamago, Cascadia, Rubik), images (404, OpenGraph, mii)
-├── components/common/ see §6
-├── content/            content entries (md/mdx), one folder per collection
-├── content.config.ts   Zod schemas for the collections — see §5
-├── paths/             one folder per route domain — see §2 and §9
-├── global/               site config — see §7
-├── layouts/                MainLayout.astro, Layout404Error.astro
-├── lib/                     cross-cutting non-UI code (`keywords.ts`, `og/` — see og-images.md)
-├── pages/                    routes — see §8
-├── styles/                    global.css (design tokens), typo.css, lettering.css
-└── utils/                      formatter, process-keywords, validating-date
+├── assets/            fonts (Tamago, Cascadia, Rubik), images
+├── components/common/ cross-cutting UI — see §6
+├── content/           content entries (md/mdx), one folder per collection
+├── content.config.ts  Zod schemas — see §5
+├── paths/             one folder per domain — see §2 and §9
+├── global/            site config — see §7
+├── layouts/           MainLayout.astro, Layout404Error.astro
+├── lib/               cross-cutting non-UI code (keywords.ts, og/)
+├── pages/             routes, and nothing else — see §4 and §8
+├── styles/            global.css (tokens), typo.css, lettering.css
+└── utils/             pluralize, process-keywords, validating-date
 ```
 
-## 4. Path aliases (`tsconfig.json`)
+## 4. `src/pages/` only routes
 
-**One alias per path** — always import a path's files through its alias,
-never with a relative `../../` chain. There is deliberately **no generic
-`@/paths/*` alias**: creating a path means creating its alias, which keeps
-the list in `tsconfig.json` an accurate map of the site.
+A page file is `getStaticPaths()` + the SEO component + one component from the
+path that owns the content. No markup and no data massaging — those live in
+`paths/<name>/components/`.
 
-```
-@biases-path/*        → src/paths/behavior/paths/biases/*
-@mental-models-path/* → src/paths/behavior/paths/mental-models/*
-@designs-path/*       → src/paths/behavior/paths/designs/*
-@sources-path/*       → src/paths/behavior/paths/sources/*
-@behavior-path/*      → src/paths/behavior/*
-@projects-path/*      → src/paths/projects/*
-@essays-path/*        → src/paths/essays/*
-@books-path/*         → src/paths/books/*
-@notes-path/*         → src/paths/notes/*
-@context-path/*       → src/paths/context/*
-@home-path/*          → src/paths/home/*
-@error-path/*         → src/paths/404/*
-```
+Every page today is at or under ~30 lines. `_og-playground/` is a dev tool and is
+exempt.
 
-Cross-cutting aliases:
+Each path pairs a listing component with a detail one:
 
-```
-@/*           → src/*
-@/lib/*       → src/lib/*
-@/global/*    → src/global/*
-@/common/*    → src/components/common/*
-@/icons/*     → src/components/common/ui/icons/*
-@/seo/*       → src/components/common/seo/*
-@/analytics/* → src/components/common/analytics/*
-@layouts/*    → src/layouts/*
-@utils/*      → src/utils/*
-@/assets/*    → src/assets/*
-```
+| path       | listing       | detail           |
+| ---------- | ------------- | ---------------- |
+| `books`    | `LibraryPage` | `BookDetail`     |
+| `projects` | `ProjectPage` | `ProjectDetail`  |
+| `biases`   | `BiasPage`    | `BiasDetail`     |
 
-`@/ui/*` is declared but points to `components/ui`, which doesn't exist —
-don't use it.
+`biases`, `mental-models` and `design-laws` are the same kind of post, so the
+three detail components render through
+`behavior/components/post/BehaviorPostLayout.astro`, which owns the shared markup
+and stylesheet. A section only supplies what is its own: where "← Atrás" points,
+and anything extra under the title — biases pass their category pill through the
+`meta` slot. **Change the layout once, not three times.**
+
+`notes` is the exception: its detail markup still lives in
+`pages/notas/[...id].astro`, because the collection is empty and the move could
+not be verified against rendered output.
 
 ## 5. Content collections (`content.config.ts`)
 
-`glob` loader over `**/*.{md,mdx}`. **3** collections are exported:
-`library`, `projects`, `bias`. `essay` is **defined but commented out**
-(not exported) — see status in §9.
+`glob` loader over `**/*.{md,mdx}`. Six collections are exported:
 
-| Collection | Physical folder                                                                | Key fields                                                                                                                                                                                                                          | Real entries today                                                             |
-| ---------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `library`  | `content/library/{slug}/`                                                      | `title`, `cover`, `abstract`, `backlog: "wip"\|"upload"`, `category` (health/product/culture/psychology/economics/creativity/philosophy/other), `score` (1-5), `authors`, `publishDate`/`lastTimeEdited` (`DD/MM/YYYY`), `keywords` | 4 (show-your-work, steal-like-an-artist, the-cold-start-problem, the-mom-test) |
-| `projects` | `content/project/{slug}/` (⚠️ singular on disk, plural as the collection name) | `projectTitle`, `projectDescription`, `projectUrl`, `cover`, `why` (≤20 chars, used as meta on Home), `styleClass?`                                                                                                                 | 1 (la-vida-moderna-es)                                                         |
-| `bias`     | `content/bias/{slug}/`                                                         | `biasName`, `biasQuestion`, `category[]` (velocidad/memoria/percepción/contexto/juicio), `relatedLinks?`                                                                                                                            | **0** — feature complete, no content yet                                       |
+| Collection     | Folder                        | Notes                                                                        |
+| -------------- | ----------------------------- | ---------------------------------------------------------------------------- |
+| `books`        | `content/books/{slug}/`       | reviews: cover, score 1-5, authors, category enum, quote, abstract           |
+| `projects`     | `content/projects/{slug}/`    | `projectUrl`, `why` (≤20 chars, meta on Home), optional `styleClass`         |
+| `notes`        | `content/notes/{slug}/`       | folder exists but holds **0 entries** — the build warns and `/notas` renders empty |
+| `biases`       | `content/biases/{slug}/`      | `category`: velocidad / memoria / percepción / contexto / juicio             |
+| `mentalModels` | `content/mental-models/{slug}/` | `category` from fs.blog's provisional list                                 |
+| `designLaws`   | `content/design-laws/{slug}/` | `category`: composición visual / interacción / percepción                    |
 
-`backlog: "wip"` vs `"upload"` controls, across all cards, whether the
-entry is clickable or shown as "not available yet" — it's the site's
-general "publish as draft" mechanism.
+`essays` is **defined but commented out** of the exports, kept for later. That is
+why `astro check` reports `'essayCollection' is declared but its value is never
+read` — expected, not a bug.
 
-Every collection with `publishDate`/`lastTimeEdited` validates the
-`DD/MM/YYYY` format with `isValidDateFormat` (`src/utils/validating-date.ts`).
+**The three behavior collections share `behaviorContentBaseSchema`** (title,
+englishTitle, question, contentCount, cover, dates, keywords, sources). Only
+`category` is per collection, since each has its own enum.
 
-⚠️ In `library`, the optional `.transform` of `lastTimeEdited` receives `ctx`
-as if it were the value of `publishDate` — smells like a copy-paste bug from
-the `.refine` in `bias` (which does use `ctx` correctly). It doesn't affect
-anything today because the field is optional and the 4 current entries don't
-force that path, but review it before relying on that transform.
+`contentCount` must be unique **within its own collection** — the number feeds
+the card code shown on each card (`DSG-001`), and `get-behavior-entries.ts`
+throws at build time naming the two colliding entries. The three collections
+number independently: biases 1..n, mental models 1..n, design laws 1..n.
 
-**Markdown/MDX pipeline** (`astro.config.mjs`): `remark-math` +
-`rehype-katex` — you can write LaTeX in any `.mdx` and it renders as a
-formula (KaTeX CSS loaded from a CDN in `BaseHead`). Every external link
-in the content is automatically rewritten to
-`target="_blank" rel="noopener noreferrer"` via `rehype-external-links`
-— the `ui/content/Link.astro` component is only for the visual style,
-it isn't needed for the security behavior.
+`backlog: "wip" | "upload"` is the site-wide draft switch: it decides whether a
+card is clickable or shown as not available yet.
 
-## 6. `src/components/common/` (cross-cutting, not tied to a feature)
+Dates are `DD/MM/YYYY`, validated by `src/utils/validating-date.ts`. A post
+cannot be edited before it was published — enforced with `.refine()` after the
+object, since it needs two fields at once.
+
+**Markdown/MDX pipeline** (`astro.config.mjs`): `remark-math` + `rehype-katex`
+(LaTeX via `$$`), and `rehype-external-links`, which rewrites every external link
+to `target="_blank" rel="noopener noreferrer"` — the `ui/content/Link.astro`
+component is only for the visual style, the security behavior is automatic.
+
+## 6. `src/components/common/` (cross-cutting)
 
 ```
 common/
-├── analytics/   Google (GA4, GTM head/body), Ahrefs, Overtracking
-│                → all load is:inline via Partytown, they don't block the main thread
-├── layout/      Header (only Logo + ToggleTheme), Footer
-│                headerMenus/ (NavbarDesktopMenu, NavbarMobileMenu, NavLinks)
-│                ⚠️ headerMenus/* is dead code: Header.astro doesn't import them
-├── navigation/  BottomBar.tsx (React, client:only) — scroll-to-top + "go up one level"
-├── seo/         BaseHead (shared head, theme script, favicons, analytics),
-│                PagesSEO (listings), ContentSEO (individual content),
-│                Favicons, 404/Error404SEO
+├── analytics/   Google (GA4, GTM), Ahrefs, Overtracking — all via Partytown
+├── layout/      Header (Logo + ToggleTheme), Footer
+├── navigation/  BottomBar.tsx (React) — scroll-to-top + go up one level
+├── seo/         BaseHead, PagesSEO (listings), ContentSEO (entries), Favicons
 └── ui/
-    ├── buttons/   GoBackInTop, SummarizeLLMs (opens ChatGPT/Claude/Grok/Perplexity
-    │              with a prefilled prompt to summarize the page)
-    ├── content/   ImgAndCap, Link (external), OwnThoughts (callout for MDX),
-    │              QuoteCard, SummarizeSection (groups 4 SummarizeLLMs)
-    ├── darkmode/  ToggleTheme (toggles data-theme + localStorage + startViewTransition)
-    ├── icons/     Logo, content icons (Bulb, UnclearThought),
-    │              ai/ (LLM logos), social/ (SocialBlock, SocialLink)
-    │              ⚠️ Moon/Sun/YingYang/GoOut.astro: unused, dead code
-    └── toc/       toc.tsx (React, floating table of contents with motion/react
-                   + IntersectionObserver), progressCircle.tsx (progress circle)
-                   ⚠️ old.TableOfContent.tsx: legacy version, unused — the 3 dynamic
-                   pages already use toc.tsx
+    ├── buttons/   GoBackInTop, SummarizeLLMs
+    ├── content/   ImgAndCap, Link, OwnThoughts, QuoteCard, SummarizeSection
+    ├── darkmode/  ToggleTheme — data-theme + localStorage + startViewTransition
+    ├── icons/     Logo, content icons, ai/ (LLM logos), social/
+    └── toc/       Toc.tsx + ProgressCircle.tsx (motion/react)
 ```
 
-**Implicit rule**: if a component needs client-side interactivity
-(scroll, state, animation), it's a `.tsx` React component with
-`client:only="react"` or similar; everything else is `.astro`.
+**A component needing client-side interactivity is `.tsx` with `client:only`;
+everything else is `.astro`.**
+
+**Icons with no importer are not dead code.** `YingYang`, `Bulb`, `GoOut`,
+`Moon`, `Sun`, `LensIcon` and `QuoteCard` are a library to drop into a post by
+hand. Zero imports is their normal state.
 
 ## 7. `src/global/` — site configuration
 
-- **`site-info.ts`** — `SITE_VERSION`, `SITE_DEFAULT_CONFIG` (title,
-  description, url, author, lang `es-ES`), `SITE_404_CONFIG`.
-- **`header-links.ts`** — `HEADER_LINKS[]` (ensayos/biblioteca/behavior).
-  ⚠️ uses Tailwind classes (`cz-neon-*`) that don't match the content CSS
-  vars (`--c-essay`, `--c-library`, `--c-behavior`) in `global.css` —
-  review if header navigation is picked up again.
-- **`pages-info.ts`** — `PAGE_INFO_SCHEMA` (Zod, validates title 50-60
-  chars and description 110-160 at build time) + `PAGES`, SEO metadata per
-  section with its fixed OG images.
-- **`socialmedia-links.ts`** — `SOCIAL_LINKS` (github, x, linkedin,
-  substack, goodreads).
+- **`site-info.ts`** — `SITE_VERSION`, `SITE_DEFAULT_CONFIG`, `SITE_404_CONFIG`
+- **`pages-info.ts`** — `PAGES`, per-section SEO metadata with its OG images,
+  validated at build time by a Zod schema (title ≤60, description 110-160)
+- **`socialmedia-links.ts`** — `SOCIAL_LINKS`
+- **`collection-keys.ts`** — `COLLECTION_KEYS`, guarded by
+  `satisfies Record<CollectionKey, CollectionKey>`, so commenting a collection
+  out of `content.config.ts` without updating this file fails the type-check
 
 ## 8. Routes (`src/pages/`)
 
-| Route                                                       | What it is                                                                                     |
-| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `/`                                                         | Home — hero + `ShowSortContent` (latest 4 items of each published collection)                  |
-| `/biblioteca`, `/biblioteca/[...id]`                        | listing and book detail page                                                                   |
-| `/proyectos`, `/proyectos/[...id]`                          | listing and project detail page                                                                |
-| `/behavior`, `/behavior/sesgos`, `/behavior/sesgos/[...id]` | listing and cognitive bias detail page                                                         |
-| `/contexto`                                                 | "about me", renders `paths/context/context.mdx` directly                                       |
-| `/ensayos`                                                  | static placeholder — `essay` feature inactive (§9)                                             |
-| `/404`                                                      | uses `Layout404Error` (no Header/Footer/BottomBar)                                             |
-| `/llms.txt`                                                 | plain text endpoint — describes the site for LLMs/AI crawlers                                  |
-| `/robots.txt`                                               | generates `Sitemap:` pointing to `sitemap-index.xml`                                           |
-| `/og/{biblioteca,proyectos,behavior/sesgos}/[...id].png`    | OG images generated at build time — see `og-images.md`                                         |
-| `/_og-playground`                                           | dev tool for tuning the OG images layout; the `_` prefix excludes it from the production build |
+| Route                                                    | What it is                                        |
+| -------------------------------------------------------- | ------------------------------------------------- |
+| `/`                                                      | Home — hero + latest items per collection         |
+| `/biblioteca`, `/biblioteca/[...id]`                     | books listing and detail                          |
+| `/proyectos`, `/proyectos/[...id]`                       | projects listing and detail                       |
+| `/behavior`                                              | hub for the three behavior sections               |
+| `/behavior/sesgos`, `/behavior/modelos-mentales`, `/behavior/diseño` | listing + detail each         |
+| `/behavior/fuentes`, `/behavior/fuentes/[...id]`         | sources drawer — see `paths/sources.md`           |
+| `/notas`, `/notas/[...id]`                               | timeline — collection empty today                 |
+| `/contexto`                                              | about me, renders `paths/context/components/context.mdx` |
+| `/ensayos`                                               | static placeholder — feature inactive             |
+| `/404`                                                   | uses `Layout404Error` (no Header/Footer)          |
+| `/llms.txt`, `/robots.txt`                               | text endpoints                                    |
+| `/og/**/[...id].png`                                     | OG images generated at build time                 |
+| `/_og-playground`                                        | dev tool; `_` keeps it out of the build           |
 
-The dynamic pages (`[...id].astro`) all follow the same pattern:
-`getStaticPaths()` over the collection → layout + TOC (`toc.tsx`) +
-the feature's `*SEO.content.astro` component.
+OG routes follow the Spanish route names: `og/biblioteca`, `og/proyectos`,
+`og/notas`, `og/behavior/sesgos`.
 
-## 9. Real status of each feature (important before touching code)
+## 9. Real status of each feature
 
-| Feature                  | Status                                                                                                                                                                                                                                                              |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `home`                   | complete and active                                                                                                                                                                                                                                                 |
-| `books` (biblioteca)     | complete and active, 4 entries                                                                                                                                                                                                                                      |
-| `projects`               | complete and active, 1 entry                                                                                                                                                                                                                                        |
-| `biases` (behavior/sesgos) | **code complete, no content**. If you're going to add a bias, the feature already supports everything (card, SEO, dynamic OG); all that's missing is creating the `.mdx` in `content/bias/`                                                                         |
-| `essays`                 | **ghost**: schema commented out in `content.config.ts`, no content folder, its 3 components (`EssayPage/Card/Header.astro`) are empty, `/ensayos` is a static placeholder. Before "fixing a bug" in essay, confirm whether the plan is to implement it from scratch |
-| `context`                | active, but via direct MDX (`context.mdx`), not via a content collection — `Context.astro` is empty and unused                                                                                                                                                      |
-| `404`                    | active                                                                                                                                                                                                                                                              |
-
-Empty files / files with no consumers detected (don't assume they do
-something if they show up in a `grep`): `PsychologyHeader.astro`,
-`BiasTLDR.astro`, `BookAuthor.astro`, `Context.astro`, the 3 in `essays/`,
-and `paths/projects/lib/projectsData.ts` (replaced by the `projects`
-content collection, with a typo `PROJETCS_DATA` if it's ever touched again).
+| Feature                     | Status                                                          |
+| --------------------------- | --------------------------------------------------------------- |
+| `home`, `books`, `projects` | complete and active                                             |
+| `behavior` + its 4 children | complete and active                                             |
+| `notes`                     | **code complete, no content**. Adding `.mdx` files is all it needs |
+| `context`                   | active, via direct MDX rather than a collection                 |
+| `essays`                    | **inactive**: collection commented out, `/ensayos` a placeholder, its 3 components empty |
+| `404`                       | active                                                          |
 
 ## 10. Design system
 
-Tokens in `src/styles/global.css` under `@theme` (Tailwind v4 reads them
-straight from there — **there's no `tailwind.config.js`**). Dark theme by
-default, toggled with `[data-theme="light"]` via an attribute on `<html>` +
-`localStorage`, with `document.startViewTransition` both for the toggle
-and for page-to-page navigation.
+Tokens in `src/styles/global.css`, on `:root` (dark, default — "burntpaper") and
+`[data-theme="light"]` ("recycledpaper"). The toggle swaps an attribute on
+`<html>` plus `localStorage`, wrapped in `document.startViewTransition`.
 
-- **Typography**: Tamago (pixel, `font-pixel`, headers) / Rubik (body)
-  / Cascadia (mono, code).
-- **Brand accent**: pink `#ff2f92` (dark) on dark backgrounds.
-- **Color per content type**: each collection has its own dark/light pair
-  (`--c-behavior`, `--c-essay`, `--c-library`, `--c-project`).
-- **Color per category**: cognitive biases and books each have their own
-  per-category color scale (see CLAUDE.md for the hex values).
-- Recurring visual motif: left/bottom border (`rounded-bl`) on list
-  items. WIP sections: box with a red border + 🚧 badge
-  (`border-error`).
+- **Typography**: Tamago (pixel, headers) / Rubik (body) / Cascadia (mono)
+- **Accent**: lime `#a2ce12`, secondary purple `#904fe7`
+- **Per content type**: `--c-behavior`, `--c-bias`, `--c-mental-model`,
+  `--c-source`, `--c-essay`, `--c-library`, `--c-project`, `--c-note`
+- **Per category**: bias categories and book categories have their own scales
+- Recurring motif: left/bottom border on list items. WIP: red-bordered box with a
+  🚧 badge (`--c-wip`)
 
-Don't hardcode new colors — always use the existing CSS vars.
+`html` font-size is `--t-body` (14px), so `1rem` = 14px. Never hardcode a color,
+size or spacing — the token exists.
 
-## 11. `src/utils/`
+## 11. Path aliases
 
-- `formatter.ts` — `Formatter.formatDate()` / `.formatDateToISO()` (Intl `es-ES`).
-- `process-keywords.ts` — normalizes and deduplicates keywords for SEO.
-- `validating-date.ts` — validates/converts the `DD/MM/YYYY` dates used in the frontmatter.
-There is no `src/interfaces/` folder: a type lives in the file that owns
-it (component props in the `.astro`/`.tsx` itself, data shapes next to
-the data in `src/global/`). Only once 2+ consumers share a type does it
-graduate to `src/lib/` — e.g. `PageKeywords` in `src/lib/keywords.ts`.
+One alias per path, always used — never a relative `../../` chain across folders,
+never a raw `src/paths/...`. There is deliberately **no generic `@/paths/*`**:
+creating a path means creating its alias, which keeps `tsconfig.json` an accurate
+map of the site.
 
-## 12. Key libraries to reuse (before adding a new one)
+```
+@biases-path/*        @mental-models-path/*  @design-laws-path/*
+@sources-path/*       @behavior-path/*       @projects-path/*
+@essays-path/*        @books-path/*          @notes-path/*
+@context-path/*       @home-path/*           @error-path/*
+```
 
-- **`motion`** (Framer Motion v12) — animations in React components
-  (`toc.tsx`, `progressCircle.tsx`).
-- **`es-toolkit`** — lodash-style utilities (throttle in `toc.tsx`).
-- **`@vercel/og` + `sharp`** — the whole OG images pipeline (§`og-images.md`).
-- **`@lucide/astro`** — icon set (in addition to the custom SVGs in `ui/icons/`).
-- **`@astrojs/partytown`** — all analytics load with `type="text/partytown"`,
-  any new tracking script should follow the same pattern.
+Cross-cutting: `@/*`, `@/lib/*`, `@/global/*`, `@/common/*`, `@/icons/*`,
+`@/seo/*`, `@/analytics/*`, `@layouts/*`, `@utils/*`, `@/assets/*`.
 
-There's no fetching/state library (no React Query, Zustand, etc.) —
-the site is 100% static, it isn't needed.
+**Always the most specific one.** `@/icons/Logo.astro`, not
+`@/common/ui/icons/Logo.astro`. A `@/components/...` or `@/paths/...` import
+means an alias was skipped, or that one is missing.
 
-## 13. Where to look depending on the task
+## 12. Types
 
-- **Add content** (book/project/bias) → create an `.mdx` in the folder of
-  the matching collection under `src/content/`; everything else (card,
-  SEO, OG image) already works on its own as long as the Zod schema is met.
-- **Touch SEO/meta tags** → `components/common/seo/` (shared) or
-  `paths/<name>/seo/` (specific to that path).
-- **Touch OG images** → `src/lib/og/` + `src/pages/og/` — see
-  `og-images.md` before changing anything, it has the reasoning behind
-  each decision.
-- **Touch the sources drawer** (`/behavior/fuentes`, the folders, the
-  viewer) → `src/paths/behavior/paths/sources/` (alias `@sources-path`) —
-  see [`paths/sources.md`](./paths/sources.md): it explains where the
-  data comes from (it lives in the frontmatter of each bias/model, not in
-  its own collection) and why the CSS is written the way it is.
-- **Touch header navigation** → the code exists (`headerMenus/`) but it's
-  disconnected; confirm with the user whether the goal is to reactivate it
-  or whether `Header.astro` (only Logo+Toggle) is intentional before
-  assuming it's a bug.
-- **Touch theming/colors** → `src/styles/global.css`, the `@theme` section
-  and `[data-theme="light"]`.
+There is no `src/interfaces/` folder and no `*.interface.ts` file. A type lives
+in the file that owns it: component props as `interface Props` inside the
+`.astro`/`.tsx` (never `Astro.props as X` — that silences errors), data shapes
+next to the data they describe. Only a type with 2+ consumers graduates to
+`src/lib/`, like `PageKeywords` in `src/lib/keywords.ts`. Don't suffix names with
+`Interface`.
+
+## 13. File naming
+
+- `lib/`, `seo/`, CSS Modules → `kebab-case`
+- Components (`.astro`, `.tsx`) → `PascalCase`
+- A CSS Module is named after its component: `go-back-in-top.module.css`, not
+  `gbit.module.css`. No abbreviations.
+
+## 14. Libraries to reuse before adding a new one
+
+- **`motion`** — animations in React components
+- **`es-toolkit`** — lodash-style utilities (throttle in `Toc.tsx`)
+- **`@vercel/og` + `sharp`** — the whole OG images pipeline
+- **`@lucide/astro`** — icon set, alongside the custom SVGs in `ui/icons/`
+- **`@astrojs/partytown`** — every analytics script loads through it
+
+There is no fetching or state library: the site is 100% static.
+
+## 15. Where to look
+
+- **Add content** → an `.mdx` in the matching `src/content/` folder. Card, SEO and
+  OG image work on their own once the Zod schema is met.
+- **Change how a behavior post looks** → `behavior/components/post/`, once for
+  all three sections.
+- **SEO/meta** → `components/common/seo/` (shared) or `paths/<name>/seo/`.
+- **OG images** → `src/lib/og/` + `src/pages/og/`, and read `og-images.md` first.
+- **The sources drawer** → `paths/behavior/paths/sources/`, and `paths/sources.md`.
+- **Theming/colors** → `src/styles/global.css`.
