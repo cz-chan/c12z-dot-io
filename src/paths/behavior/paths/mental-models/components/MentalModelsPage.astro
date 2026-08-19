@@ -1,15 +1,13 @@
 ---
 import styles from "./mental-models.module.css";
-import { getCollection } from "astro:content";
 
-import { parseDate } from "@utils/validating-date.ts";
+import { getBehaviorEntries } from "@behavior-path/data/card/getBehaviorEntries.ts";
+
 import MentalModelsHeader from "./MentalModelsHeader.astro";
+import BehaviorGrid from "@behavior-path/components/card/BehaviorGrid.astro";
+import { COLLECTION_KEYS } from "@/global/collection-keys.ts";
 
-const models = (await getCollection("mentalModels")).sort(
-	(a, b) =>
-		parseDate(b.data.publishDate).getTime() -
-		parseDate(a.data.publishDate).getTime(),
-);
+const models = await getBehaviorEntries("mentalModels");
 ---
 
 <section class={styles.modelsPage}>
@@ -17,46 +15,10 @@ const models = (await getCollection("mentalModels")).sort(
 
 	{
 		models.length > 0 ? (
-			<ol class={styles.index}>
-				{models.map((model, i) => {
-					const { title, question, publishDate, backlog } = model.data;
-					return (
-						<li class={styles.row}>
-							{backlog === "wip" ? (
-								<div class={styles.rowInner}>
-									<span class={styles.rowIndex}>
-										{String(i + 1).padStart(2, "0")}
-									</span>
-									<div class={styles.rowMain}>
-										<h2 class={styles.modelName}>{title}</h2>
-										<p class={styles.modelQuestion}>{question}</p>
-									</div>
-									<span class={styles.wipMark}>¡Estoy estudiándolo!</span>
-								</div>
-							) : (
-								<a
-									class={styles.rowInner}
-									href={`/behavior/modelos-mentales/${model.id}`}
-								>
-									<span class={styles.rowIndex}>
-										{String(i + 1).padStart(2, "0")}
-									</span>
-									<div class={styles.rowMain}>
-										<h2
-											class={styles.modelName}
-											transition:name={`${model.id}-name`}
-										>
-											{title}
-										</h2>
-										<p class={styles.modelQuestion}>{question}</p>
-									</div>
-									<span class={styles.rowMeta}>{publishDate}</span>
-								</a>
-							)}
-						</li>
-					);
-				})}
-			</ol>
+			<BehaviorGrid
+				entries={models}
+				section={COLLECTION_KEYS.mentalModels}
+			/>
 		) : (
 			<p class={styles.empty}>
 				Todavía no hay ningún modelo mental publicado. Pronto habrá contenido.
