@@ -1,6 +1,6 @@
-import { SECTION_LISTS } from "./sectionLists";
+import { SECTION_LISTS } from "./section-lists";
 import { getCollection } from "astro:content";
-import type { SectionItem } from "./sectionLists.interface";
+import type { SectionItem } from "./section-lists";
 
 const parseDate = (theDate: string) =>
 	new Date(theDate.split("/").reverse().join("-")).getTime();

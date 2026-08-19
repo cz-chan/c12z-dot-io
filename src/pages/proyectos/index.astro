@@ -6,7 +6,7 @@ import { PAGES } from "@/global/pages-info.ts";
 import ProjectPage from "@projects-path/components/ProjectPage.astro";
 import PagesSEO from "@/seo/PagesSEO.astro";
 
-import { projectPageKeywords } from "@projects-path/seo/projectPage.keywords";
+import { projectsKeywords } from "@projects-path/seo/projects.keywords";
 ---
 
 <MainLayout>
@@ -16,7 +16,7 @@ import { projectPageKeywords } from "@projects-path/seo/projectPage.keywords";
 		pageDescription={PAGES.projects.description}
 		ogImage={PAGES.projects.ogImage}
 		ogImageAlt={PAGES.projects.ogImageAlt}
-		pageKeywords={projectPageKeywords}
+		pageKeywords={projectsKeywords}
 	/>
 	<ProjectPage />
 </MainLayout>

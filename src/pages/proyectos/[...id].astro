@@ -4,13 +4,13 @@ import { SquareArrowOutUpRight } from "@lucide/astro";
 
 import MainLayout from "@layouts/MainLayout.astro";
 import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
-import TOC from "@/common/ui/toc/toc";
+import TOC from "@/common/ui/toc/Toc";
 import ProjectsSEO from "@projects-path/seo/ProjectsSEO.content.astro";
 
 import ProjectCover from "@projects-path/components/ProjectCover.astro";
 
 import styles from "@projects-path/components/project.module.css";
-import "@projects-path/components/projectStyles/theProjectStyles.css";
+import "@projects-path/components/project-classes.css";
 
 interface Props {
 	entry: CollectionEntry<"projects">;

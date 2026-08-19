@@ -1,6 +1,6 @@
 import type { PageKeywords } from "@/lib/keywords";
 
-export const projectPageKeywords: PageKeywords = {
+export const projectsKeywords: PageKeywords = {
   keywords: [
     "projects",
     "proyectos de chema ferrandez",

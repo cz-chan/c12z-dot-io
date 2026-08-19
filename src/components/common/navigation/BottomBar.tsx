@@ -1,4 +1,4 @@
-import styles from "./bb.module.css";
+import styles from "./bottom-bar.module.css";
 import { useState, useEffect } from "react";
 
 const BottomBar = () => {

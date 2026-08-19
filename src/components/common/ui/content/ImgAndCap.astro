@@ -1,5 +1,5 @@
 ---
-import styles from "./inc.module.css";
+import styles from "./img-and-cap.module.css";
 import { Image } from "astro:assets";
 
 // Define props interface (inline for simplicity; consider moving to a separate .ts file for reusability)
@@ -9,7 +9,7 @@ interface Props {
 	caption: string;
 }
 
-const { src, alt, caption } = Astro.props as Props;
+const { src, alt, caption } = Astro.props;
 ---
 
 <div class={styles.inc}>

@@ -5,15 +5,24 @@
 import styles from "./toc.module.css";
 import { useEffect, useRef, useState } from "react";
 
-import type { DynamicTocProps } from "@/common/ui/toc/toc.interface";
-
 import { throttle } from "es-toolkit";
 
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 
-import ProgressCircle from "./progressCircle";
+import ProgressCircle from "./ProgressCircle";
 
-export default function TOC({ title, headings }: DynamicTocProps) {
+interface Headings {
+	slug: string;
+	text: string;
+	depth: number;
+}
+
+interface Props {
+	title: string;
+	headings: Headings[];
+}
+
+export default function TOC({ title, headings }: Props) {
 	const isHidden = useIsHidden();
 	const { rootRef, expanded, setExpanded } = useExpanded();
 	const { progress } = useArticleScrollProgress();

@@ -3,13 +3,20 @@
  */
 import styles from "./toc.module.css";
 
-import type { ProgressCircleProps } from "./toc.interface";
 import { motion } from "motion/react";
+
+import type { MotionValue } from "motion/react";
+
+interface Props {
+	progress: MotionValue<number>;
+	strokeWidth?: number;
+	className?: string;
+}
 
 export default function ProgressCircle({
 	progress,
 	strokeWidth = 4,
-}: ProgressCircleProps) {
+}: Props) {
 	return (
 		<span className={styles.circle}>
 			<svg
