@@ -1,0 +1,87 @@
+---
+import styles from "@designs-path/components/design.module.css";
+
+import { getCollection, render, type CollectionEntry } from "astro:content";
+
+import MainLayout from "@layouts/MainLayout.astro";
+
+import DesignSEO from "@designs-path/seo/DesignSEO.content.astro";
+import PostSources from "@sources-path/components/PostSources.astro";
+
+import GoBackInTop from "@/components/common/ui/buttons/GoBackInTop.astro";
+import WipNotice from "@behavior-path/components/wip/WipNotice.astro";
+import TOC from "@/components/common/ui/toc/toc.tsx";
+
+interface Props {
+	entry: CollectionEntry<"designLaws">;
+}
+
+export async function getStaticPaths() {
+	const designLaws = await getCollection("designLaws");
+
+	return designLaws.map((entry) => ({
+		params: { id: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { data, id } = entry;
+const { title, publishDate, lastTimeEdited, question, backlog } = data;
+
+const isWip = backlog === "wip";
+
+const { Content, headings } = await render(entry);
+---
+
+<MainLayout>
+	<DesignSEO
+		slot="head"
+		entry={entry}
+	/>
+	<section class={styles.designLaw}>
+		<TOC
+			client:only="react"
+			headings={headings}
+			title={title}
+		/>
+		<GoBackInTop
+			headPage="/behavior/diseño"
+			title="ir a la página de leyes de diseño"
+		/>
+
+		<article class={styles.intro}>
+			<section class={styles.textAlign}>
+				<h1
+					transition:name={`${id}-name`}
+					class={styles.designTitle}
+				>
+					{title}
+				</h1>
+				<h2 class={styles.designSubtitle}>{question}</h2>
+				<section class={styles.publish}>
+					{
+						lastTimeEdited && lastTimeEdited !== publishDate ? (
+							<>
+								<span class={styles.text}>Publicado: {publishDate}</span>
+								<span class={styles.text}>Editado: {lastTimeEdited}</span>
+							</>
+						) : (
+							<span class={styles.text}>Publicado: {publishDate}</span>
+						)
+					}
+				</section>
+			</section>
+			{
+				isWip ? (
+					<WipNotice />
+				) : (
+					<section class="lettering">
+						<Content />
+					</section>
+				)
+			}
+			<PostSources sources={data.sources} />
+		</article>
+	</section>
+</MainLayout>
