@@ -1,88 +1,30 @@
 ---
-/**
- * Neceito porner el prerender porque aun no ha salido ASTRO 5 por ende, en las páginas dinámicas necesitas esto
- */
-// export const prerender = true;
-
-import styles from "@biases-path/components/bias.module.css"
-
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
-
 import BiasSEO from "@biases-path/seo/BiasSEO.content.astro";
-
-import BiasCategory from "@biases-path/components/BiasCategory.astro";
-
-import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
-import WipNotice from "@behavior-path/components/wip/WipNotice.astro";
-import PostSources from "@sources-path/components/PostSources.astro";
-import TOC from "@/common/ui/toc/Toc.tsx";
-
+import BiasDetail from "@biases-path/components/BiasDetail.astro";
 
 interface Props {
-  entry: CollectionEntry<"biases">;
+	entry: CollectionEntry<"biases">;
 }
 
 export async function getStaticPaths() {
-  const biases = await getCollection("biases");
+	const biases = await getCollection("biases");
 
-  return biases.map((entry) => ({
-    params: { id: entry.id },
-    props: { entry },
-  }));
+	return biases.map((entry) => ({
+		params: { id: entry.id },
+		props: { entry },
+	}));
 }
 
 const { entry } = Astro.props;
-const { data, id } = entry;
-const { title, publishDate, lastTimeEdited, question, category, backlog } =
-  data;
-
-const isWip = backlog === "wip";
-
-const { Content, headings } = await render(entry);
-
 ---
 
 <MainLayout>
-  <BiasSEO slot="head" entry={entry} />
-  <section class={styles.bias}>
-    <TOC client:only="react" headings={headings} title={title}/>
-    <GoBackInTop headPage="/behavior/sesgos" title="ir a la página de behavior" />
-
-    <article class={styles.intro}>
-      <section class={styles.textAlign}>
-        <h1 transition:name=`${id}-name` class={styles.biasName}>
-          {title}
-        </h1>
-        <h2 class={styles.biasQuestion}>{question}</h2>
-        <section class={styles.categoriesSect}>
-          <p>Categoría del sesgo:</p>
-          <BiasCategory category={category} />
-        </section>
-        <section class={styles.publish}>
-          {
-            lastTimeEdited && lastTimeEdited !== publishDate
-              ? (
-                <span class={styles.text}>Publicado: {publishDate}</span>
-                <span class={styles.text}>Editado: {lastTimeEdited}</span>
-              )
-              : (
-                <span class={styles.text}>Publicado: {publishDate}</span>
-              )
-          }
-        </section>
-      </section>
-        {
-          isWip ? (
-            <WipNotice />
-          ) : (
-            <section class="lettering">
-              <Content />
-            </section>
-          )
-        }
-        <PostSources sources={data.sources} />
-    </article>
-  </section>
+	<BiasSEO
+		slot="head"
+		entry={entry}
+	/>
+	<BiasDetail entry={entry} />
 </MainLayout>

@@ -1,0 +1,65 @@
+/*
+ * Ficha de un post de behavior: sesgo, modelo mental o ley de diseño.
+ * Los tres son el mismo tipo de contenido, así que comparten un único
+ * layout (BehaviorPostLayout.astro) y estos estilos. Antes vivían
+ * triplicados en bias/, mental-models/ y design-laws/.
+ */
+
+.post {
+	display: grid;
+	margin-inline: auto;
+	max-width: var(--screen-md);
+}
+
+.intro {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-6);
+}
+
+.textAlign {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-3);
+	margin-bottom: var(--sp-4);
+}
+
+.postTitle {
+	font-family: var(--ff-pixel);
+	font-size: clamp(1.75rem, 4vw, 2.5rem);
+	line-height: var(--lh-h1);
+	letter-spacing: var(--tracking-widest);
+}
+
+.postQuestion {
+	font-family: var(--ff-rubik);
+	font-weight: 300;
+	font-size: var(--t-h3);
+	line-height: var(--lh-h3);
+	color: var(--fg-2);
+}
+
+/* Ranura opcional: hoy solo la usan los sesgos, para su píldora de categoría. */
+.meta {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	column-gap: var(--sp-2);
+	row-gap: var(--sp-1);
+
+	& p {
+		margin-bottom: 0;
+	}
+}
+
+.publish {
+	display: flex;
+	gap: var(--sp-4);
+
+	& .text {
+		font-family: var(--ff-mono);
+		font-size: var(--t-micro);
+		line-height: var(--lh-micro);
+		color: var(--fg-3);
+	}
+}

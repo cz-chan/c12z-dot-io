@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import BehaviorPostLayout from "@behavior-path/components/post/BehaviorPostLayout.astro";
+
+interface Props {
+	entry: CollectionEntry<"designLaws">;
+}
+
+const { entry } = Astro.props;
+---
+
+<BehaviorPostLayout
+	entry={entry}
+	backHref="/behavior/diseño"
+	backTitle="ir a la página de leyes de diseño"
+/>

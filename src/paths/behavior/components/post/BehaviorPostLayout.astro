@@ -1,0 +1,91 @@
+---
+/**
+ * Ficha de un post de behavior. Sesgos, modelos mentales y leyes de diseño
+ * son el mismo tipo de contenido — mismo frontmatter base, misma estructura —
+ * así que se pintan desde aquí. Antes esto vivía triplicado en las tres
+ * páginas `[...id].astro`, y cambiar el bloque de fechas eran tres ediciones.
+ *
+ * Lo único que varía entre secciones es a dónde apunta el "← Atrás" y si hay
+ * algo extra bajo el título: los sesgos meten ahí su píldora de categoría a
+ * través del slot `meta`, que los otros dos dejan vacío.
+ */
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+
+import styles from "./behavior-post.module.css";
+
+import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
+import WipNotice from "@behavior-path/components/wip/WipNotice.astro";
+import PostSources from "@sources-path/components/PostSources.astro";
+import TOC from "@/common/ui/toc/Toc.tsx";
+
+type BehaviorPost =
+	| CollectionEntry<"biases">
+	| CollectionEntry<"mentalModels">
+	| CollectionEntry<"designLaws">;
+
+interface Props {
+	entry: BehaviorPost;
+	/** Listado al que vuelve el "← Atrás", p. ej. `/behavior/sesgos`. */
+	backHref: string;
+	backTitle: string;
+}
+
+const { entry, backHref, backTitle } = Astro.props;
+const { data, id } = entry;
+const { title, question, publishDate, lastTimeEdited, backlog } = data;
+
+const isWip = backlog === "wip";
+const wasEdited = lastTimeEdited && lastTimeEdited !== publishDate;
+
+const { Content, headings } = await render(entry);
+---
+
+<section class={styles.post}>
+	<TOC
+		client:only="react"
+		headings={headings}
+		title={title}
+	/>
+	<GoBackInTop
+		headPage={backHref}
+		title={backTitle}
+	/>
+
+	<article class={styles.intro}>
+		<section class={styles.textAlign}>
+			<h1
+				transition:name={`${id}-name`}
+				class={styles.postTitle}
+			>
+				{title}
+			</h1>
+			<h2 class={styles.postQuestion}>{question}</h2>
+
+			{
+				Astro.slots.has("meta") && (
+					<section class={styles.meta}>
+						<slot name="meta" />
+					</section>
+				)
+			}
+
+			<section class={styles.publish}>
+				<span class={styles.text}>Publicado: {publishDate}</span>
+				{wasEdited && <span class={styles.text}>Editado: {lastTimeEdited}</span>}
+			</section>
+		</section>
+
+		{
+			isWip ? (
+				<WipNotice />
+			) : (
+				<section class="lettering">
+					<Content />
+				</section>
+			)
+		}
+
+		<PostSources sources={data.sources} />
+	</article>
+</section>

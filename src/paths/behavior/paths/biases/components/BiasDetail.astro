@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import BehaviorPostLayout from "@behavior-path/components/post/BehaviorPostLayout.astro";
+import BiasCategory from "./BiasCategory.astro";
+
+interface Props {
+	entry: CollectionEntry<"biases">;
+}
+
+const { entry } = Astro.props;
+---
+
+<BehaviorPostLayout
+	entry={entry}
+	backHref="/behavior/sesgos"
+	backTitle="ir a la página de sesgos"
+>
+	<Fragment slot="meta">
+		<p>Categoría del sesgo:</p>
+		<BiasCategory category={entry.data.category} />
+	</Fragment>
+</BehaviorPostLayout>

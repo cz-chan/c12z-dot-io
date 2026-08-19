@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import BehaviorPostLayout from "@behavior-path/components/post/BehaviorPostLayout.astro";
+
+interface Props {
+	entry: CollectionEntry<"mentalModels">;
+}
+
+const { entry } = Astro.props;
+---
+
+<BehaviorPostLayout
+	entry={entry}
+	backHref="/behavior/modelos-mentales"
+	backTitle="ir a la página de modelos mentales"
+/>

@@ -1,16 +1,9 @@
 ---
-import styles from "@design-laws-path/components/design-laws.module.css";
-
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
-
 import DesignLawsSEO from "@design-laws-path/seo/DesignLawsSEO.content.astro";
-import PostSources from "@sources-path/components/PostSources.astro";
-
-import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
-import WipNotice from "@behavior-path/components/wip/WipNotice.astro";
-import TOC from "@/common/ui/toc/Toc.tsx";
+import DesignLawDetail from "@design-laws-path/components/DesignLawDetail.astro";
 
 interface Props {
 	entry: CollectionEntry<"designLaws">;
@@ -26,12 +19,6 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { data, id } = entry;
-const { title, publishDate, lastTimeEdited, question, backlog } = data;
-
-const isWip = backlog === "wip";
-
-const { Content, headings } = await render(entry);
 ---
 
 <MainLayout>
@@ -39,49 +26,5 @@ const { Content, headings } = await render(entry);
 		slot="head"
 		entry={entry}
 	/>
-	<section class={styles.designLaw}>
-		<TOC
-			client:only="react"
-			headings={headings}
-			title={title}
-		/>
-		<GoBackInTop
-			headPage="/behavior/diseño"
-			title="ir a la página de leyes de diseño"
-		/>
-
-		<article class={styles.intro}>
-			<section class={styles.textAlign}>
-				<h1
-					transition:name={`${id}-name`}
-					class={styles.designTitle}
-				>
-					{title}
-				</h1>
-				<h2 class={styles.designSubtitle}>{question}</h2>
-				<section class={styles.publish}>
-					{
-						lastTimeEdited && lastTimeEdited !== publishDate ? (
-							<>
-								<span class={styles.text}>Publicado: {publishDate}</span>
-								<span class={styles.text}>Editado: {lastTimeEdited}</span>
-							</>
-						) : (
-							<span class={styles.text}>Publicado: {publishDate}</span>
-						)
-					}
-				</section>
-			</section>
-			{
-				isWip ? (
-					<WipNotice />
-				) : (
-					<section class="lettering">
-						<Content />
-					</section>
-				)
-			}
-			<PostSources sources={data.sources} />
-		</article>
-	</section>
+	<DesignLawDetail entry={entry} />
 </MainLayout>
