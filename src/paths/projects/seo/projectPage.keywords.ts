@@ -1,4 +1,4 @@
-import type { PageKeywords } from "@interfaces/keywords.interface";
+import type { PageKeywords } from "@/lib/keywords";
 
 export const projectPageKeywords: PageKeywords = {
   keywords: [

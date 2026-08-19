@@ -1,3 +1,3 @@
 export interface PageKeywords {
-  keywords: string[];
+	keywords: string[];
 }

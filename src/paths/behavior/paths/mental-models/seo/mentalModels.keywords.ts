@@ -1,4 +1,4 @@
-import type { PageKeywords } from "@interfaces/keywords.interface.ts";
+import type { PageKeywords } from "@/lib/keywords";
 
 export const mentalModelsKeywords: PageKeywords = {
 	keywords: [

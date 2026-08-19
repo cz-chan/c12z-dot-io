@@ -41,6 +41,8 @@ Each path holds:
 
 Something lives in the path that uses it. Once **2+ paths** need it, it graduates to `src/components/common/`, `src/global/`, or `src/lib/` — not before.
 
+**Types follow the same rule — there is no `src/interfaces/` folder.** A type lives in the file that owns it: component props as `interface Props` inside the `.astro`/`.tsx` itself (never `Astro.props as X` — that silences errors), data shapes next to the data they describe. Only a type with 2+ consumers graduates to `src/lib/` (e.g. `PageKeywords` in `src/lib/keywords.ts`). Don't suffix names with `Interface`.
+
 **Nested paths** — a path that owns child routes puts them in its own `paths/` folder, recursively. Today only `behavior` has them:
 
 ```
@@ -99,7 +101,6 @@ Cross-cutting aliases:
 @/analytics/* → src/components/common/analytics/*
 @layouts/*    → src/layouts/*
 @utils/*      → src/utils/*
-@interfaces/* → src/interfaces/*
 @/assets/*    → src/assets/*
 ```
 

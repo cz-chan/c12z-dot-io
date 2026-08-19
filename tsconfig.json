@@ -28,7 +28,6 @@
 			"@/analytics/*": ["./src/components/common/analytics/*"],
 			"@layouts/*": ["./src/layouts/*"],
 			"@utils/*": ["./src/utils/*"],
-			"@interfaces/*": ["./src/interfaces/*"],
 			"@/assets/*": ["./src/assets/*"]
 		},
 		"jsx": "react-jsx",

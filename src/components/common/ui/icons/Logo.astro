@@ -1,12 +1,16 @@
 ---
 import styles from "./icons.module.css"
-import type { CustomLogo } from "@interfaces/customLogo.interface";
+interface Props {
+  width?: string;
+  height?: string;
+  shouldGo: string;
+}
 
 const {
   width = "1rem",
   height = "1rem",
   shouldGo = "/",
-} = Astro.props as CustomLogo;
+} = Astro.props;
 
 const isRem = (value: string) => /^\d+(\.\d+)?rem$/.test(value);
 

@@ -1,4 +1,4 @@
-import type { PageKeywords } from "@interfaces/keywords.interface";
+import type { PageKeywords } from "@/lib/keywords";
 
 /**
  * Keywords for /behavior/fuentes (the drawer index only). The per-topic

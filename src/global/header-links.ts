@@ -1,6 +1,10 @@
-import type { HeaderLinksInterface } from "@interfaces/headerLinks.interface";
+export interface HeaderLink {
+  href: string;
+  text: string;
+  customClasses: string;
+}
 
-export const HEADER_LINKS: HeaderLinksInterface[] = [
+export const HEADER_LINKS: HeaderLink[] = [
   {
     href: "/ensayos",
     text: "/ensayos",

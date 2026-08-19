@@ -34,8 +34,14 @@ Each path holds:
 
 - `components/` — Astro/React components specific to that path
 - `seo/` — keywords and metadata for that path
-- `data/` or `rules/` — business logic or static data
+- `lib/` — everything that isn't UI: static data, derivations/queries, and the types they share. One folder, not two — what changes together lives together.
+- `icons/` — icons used only by this path
+- `scripts/` — client-side JS loaded by the path's components (only where there is any)
 - `styles/` — CSS Modules scoped to the path (some paths keep the module next to the component instead)
+
+Something lives in the path that uses it. Once **2+ paths** need it, it graduates to `src/components/common/`, `src/global/`, or `src/lib/` — not before.
+
+**Types follow the same rule — there is no `src/interfaces/` folder.** A type lives in the file that owns it: component props as `interface Props` inside the `.astro`/`.tsx` itself (never `Astro.props as X` — that silences errors), data shapes next to the data they describe. Only a type with 2+ consumers graduates to `src/lib/` (e.g. `PageKeywords` in `src/lib/keywords.ts`). Don't suffix names with `Interface`.
 
 **Nested paths** — a path that owns child routes puts them in its own `paths/` folder, recursively. Today only `behavior` has them:
 
@@ -43,7 +49,7 @@ Each path holds:
 src/paths/behavior/
 ├── components/   ← behavior's own
 ├── seo/
-├── data/
+├── lib/
 └── paths/        ← child paths
     ├── biases/         → /behavior/sesgos
     ├── mental-models/  → /behavior/modelos-mentales
@@ -55,7 +61,7 @@ Folder names are plural when the path is a collection of items (`biases`, `essay
 
 **Content Collections** — `src/content/` holds markdown/MDX validated by Zod schemas in `src/content.config.ts`. Registered collections: `bias`, `library` (book reviews), `projects`, `notes`, `mentalModels`, `designLaws`. An `essay` collection is defined but commented out of the exports.
 
-**Sources are frontmatter, not a collection** — posts embed a `sources` array (`sourceSchema`: title, type enum, author, url…) in their own frontmatter. Adding a source type takes TWO steps: the `z.enum` in `content.config.ts` AND `TYPE_LABELS` in `behavior/paths/sources/data/source-types.ts` (build fails if you forget the second — intended). See `.docs/paths/sources.md`.
+**Sources are frontmatter, not a collection** — posts embed a `sources` array (`sourceSchema`: title, type enum, author, url…) in their own frontmatter. Adding a source type takes TWO steps: the `z.enum` in `content.config.ts` AND `TYPE_LABELS` in `behavior/paths/sources/lib/source-types.ts` (build fails if you forget the second — intended). See `.docs/paths/sources.md`.
 
 **Shared globals** — `src/global/`: `site-info.ts`, `header-links.ts`, `pages-info.ts`, `socialmedia-links.ts`.
 
@@ -95,7 +101,6 @@ Cross-cutting aliases:
 @/analytics/* → src/components/common/analytics/*
 @layouts/*    → src/layouts/*
 @utils/*      → src/utils/*
-@interfaces/* → src/interfaces/*
 @/assets/*    → src/assets/*
 ```
 

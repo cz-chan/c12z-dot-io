@@ -36,7 +36,7 @@ shape (not every path has all 4 folders):
 paths/<name>/
 ├── components/   Astro/React components for that path
 ├── seo/          keywords + SEO component specific to that content
-├── data/ | rules/  business logic, static data, interfaces
+├── data/ | rules/  business logic, static data, their types
 └── styles/         CSS Modules if it needs its own styling
 ```
 
@@ -66,7 +66,7 @@ src/paths/behavior/
 
 Everything **cross-cutting** (not belonging to a single domain) lives
 outside `paths/`: layouts, common UI/SEO/analytics components, global
-site config, utils, shared interfaces.
+site config and utils.
 
 ## 3. `src/` tree
 
@@ -78,9 +78,8 @@ src/
 ├── content.config.ts   Zod schemas for the collections — see §5
 ├── paths/             one folder per route domain — see §2 and §9
 ├── global/               site config — see §7
-├── interfaces/            TS types shared across paths
 ├── layouts/                MainLayout.astro, Layout404Error.astro
-├── lib/og/                  OG image generation engine — see og-images.md
+├── lib/                     cross-cutting non-UI code (`keywords.ts`, `og/` — see og-images.md)
 ├── pages/                    routes — see §8
 ├── styles/                    global.css (design tokens), typo.css, lettering.css
 └── utils/                      formatter, process-keywords, validating-date
@@ -120,7 +119,6 @@ Cross-cutting aliases:
 @/analytics/* → src/components/common/analytics/*
 @layouts/*    → src/layouts/*
 @utils/*      → src/utils/*
-@interfaces/* → src/interfaces/*
 @/assets/*    → src/assets/*
 ```
 
@@ -265,14 +263,15 @@ and for page-to-page navigation.
 
 Don't hardcode new colors — always use the existing CSS vars.
 
-## 11. `src/utils/` and `src/interfaces/`
+## 11. `src/utils/`
 
 - `formatter.ts` — `Formatter.formatDate()` / `.formatDateToISO()` (Intl `es-ES`).
 - `process-keywords.ts` — normalizes and deduplicates keywords for SEO.
 - `validating-date.ts` — validates/converts the `DD/MM/YYYY` dates used in the frontmatter.
-- `interfaces/` — types shared across paths (`PageKeywords`,
-  `SocialLinksInterface`, `SiteDefaultConfigInterface`, etc.); if a type
-  is used from 2+ paths, it goes here instead of being duplicated.
+There is no `src/interfaces/` folder: a type lives in the file that owns
+it (component props in the `.astro`/`.tsx` itself, data shapes next to
+the data in `src/global/`). Only once 2+ consumers share a type does it
+graduate to `src/lib/` — e.g. `PageKeywords` in `src/lib/keywords.ts`.
 
 ## 12. Key libraries to reuse (before adding a new one)
 

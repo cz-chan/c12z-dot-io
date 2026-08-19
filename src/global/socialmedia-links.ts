@@ -1,6 +1,13 @@
-import type { SocialLinksInterface } from "@/interfaces/socialMediaLinks.interfaces";
+export interface SocialLink {
+	name: string;
+	url: string;
+	userName: string;
+	title: string;
+}
 
-export const SOCIAL_LINKS: SocialLinksInterface = {
+export type SocialLinks = Record<string, SocialLink>;
+
+export const SOCIAL_LINKS: SocialLinks = {
 	github: {
 		name: "Github",
 		url: "https://github.com/cz-chan",
