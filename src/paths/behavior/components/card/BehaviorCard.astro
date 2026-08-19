@@ -1,0 +1,180 @@
+---
+import styles from "./behavior-card.module.css";
+
+import { BehaviorSectionData } from "@behavior-path/data/behavior-sections.data.ts";
+
+import {
+	formatCode,
+	SECTION_CODES,
+	type BehaviorSectionKeys,
+} from "@/paths/behavior/data/card/behavior-fancycodes.ts";
+import type { BehaviorEntry } from "@/paths/behavior/data/card/behavior-card.types.ts";
+
+import Barcode from "@/icons/Barcode.astro";
+import Neuron from "@/icons/Neuron.astro";
+import Prism from "@/icons/Prism.astro";
+import Pattern from "@/icons/Pattern.astro";
+
+interface Props {
+	entry: BehaviorEntry;
+	section: BehaviorSectionKeys;
+}
+
+const { entry, section } = Astro.props;
+const {
+	title,
+	englishTitle,
+	question,
+	category,
+	publishDate,
+	readingTime,
+	contentCount,
+	backlog,
+} = entry.data;
+
+/**
+ * A post still being studied. It keeps its link and its sources on purpose —
+ * the page exists so it can start ranking — but the card says plainly that
+ * there is nothing finished to read yet.
+ */
+const isWip = backlog === "wip";
+
+/**
+ * The one place a section picks its background drawing (spec 4). `satisfies`
+ * instead of an annotation because the three components no longer share a
+ * signature: Neuron takes a `mode` prop and the other two take none. The
+ * check still fails to compile if a section is missing.
+ *
+ * Neuron renders in its default "use" mode here — a 30 byte reference to the
+ * <symbol> that BehaviorGrid emits once per page.
+ */
+const WATERMARKS = {
+	biases: Neuron,
+	mentalModels: Prism,
+	designLaws: Pattern,
+} satisfies Record<BehaviorSectionKeys, unknown>;
+
+const Watermark = WATERMARKS[section];
+
+const basePath = BehaviorSectionData.find(
+	(item) => item.collection === section,
+)?.href;
+
+if (!basePath) {
+	throw new Error(
+		`[BehaviorCard] no href in BehaviorSectionData for the "${section}" collection.`,
+	);
+}
+
+const code = formatCode(section, contentCount);
+
+/** publishDate is DD/MM/YYYY: the card prints DD.MM.YYYY, <time> needs ISO. */
+const [day, month, year] = publishDate.split("/");
+const displayDate = `${day}.${month}.${year}`; // it looks cooler and better with dots than dashes
+const isoDate = `${year}-${month}-${day}`;
+
+/** The stub prints the prefix on its own, without the number. */
+const prefix = SECTION_CODES[section];
+---
+
+<li class={styles.item}>
+	<article
+		class={styles.card}
+		data-section={section}
+		data-category={category}
+		data-wip={isWip ? "" : undefined}
+	>
+		<section class={styles.body}>
+			<div
+				class={styles.watermark}
+				aria-hidden="true"
+			>
+				<Watermark />
+			</div>
+
+			<div class={styles.top}>
+				<span class={styles.chip}>{category}</span>
+				<span class={styles.codeGroup}>
+					<span class={styles.code}>{code}</span>
+					{
+						!isWip && (
+							<time
+								class={styles.codeDate}
+								datetime={isoDate}
+							>
+								{displayDate}
+							</time>
+						)
+					}
+				</span>
+			</div>
+
+			<h2
+				class={styles.title}
+				transition:name={`${entry.id}-name`}
+			>
+				<a
+					class={styles.link}
+					href={`${basePath}/${entry.id}`}
+					>{title}</a
+				>
+			</h2>
+
+			<p class={styles.question}>{question}</p>
+
+			<section class={styles.band}>
+				<span
+					class={styles.english}
+					lang="en"
+					>{englishTitle}</span
+				>
+				{
+					isWip ? (
+						<span class={styles.meta}>En revisión</span>
+					) : (
+						<span class={styles.meta}>
+							<time
+								class={styles.bandDate}
+								datetime={isoDate}
+							>
+								{displayDate}
+							</time>
+							{readingTime && (
+								<>
+									<span
+										class={styles.divider}
+										aria-hidden="true"
+									>
+										|
+									</span>
+									<span>{readingTime} MIN</span>
+								</>
+							)}
+						</span>
+					)
+				}
+			</section>
+		</section>
+
+		<section
+			class={styles.stub}
+			aria-hidden="true"
+		>
+			<div class={styles.barcode}>
+				<Barcode code={code} />
+			</div>
+			<span class={styles.stubSide}>
+				{readingTime && <span class={styles.stubTime}>{readingTime} min</span>}
+				<span class={styles.stubMeta}>
+					<span class={styles.stubPrefix}>{prefix}</span>
+					<span class={styles.stubDate}>
+						{isWip ? "En revisión" : displayDate}
+					</span>
+				</span>
+			</span>
+			<span class={styles.stubNumber}>
+				{String(contentCount).padStart(3, "0")}
+			</span>
+		</section>
+	</article>
+</li>

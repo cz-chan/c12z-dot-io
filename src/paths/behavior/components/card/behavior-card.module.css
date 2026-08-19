@@ -1,0 +1,535 @@
+/**
+ * The card shared by /behavior/sesgos, /behavior/diseño and
+ * /behavior/modelos-mentales. One component, no layout branches per section.
+ */
+
+.grid {
+	/* The widest the grid ever gets, and from it the widest a single card ever
+	 * gets: exactly one of the two desktop columns. Derived and not typed twice
+	 * so the tablet card can never drift from the desktop one. */
+	--grid-max: 72rem;
+	--card-max: calc((var(--grid-max) - var(--sp-6)) / 2);
+
+	display: grid;
+	/* The track max stays 1fr on purpose: repeat(auto-fit, minmax(A, B)) counts
+	 * how many tracks fit using B when B is a fixed length, so capping the
+	 * track at one column's width would only ever leave room for one. The cap
+	 * goes on the card instead, and justify-items centres it in its track. */
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+	align-items: stretch;
+	gap: var(--sp-6);
+	padding: 0;
+	list-style: none;
+}
+
+@media (width >= 56rem) {
+	.grid {
+		--grid-breakout: min(var(--grid-max), 100vw - var(--sp-10) * 2);
+
+		/* Pinned to two from here up. Left to auto-fit, a 72rem grid fits three
+		 * 22rem columns and the ticket goes square again on a wide monitor. */
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		width: var(--grid-breakout);
+		margin-inline: calc(50% - var(--grid-breakout) / 2);
+	}
+}
+
+/* Each ticket is its own container: the compact rules further down key off
+ * the width of the CARD, not of the window. That is what lets two columns
+ * exist on a tablet without the ticket going square — at 371px it compacts
+ * itself, at 493px it does not, and neither has to know the viewport. */
+.item {
+	container-type: inline-size;
+	display: flex;
+}
+
+.card {
+	/* Falls back to a neutral so a new enum value degrades instead of vanishing */
+	--cat-surface: var(--fg-3);
+	--cat-band: var(--fg-3);
+
+	position: relative;
+	display: flex;
+	width: 100%;
+	/* Capped and centred with margins rather than with justify-items, which
+	 * would size the track to its content and leave width:100% with nothing
+	 * to resolve against inside the query container. */
+	max-width: var(--card-max);
+	margin-inline: auto;
+	overflow: hidden;
+	border: var(--hairline);
+	border-radius: var(--r-md);
+	background-color: var(--surface-1);
+	transition:
+		border-color var(--t-base) var(--ease),
+		box-shadow var(--t-base) var(--ease);
+}
+
+/* ---- Category colours ------------------------------------ */
+
+.card[data-section="biases"][data-category="velocidad"] {
+	--cat-surface: var(--c-bias-category-speed-surface);
+	--cat-band: var(--c-bias-category-speed-band);
+}
+.card[data-section="biases"][data-category="memoria"] {
+	--cat-surface: var(--c-bias-category-memory-surface);
+	--cat-band: var(--c-bias-category-memory-band);
+}
+.card[data-section="biases"][data-category="juicio"] {
+	--cat-surface: var(--c-bias-category-judgment-surface);
+	--cat-band: var(--c-bias-category-judgment-band);
+}
+.card[data-section="biases"][data-category="contexto"] {
+	--cat-surface: var(--c-bias-category-context-surface);
+	--cat-band: var(--c-bias-category-context-band);
+}
+.card[data-section="biases"][data-category="percepción"] {
+	--cat-surface: var(--c-bias-category-perception-surface);
+	--cat-band: var(--c-bias-category-perception-band);
+}
+
+.card[data-section="mentalModels"][data-category="pensamiento general"] {
+	--cat-surface: var(--c-model-category-general-surface);
+	--cat-band: var(--c-model-category-general-band);
+}
+.card[data-section="mentalModels"][data-category="física, química y biología"] {
+	--cat-surface: var(--c-model-category-science-surface);
+	--cat-band: var(--c-model-category-science-band);
+}
+.card[data-section="mentalModels"][data-category="sistemas"] {
+	--cat-surface: var(--c-model-category-systems-surface);
+	--cat-band: var(--c-model-category-systems-band);
+}
+.card[data-section="mentalModels"][data-category="matematicas"] {
+	--cat-surface: var(--c-model-category-maths-surface);
+	--cat-band: var(--c-model-category-maths-band);
+}
+.card[data-section="mentalModels"][data-category="economía"] {
+	--cat-surface: var(--c-model-category-economics-surface);
+	--cat-band: var(--c-model-category-economics-band);
+}
+.card[data-section="mentalModels"][data-category="militar y guerra"] {
+	--cat-surface: var(--c-model-category-war-surface);
+	--cat-band: var(--c-model-category-war-band);
+}
+.card[data-section="mentalModels"][data-category="humanidad y juicio"] {
+	--cat-surface: var(--c-model-category-judgment-surface);
+	--cat-band: var(--c-model-category-judgment-band);
+}
+
+.card[data-section="designLaws"][data-category="composición visual"] {
+	--cat-surface: var(--c-design-category-layout-surface);
+	--cat-band: var(--c-design-category-layout-band);
+}
+.card[data-section="designLaws"][data-category="interacción"] {
+	--cat-surface: var(--c-design-category-interaction-surface);
+	--cat-band: var(--c-design-category-interaction-band);
+}
+.card[data-section="designLaws"][data-category="percepción"] {
+	--cat-surface: var(--c-design-category-perception-surface);
+	--cat-band: var(--c-design-category-perception-band);
+}
+
+/* ---- Body --------------------------------------------------------------- */
+
+.body {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--sp-2);
+	min-width: 0;
+	padding: var(--sp-6) var(--sp-5) 0;
+}
+
+/* ---- Watermark ------------------------------------------------*/
+
+.watermark {
+	position: absolute;
+	z-index: -1;
+	inset: 0;
+	overflow: hidden;
+	color: var(--surface-3);
+	pointer-events: none;
+}
+
+/* Centred in the body, which stops at the perforation */
+.watermark > svg {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: auto;
+	transform: translate(-50%, -50%);
+}
+
+.card[data-section="biases"] .watermark > svg {
+	width: 92%;
+}
+
+.card[data-section="mentalModels"] .watermark > svg {
+	width: 86%;
+}
+
+.card[data-section="designLaws"] .watermark > svg {
+	width: 52%;
+}
+
+/* ---- Top row ------------------------------------------------------------ */
+
+.top {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: var(--sp-3);
+	min-height: var(--wdth);
+}
+
+.chip {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	padding: var(--sp-2) var(--sp-3);
+	border-radius: 0 0 var(--r-md) 0;
+	background-color: var(--cat-surface);
+	color: var(--fg);
+	font-family: var(--ff-mono);
+	font-size: var(--t-nano);
+	line-height: var(--lh-nano);
+	letter-spacing: var(--tracking-widest);
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.codeGroup {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: var(--sp-05);
+}
+
+.code {
+	color: var(--fg-3);
+	font-family: var(--ff-mono);
+	font-size: var(--t-micro);
+	letter-spacing: var(--tracking-widest);
+}
+
+/* Only shown once the card is too narrow for the band to hold both the date
+ * and the reading time — see the container query at the foot of this file. */
+.codeDate {
+	display: none;
+	color: var(--fg-3);
+	font-family: var(--ff-mono);
+	font-size: var(--t-nano);
+	letter-spacing: var(--tracking-wider);
+	white-space: nowrap;
+}
+
+/* ---- Text --------------------------------------------------------------- */
+
+.title {
+	max-width: var(--wdth-16);
+	color: var(--fg);
+	font-family: var(--ff-pixel);
+	font-size: var(--t-intro);
+	line-height: var(--lh-display);
+	letter-spacing: var(--tracking-wide);
+	text-wrap: balance;
+}
+
+/*
+One link, stretched over the whole card. No nested anchors (§5).
+I use this form to enhance the accesibility.
+Wrapping the whole <article> in an <a> would work, but the accessible name of
+a link is all of its text: a screen reader would read out the chip, the code,
+the question, the English title and the date as one 140 character link name.
+Here it announces just "Sesgo de anclaje". It also leaves room for a second
+link inside the card later on (a category filter, say) without nesting anchors,
+which is invalid and gets silently restructured by the parser.
+*/
+.link {
+	color: inherit;
+	text-decoration: none;
+}
+
+.link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+}
+
+.link:focus-visible {
+	outline: none;
+}
+
+.card:has(.link:focus-visible) {
+	outline: var(--sp-05) solid var(--accent);
+	outline-offset: var(--sp-1);
+}
+
+.question {
+	max-width: var(--wdth-16);
+	color: var(--fg-2);
+	font-family: var(--ff-rubik);
+	font-size: var(--t-body);
+	line-height: var(--lh-body);
+	text-wrap: pretty;
+}
+
+/* ---- Band --------------------------------------------*/
+
+.band {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: var(--sp-1) var(--sp-3);
+	margin-top: auto;
+	/* --sp-5 is the same width that the body padding inline */
+	margin-inline: calc(var(--sp-5) * -1);
+	padding: var(--sp-4) var(--sp-5);
+	background-color: var(--cat-band);
+	color: var(--fg);
+}
+
+.english {
+	font-family: var(--ff-rubik);
+	font-size: var(--t-body);
+	font-weight: 600;
+	min-width: 0;
+}
+
+.meta {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-2);
+	font-family: var(--ff-mono);
+	font-size: var(--t-micro);
+	letter-spacing: var(--tracking-wider);
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.divider {
+	opacity: 0.5;
+}
+
+/* ---- Stub ---------------------------------------*/
+
+.stub {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	/* The barcode takes what is left after the number, so it grows with the
+	 * card instead of sitting in a fixed box at the top. */
+	grid-template-rows: 1fr auto;
+	gap: var(--sp-2);
+	flex: 0 0 var(--wdth-8);
+	padding: var(--sp-3) var(--sp-2);
+	background-color: var(--fg);
+	color: var(--bg);
+}
+
+/* The perforation. A repeating gradient. */
+.stub::before {
+	content: "";
+	position: absolute;
+	inset-block: 0;
+	left: 0;
+	width: var(--sp-05);
+	background: repeating-linear-gradient(
+		to bottom,
+		var(--bg) 0 var(--sp-1),
+		transparent var(--sp-1) var(--sp-3)
+	);
+}
+
+/* Two-tone bars: the category colour and the stub's own ink. */
+.barcode {
+	--barcode-ink: var(--bg);
+
+	grid-column: 1;
+	grid-row: 1;
+	min-height: 0;
+	color: var(--cat-surface);
+}
+
+/* Narrow by default, so the stub's own margin shows and the perforation reads
+ * as a tear line. It only goes edge to edge once the card reaches its full
+ * desktop width and the stub has room to spare. */
+.barcode > svg {
+	display: block;
+	width: 78%;
+	height: 100%;
+	margin-inline: auto;
+}
+
+@container (width >= 28rem) {
+	.barcode > svg {
+		width: 100%;
+		margin-inline: 0;
+	}
+}
+
+/* The right-hand column of the stub. */
+.stubSide {
+	grid-column: 2;
+	grid-row: 1 / -1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sp-3);
+}
+
+/* Reads bottom-up, like the rest of the stub. */
+.stubTime {
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	color: color-mix(in srgb, var(--bg) 60%, transparent);
+	font-family: var(--ff-mono);
+	font-size: var(--t-nano);
+	letter-spacing: var(--tracking-wider);
+	text-transform: uppercase;
+	white-space: nowrap;
+	font-weight: bold;
+}
+
+/* Reads bottom-up along the stub: the prefix in the category colour, the date
+ * dimmed, as on a printed ticket. */
+.stubMeta {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-2);
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	font-family: var(--ff-mono);
+	font-size: var(--t-nano);
+	letter-spacing: var(--tracking-wider);
+	text-transform: uppercase;
+	white-space: nowrap;
+	font-weight: bold;
+}
+
+.stubPrefix {
+	color: var(--cat-surface);
+}
+
+.stubDate {
+	color: color-mix(in srgb, var(--bg) 60%, transparent);
+}
+
+.stubNumber {
+	grid-column: 1;
+	grid-row: 2;
+	align-self: end;
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	font-family: var(--ff-pixel);
+	font-size: var(--t-intro);
+	line-height: 1;
+	letter-spacing: var(--tracking-wide);
+}
+
+/** ---- WIP ----------------------------------------------------------------
+ * The post exists, is linked, with their sources and is indexable — 
+ * that is the point, it starts ranking while it is written.
+ *
+ * The band drops --cat-band here so "in progress" looks the same across the
+ * three sections rather than hiding behind seven different category hues.
+ * The chip keeps its colour: the category IS settled.
+ */
+
+/* The state used to have its own badge next to the code. */
+.card[data-wip] .code {
+	color: var(--c-wip-ink);
+}
+
+.card[data-wip] .title {
+	color: var(--fg-2);
+}
+
+/* Diagonal hatching, the same repeating-gradient trick as the perforation. */
+.card[data-wip] .band {
+	background-color: var(--c-wip-surface);
+	background-image: repeating-linear-gradient(
+		45deg,
+		transparent 0 var(--sp-3),
+		var(--c-wip-stripe) var(--sp-3) var(--sp-6)
+	);
+	color: var(--c-wip-ink);
+}
+
+.card[data-wip] .barcode {
+	color: var(--c-wip-bars);
+}
+
+.card[data-wip] .stubPrefix {
+	color: var(--c-wip-bars);
+}
+
+/* ---- States -------------------------------------- */
+
+.card:hover {
+	box-shadow: var(--shadow-2);
+}
+
+/* ---- Responsive -----------------------------------
+ * @container and not @media because this asks about the CARD, not the window,
+ * and the two do not move together: at a 877px viewport the card is 371px
+ * (two columns) while at 474px it is 453px (one column). The wider window
+ * gives the narrower card, so no viewport breakpoint can express this.
+ *
+ * 31.5rem is not in global.css on purpose — the tokens there are page widths
+ * (--screen-*) and element widths (--wdth-*), and this is neither: it is the
+ * width at which THIS card runs out of room. It happens to line up with
+ * --screen-xs (460px), where the page header reflows, but only indirectly:
+ * 31.5rem = 441px of card, which is a 462px viewport once the body padding
+ * is taken off. Writing --screen-xs here would read as "the same breakpoint"
+ * and it is not the same measurement.
+ *
+ * Careful: rem resolves differently in the two at-rules. Inside @media it is
+ * always 16px; inside @container it is the root font-size, 14px here. So
+ * 31.5rem is 441px, not 504px.
+ */
+
+@container (width < 31.5rem) {
+	.codeDate {
+		display: block;
+	}
+
+	.bandDate,
+	.bandDate + .divider {
+		display: none;
+	}
+
+	.body {
+		padding: var(--sp-4) var(--sp-4) 0;
+	}
+
+	.title {
+		font-size: var(--t-h1);
+	}
+
+	.question {
+		font-size: var(--t-mili);
+	}
+
+	.band {
+		margin-inline: calc(var(--sp-4) * -1);
+		padding-inline: var(--sp-4);
+	}
+
+	.stub {
+		padding-inline: var(--sp-1);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.card {
+		transition: none;
+	}
+}
