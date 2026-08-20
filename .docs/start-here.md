@@ -90,7 +90,7 @@ English.
 ```
 src/
 ├── assets/            fonts (Tamago, Cascadia, Rubik), images
-├── components/common/ cross-cutting UI — see §6
+├── components/        shared UI by role — see §6
 ├── content/           content entries (md/mdx), one folder per collection
 ├── content.config.ts  Zod schemas — see §5
 ├── paths/             one folder per domain — see §2 and §9
@@ -168,28 +168,55 @@ object, since it needs two fields at once.
 to `target="_blank" rel="noopener noreferrer"` — the `ui/content/Link.astro`
 component is only for the visual style, the security behavior is automatic.
 
-## 6. `src/components/common/` (cross-cutting)
+## 6. `src/components/` (shared UI)
+
+Split by **role**, one level deep. No `common/` wrapper: this folder *is* the
+shared bucket, so the extra level said nothing.
 
 ```
-common/
-├── analytics/   Google (GA4, GTM), Ahrefs, Overtracking — all via Partytown
-├── layout/      Header (Logo + ToggleTheme), Footer
-├── navigation/  BottomBar.tsx (React) — scroll-to-top + go up one level
-├── seo/         BaseHead, PagesSEO (listings), ContentSEO (entries), Favicons
-└── ui/
-    ├── buttons/   GoBackInTop, SummarizeLLMs
-    ├── content/   ImgAndCap, Link, OwnThoughts, QuoteCard, SummarizeSection
-    ├── darkmode/  ToggleTheme — data-theme + localStorage + startViewTransition
-    ├── icons/     Logo, content icons, ai/ (LLM logos), social/
-    └── toc/       Toc.tsx + ProgressCircle.tsx (motion/react)
+components/
+├── analytics/  GA4, GTMHead, GTMBody, Ahrefs, Overtracking — all via Partytown
+├── layout/     Header, Footer, BottomBar
+├── seo/        BaseHead, PagesSEO, ContentSEO, Error404SEO, Favicons
+├── icons/      site-wide icons + social/
+├── ui/         shared widgets: GoBackInTop, ToggleTheme, Toc + ProgressCircle
+└── mdx/        dropped into a post by hand: Link, OwnThoughts, ImgAndCap, QuoteCard
 ```
+
+Inside `layout/`, `ui/` and `mdx/`, **a component that owns more than one file
+gets its own kebab-case folder**, the same way `paths/*/components/` groups
+`card/`, `post/`, `wip/` and `summarize/`:
+
+```
+ui/
+├── go-back-in-top/  GoBackInTop.astro + go-back-in-top.module.css
+├── toc/             Toc.tsx + ProgressCircle.tsx + toc.module.css
+└── toggle-theme/    ToggleTheme.astro + .module.css + toggle-theme.ts
+```
+
+`toc/` is why the rule exists: `ProgressCircle` is used only by `Toc` and shares
+its stylesheet, so they are one component split across three files. Flat, they
+read as three unrelated ones — and the CSS Modules sorted away from their
+components anyway, because uppercase filenames sort before lowercase.
+
+A single-file component stays flat: `mdx/QuoteCard.astro` has no stylesheet of
+its own, so it needs no folder.
 
 **A component needing client-side interactivity is `.tsx` with `client:only`;
 everything else is `.astro`.**
 
-**Icons with no importer are not dead code.** `YingYang`, `Bulb`, `GoOut`,
-`Moon`, `Sun`, `LensIcon` and `QuoteCard` are a library to drop into a post by
-hand. Zero imports is their normal state.
+**`mdx/` exists to make a rule visible.** Those components have no importer in
+any `.astro` file — the `.mdx` posts import them. Zero imports is their normal
+state, not dead code. The same is true of the icons in `icons/` kept for manual
+use (`YingYang`, `Bulb`, `GoOut`, `Moon`, `Sun`).
+
+**Shared means 2+ paths, and that is enforced.** Anything a single path uses
+lives in that path, however generic it looks:
+
+| what | where | why |
+| ---- | ----- | --- |
+| summarize-with-AI block + its 6 LLM icons | `paths/books/components/summarize/` | only the book pages offer it |
+| `Barcode`, `Neuron`, `Prism`, `Pattern` | `paths/behavior/icons/` | only the behavior cards draw them |
 
 ## 7. `src/global/` — site configuration
 
@@ -264,12 +291,12 @@ map of the site.
 @context-path/*       @home-path/*           @error-path/*
 ```
 
-Cross-cutting: `@/*`, `@/lib/*`, `@/global/*`, `@/common/*`, `@/icons/*`,
-`@/seo/*`, `@/analytics/*`, `@layouts/*`, `@utils/*`, `@/assets/*`.
+Cross-cutting: `@/*`, `@/lib/*`, `@/global/*`, `@/ui/*`, `@/icons/*`, `@/seo/*`,
+`@/mdx/*`, `@/layout/*`, `@/analytics/*`, `@layouts/*`, `@utils/*`, `@/assets/*`.
 
-**Always the most specific one.** `@/icons/Logo.astro`, not
-`@/common/ui/icons/Logo.astro`. A `@/components/...` or `@/paths/...` import
-means an alias was skipped, or that one is missing.
+**Always the most specific one, `.mdx` included.** The post files were the last
+place still carrying `../../../components/...` chains. A `@/components/...` or
+`@/paths/...` import means an alias was skipped, or that one is missing.
 
 ## 12. Types
 

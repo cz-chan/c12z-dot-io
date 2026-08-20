@@ -84,14 +84,37 @@ A collection is named after **the item** it holds, never after the page that sho
 
 **Shared globals** — `src/global/`: `site-info.ts`, `pages-info.ts`, `socialmedia-links.ts`, `collection-keys.ts`.
 
-**Common UI** — `src/components/common/`: `layout`, `navigation`, `seo`, `analytics`, `ui` (buttons, icons, toc…).
+**Shared UI** — `src/components/`, split by role, one level deep:
+
+- `layout/` — Header, Footer, BottomBar
+- `seo/` — BaseHead, PagesSEO, ContentSEO, Error404SEO, Favicons
+- `analytics/` — GA4, GTM, Ahrefs, Overtracking
+- `icons/` — site-wide icons + `social/`
+- `ui/` — shared widgets: GoBackInTop, ToggleTheme, Toc
+- `mdx/` — components you drop into a post by hand: Link, OwnThoughts, ImgAndCap, QuoteCard
+
+**Inside `layout/`, `ui/` and `mdx/`, a component owning more than one file gets
+its own kebab-case folder** — the same rule `paths/*/components/` already follows
+with `card/`, `post/`, `wip/` and `summarize/`:
+
+```
+ui/toc/            Toc.tsx + ProgressCircle.tsx + toc.module.css
+ui/toggle-theme/   ToggleTheme.astro + .module.css + toggle-theme.ts
+```
+
+`ui/toc/` is the point of the rule: `ProgressCircle` is used only by `Toc` and
+shares its stylesheet, so they are one component in three files, not three loose
+ones. A single-file component stays flat (`mdx/QuoteCard.astro`).
+
+`mdx/` is why those have no importer in `.astro` files: the `.mdx` import them.
+That is their normal state, not dead code.
 
 **OG images** — `src/lib/og/` renders social images with `@vercel/og` + `sharp` at build time.
 
-**Icons and MDX components with no importer are not dead code.** `YingYang`,
-`Bulb`, `GoOut`, `Moon`, `Sun`, `LensIcon` and `QuoteCard` are a library to drop
-into a post by hand, so having zero imports is their normal state. Don't delete
-them as unused.
+**Icons with no importer are not dead code.** `YingYang`, `Bulb`, `GoOut`,
+`Moon`, `Sun` and `LensIcon` are a library to drop into a post by hand, so having
+zero imports is their normal state. Don't delete them as unused. The same goes
+for everything in `components/mdx/`.
 
 ### `src/pages/` only routes
 
@@ -141,19 +164,25 @@ Cross-cutting aliases:
 @/*           → src/*
 @/lib/*       → src/lib/*
 @/global/*    → src/global/*
-@/common/*    → src/components/common/*
-@/icons/*     → src/components/common/ui/icons/*
-@/seo/*       → src/components/common/seo/*
-@/analytics/* → src/components/common/analytics/*
+@/ui/*        → src/components/ui/*
+@/icons/*     → src/components/icons/*
+@/seo/*       → src/components/seo/*
+@/mdx/*       → src/components/mdx/*
+@/layout/*    → src/components/layout/*
+@/analytics/* → src/components/analytics/*
 @layouts/*    → src/layouts/*
 @utils/*      → src/utils/*
 @/assets/*    → src/assets/*
 ```
 
-**Always import through the most specific alias available.** `@/icons/Logo.astro`,
-never `@/common/ui/icons/Logo.astro`; `@/seo/BaseHead.astro`, never
-`@/components/common/seo/BaseHead.astro`. A `@/components/...` or `@/paths/...`
-import means an alias was skipped — or that one is missing.
+**Always import through an alias**, in `.mdx` files too — they were the last
+place still carrying `../../../components/...` chains. A `@/components/...` or
+`@/paths/...` import means an alias was skipped, or that one is missing.
+
+**Shared means 2+ paths, and it is enforced.** Something used by a single path
+belongs in that path, even if it feels generic: the summarize-with-AI block lives
+in `paths/books/`, and `Barcode`/`Neuron`/`Prism`/`Pattern` in
+`paths/behavior/icons/`, because nothing else uses them.
 
 ### Content collection schemas
 
