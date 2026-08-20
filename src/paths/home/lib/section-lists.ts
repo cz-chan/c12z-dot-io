@@ -36,6 +36,13 @@ export const SECTION_LISTS: Section[] = [
 		items: [],
 	},
 	{
+		href: "/notas",
+		style: "note",
+		label: "notas",
+		description: "Apuntes cortos e ideas antes de que sean ensayos",
+		items: [],
+	},
+	{
 		href: "/ensayos",
 		style: "essay",
 		label: "ensayos",

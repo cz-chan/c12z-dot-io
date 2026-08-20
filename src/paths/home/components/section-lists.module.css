@@ -178,7 +178,7 @@
 		text-decoration-color: var(--c-project);
 	}
 }
-.other {
+.note {
 	text-decoration: underline;
 	text-decoration-color: color-mix(in srgb, var(--c-note) 50%, transparent);
 	text-underline-offset: 0.25em;

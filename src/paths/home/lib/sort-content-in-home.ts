@@ -1,6 +1,7 @@
 import { SECTION_LISTS } from "./section-lists";
 import { getCollection } from "astro:content";
 import type { SectionItem } from "./section-lists";
+import { formatNoteDate } from "@notes-path/lib/format-note-date.ts";
 
 const parseDate = (theDate: string) =>
 	new Date(theDate.split("/").reverse().join("-")).getTime();
@@ -21,12 +22,14 @@ const [
 	mentalModelEntries,
 	designLawEntries,
 	projectEntries,
+	notesEntries,
 ] = await Promise.all([
 	getCollection("books"),
 	getCollection("biases"),
 	getCollection("mentalModels"),
 	getCollection("designLaws"),
 	getCollection("projects"),
+	getCollection("notes"),
 ]);
 
 const uploadedBooks = booksEntries.filter(
@@ -76,6 +79,15 @@ const recentProject: SectionItem[] = uploadedProject
 		meta: `@${entry.data.why}`,
 	}));
 
+const recentNotes: SectionItem[] = [...notesEntries]
+	.sort(byNewest)
+	.slice(0, 4)
+	.map((entry) => ({
+		text: entry.data.title,
+		href: `/notas/${entry.id}`,
+		meta: formatNoteDate(entry.data.publishDate),
+	}));
+
 const sectionUpdates: Record<
 	string,
 	{ items: SectionItem[]; totalCount: number }
@@ -83,6 +95,7 @@ const sectionUpdates: Record<
 	biblioteca: { items: recentBook, totalCount: uploadedBooks.length },
 	behavior: { items: recentBehavior, totalCount: uploadedBehavior.length },
 	proyectos: { items: recentProject, totalCount: uploadedProject.length },
+	notas: { items: recentNotes, totalCount: notesEntries.length },
 };
 
 export const updatedSectionLists = SECTION_LISTS.map((section) =>
