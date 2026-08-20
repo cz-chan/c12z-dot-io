@@ -4,10 +4,10 @@ import { render } from "astro:content";
 
 import styles from "./behavior-post.module.css";
 
-import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
+import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 import WipNotice from "@behavior-path/components/wip/WipNotice.astro";
 import PostSources from "@sources-path/components/PostSources.astro";
-import TOC from "@/common/ui/toc/Toc.tsx";
+import TOC from "@/ui/toc/Toc.tsx";
 
 type BehaviorPost =
 	| CollectionEntry<"biases">

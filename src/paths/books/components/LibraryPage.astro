@@ -3,7 +3,7 @@ import styles from "./book.module.css"
 import { getCollection } from "astro:content";
 import BookCard from "./BookCard.astro";
 import LibraryHeader from "./LibraryHeader.astro";
-import GoBackInTop from "@/common/ui/buttons/GoBackInTop.astro";
+import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 
 const library = await getCollection("books");
 

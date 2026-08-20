@@ -21,10 +21,12 @@
 
 			"@/lib/*": ["./src/lib/*"],
 			"@/global/*": ["./src/global/*"],
-			"@/common/*": ["./src/components/common/*"],
-			"@/icons/*": ["./src/components/common/ui/icons/*"],
-			"@/seo/*": ["./src/components/common/seo/*"],
-			"@/analytics/*": ["./src/components/common/analytics/*"],
+			"@/ui/*": ["./src/components/ui/*"],
+			"@/icons/*": ["./src/components/icons/*"],
+			"@/seo/*": ["./src/components/seo/*"],
+			"@/mdx/*": ["./src/components/mdx/*"],
+			"@/layout/*": ["./src/components/layout/*"],
+			"@/analytics/*": ["./src/components/analytics/*"],
 			"@layouts/*": ["./src/layouts/*"],
 			"@utils/*": ["./src/utils/*"],
 			"@/assets/*": ["./src/assets/*"]
