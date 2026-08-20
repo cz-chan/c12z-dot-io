@@ -32,12 +32,12 @@
  *   - `asset`, `title_asset`, `href_link`, and `title_link` must all be provided
  *     together; the link renders only when `asset` is truthy.
  *   - In MDX files, import the component after the frontmatter and before any content:
- *       import OwnThoughts from "../../../components/common/ui/content/OwnThoughts.astro"; or
- * 			 import OwnThoughts from "@/common/ui/content/OwnThoughts.astro";
+ *       import OwnThoughts from "@/mdx/own-thoughts/OwnThoughts.astro"; or
+ * 			 import OwnThoughts from "@/mdx/own-thoughts/OwnThoughts.astro";
  */
 
 import styles from "./own-thoughts.module.css";
-import UnclearThought from "../icons/UnclearThought.astro";
+import UnclearThought from "@/icons/UnclearThought.astro";
 
 interface Props {
 	paragraphs: string[];
