@@ -67,9 +67,15 @@
 	& .node {
 		position: absolute;
 		top: 0;
-		/* Compensates for the padding-left of .timeline so it aligns exactly with the line */
-		left: calc(var(--sp-2) - var(--sp-6) + 0.1rem);
-		transform: translateX(-50%); /* center the "x" on the line */
+		/* Compensates for the padding-left of .timeline (the item's left edge)
+		   so the node lands on the line, plus half the line's own width. */
+		left: calc(var(--sp-2) - var(--sp-6) + var(--wdth) / 2);
+		/* centers the "x" on the line: half its own width, which is --sp-5
+		   because box-sizing is border-box (the padding is already inside it).
+		   A transform is avoided on purpose: it would become the containing
+		   block for the fixed-attachment texture below and break its
+		   alignment with the page grain. */
+		margin-left: calc(var(--sp-5) / -2);
 
 		display: block;
 		width: var(--sp-5);
@@ -81,6 +87,34 @@
 		background-color: var(--bg);
 		padding: var(--sp-1);
 		transition: color var(--t-base) var(--ease);
+
+		/* The node hides the dashed line behind it, so it needs an opaque
+		   background — but a flat --bg patch reads as a solid box over the
+		   page's paper texture (body::before/::after sit at z-index -1, under
+		   the content). These two layers repaint the same grain + fleck on the
+		   node itself; `background-attachment: fixed` locks them to the
+		   viewport, exactly like the body layers, so the noise lines up. */
+		&::before,
+		&::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			pointer-events: none;
+			background-attachment: fixed;
+			mix-blend-mode: var(--texture-blend);
+		}
+
+		&::before {
+			background-image: var(--texture-grain);
+			background-size: var(--texture-grain-size);
+			opacity: var(--texture-grain-opacity);
+		}
+
+		&::after {
+			background-image: var(--texture-fleck);
+			background-size: var(--texture-fleck-size);
+			opacity: var(--texture-fleck-opacity);
+		}
 	}
 	&:hover .node {
 		color: var(--c-note);
@@ -157,7 +191,7 @@
 		column-gap: var(--sp-8); /* hueco central por donde pasa la línea */
 
 		& .node {
-			left: 50.1%; /* sobre la línea central (50% + ajuste óptico) */
+			left: calc(50% + var(--wdth) / 2); /* sobre la línea central */
 		}
 
 		/* content y figure comparten fila; la columna la decide odd/even (abajo) */
