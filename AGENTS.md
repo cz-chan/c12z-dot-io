@@ -36,6 +36,22 @@ rm -rf dist && rm -rf .vercel/* && mkdir -p .vercel
 
 `dist/` goes away entirely; `.vercel/` is emptied but the folder itself stays.
 
+**Never leave a server you started still running.** `pnpm dev` and `pnpm preview`
+both bind port 4321. If you start one to check something, stop it when you are
+done — before reporting back, not later. A stray server holds the port, so the
+next run silently attaches to a stale build and you end up verifying yesterday's
+code.
+
+```bash
+pnpm exec astro dev stop          # for pnpm dev
+lsof -nP -iTCP:4321 -sTCP:LISTEN  # confirm nothing is left listening
+```
+
+`astro dev stop` only knows about the dev server. `pnpm preview` runs as
+`node .../astro.mjs preview`, so it survives a `pkill -f "astro preview"` — kill
+it by the PID that `lsof` reports, then check the port again. Whoever started
+the server closes it; leave the port as you found it.
+
 ## Architecture
 
 Personal blog/portfolio site built with **Astro 7** + **React 19** + **MDX**, deployed to Vercel (static output). **No Tailwind** — styling is plain CSS: design-token CSS variables in `src/styles/global.css` plus CSS Modules per component.
