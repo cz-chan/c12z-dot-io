@@ -4,42 +4,65 @@
  */
 
 .grid {
-	/* The widest the grid ever gets, and from it the widest a single card ever
-	 * gets: exactly one of the two desktop columns. Derived and not typed twice
-	 * so the tablet card can never drift from the desktop one. */
-	--grid-max: 72rem;
-	--card-max: calc((var(--grid-max) - var(--sp-6)) / 2);
+	/* The ticket is a fixed 300x160 object now, not something that grows with
+	 * the space it is given. px and not rem on purpose: rem here is 14px (the
+	 * root is --t-body) and a ticket is a drawn thing with a size, not a block
+	 * of text that should follow the reader's font settings. */
+	--card-w: 300px;
+	--card-h: 160px;
+
+	/* One number decides the layout at each size. The grid is then exactly N
+	 * tickets plus the gaps between them, which is what keeps a track from
+	 * coming out wider than a card and leaving it floating in its own column. */
+	--cols: 1;
+	--grid-max: calc(
+		var(--card-w) * var(--cols) + var(--sp-6) * (var(--cols) - 1)
+	);
 
 	display: grid;
-	/* The track max stays 1fr on purpose: repeat(auto-fit, minmax(A, B)) counts
-	 * how many tracks fit using B when B is a fixed length, so capping the
-	 * track at one column's width would only ever leave room for one. The cap
-	 * goes on the card instead, and justify-items centres it in its track. */
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-	align-items: stretch;
+	/* minmax(0, w) and not a bare w: below ~340px of viewport a rigid 300px
+	 * track is wider than the page and the grid would scroll sideways. The
+	 * ticket gives up its fixed width only there, where the alternative is
+	 * overflow. */
+	grid-template-columns: repeat(var(--cols), minmax(0, var(--card-w)));
+	justify-content: center;
 	gap: var(--sp-6);
 	padding: 0;
 	list-style: none;
 }
 
-@media (width >= 56rem) {
+/* One column below 576px, two up to 1024px, three above.
+ *
+ * The cut to two is at 36rem rather than higher because a lone column is the
+ * one place the ticket cannot hold its size: it is capped at 300px but the
+ * column is wider, so the card sits centred in dead space. The narrower that
+ * band, the less of that there is to look at.
+ *
+ * From two columns up the grid also has to escape <main>, which is capped at
+ * 48rem (672px) — narrower than the three-column grid. Hence 100vw rather than
+ * 100%, with --sp-6 of slack each side: 100vw counts the scrollbar and the
+ * layout does not, and without the slack that difference is an overflow. */
+@media (width >= 36rem) {
 	.grid {
-		--grid-breakout: min(var(--grid-max), 100vw - var(--sp-10) * 2);
+		--cols: 2;
+		--grid-breakout: min(var(--grid-max), 100vw - var(--sp-6) * 2);
 
-		/* Pinned to two from here up. Left to auto-fit, a 72rem grid fits three
-		 * 22rem columns and the ticket goes square again on a wide monitor. */
-		grid-template-columns: repeat(2, minmax(0, 1fr));
 		width: var(--grid-breakout);
 		margin-inline: calc(50% - var(--grid-breakout) / 2);
 	}
 }
 
-/* Each ticket is its own container: the compact rules further down key off
- * the width of the CARD, not of the window. That is what lets two columns
- * exist on a tablet without the ticket going square — at 371px it compacts
- * itself, at 493px it does not, and neither has to know the viewport. */
+/* Three from 1024px: 3 x 300px + 2 gaps = 956px, and 1024 is the first width
+ * that holds it once the slack above is taken off. --grid-breakout is resolved
+ * lazily, so it picks up --cols: 3 here without being restated. */
+@media (width >= 64rem) {
+	.grid {
+		--cols: 3;
+	}
+}
+
+/* The list item is only there to let the fixed-height card sit in the track. */
 .item {
-	container-type: inline-size;
 	display: flex;
 }
 
@@ -48,14 +71,21 @@
 	--cat-surface: var(--fg-3);
 	--cat-band: var(--fg-3);
 
+	/* Plain tokens, no clamp() and no cqi. The card is one size at every
+	 * breakpoint, so there is nothing left for type and spacing to interpolate
+	 * against — these are the values the fluid version resolved to anyway. */
+	--card-pad: var(--sp-4);
+	--card-pad-block: var(--sp-3);
+	--card-stub: var(--sp-8);
+
 	position: relative;
 	display: flex;
+	/* The width comes from the track, which the grid sized to --card-w; the
+	 * height is the card's own and does not answer to its content. What does
+	 * not fit is clipped rather than allowed to push the ticket out of shape —
+	 * see the line clamps on the title and the question. */
 	width: 100%;
-	/* Capped and centred with margins rather than with justify-items, which
-	 * would size the track to its content and leave width:100% with nothing
-	 * to resolve against inside the query container. */
-	max-width: var(--card-max);
-	margin-inline: auto;
+	height: var(--card-h);
 	overflow: hidden;
 	border: var(--hairline);
 	border-radius: var(--r-md);
@@ -138,9 +168,12 @@
 	display: flex;
 	flex: 1;
 	flex-direction: column;
-	gap: var(--sp-2);
+	/* --sp-1 and not --sp-2: inside 160px the four rows plus their gaps are
+	 * what decides whether the title gets its second line. */
+	gap: var(--sp-1);
 	min-width: 0;
-	padding: var(--sp-6) var(--sp-5) 0;
+	min-height: 0;
+	padding: var(--card-pad) var(--card-pad) 0;
 }
 
 /* ---- Watermark ------------------------------------------------*/
@@ -216,10 +249,12 @@
 	letter-spacing: var(--tracking-widest);
 }
 
-/* Only shown once the card is too narrow for the band to hold both the date
- * and the reading time — see the container query at the foot of this file. */
+/* The date lives here, not in the band: 300px is not enough for the band to
+ * carry the English title, the date and the reading time on one line. This
+ * used to be a container query with the band as the wide-card default; there
+ * is no wide card any more, so it is just how the card is built. */
 .codeDate {
-	display: none;
+	display: block;
 	color: var(--fg-3);
 	font-family: var(--ff-mono);
 	font-size: var(--t-nano);
@@ -230,13 +265,19 @@
 /* ---- Text --------------------------------------------------------------- */
 
 .title {
-	max-width: var(--wdth-16);
 	color: var(--fg);
 	font-family: var(--ff-pixel);
-	font-size: var(--t-intro);
+	font-size: var(--t-h2);
 	line-height: var(--lh-display);
 	letter-spacing: var(--tracking-wide);
 	text-wrap: balance;
+	/* Two lines is what 300px holds for the longest titles in the three
+	 * collections ("Heurística de disponibilidad"). A third would come out of
+	 * the question's budget, and 160px has no slack to lend. */
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	line-clamp: 2;
+	overflow: hidden;
 }
 
 /*
@@ -271,12 +312,18 @@ which is invalid and gets silently restructured by the parser.
 }
 
 .question {
-	max-width: var(--wdth-16);
 	color: var(--fg-2);
 	font-family: var(--ff-rubik);
-	font-size: var(--t-body);
+	font-size: var(--t-mili);
 	line-height: var(--lh-body);
 	text-wrap: pretty;
+	/* What is left of the 160px after the top row, two lines of title and the
+	 * band. The clamp is not decoration: without it a long question is simply
+	 * cut mid-line by the card's overflow, which reads as a rendering bug. */
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	line-clamp: 2;
+	overflow: hidden;
 }
 
 /* ---- Band --------------------------------------------*/
@@ -288,16 +335,17 @@ which is invalid and gets silently restructured by the parser.
 	flex-wrap: wrap;
 	gap: var(--sp-1) var(--sp-3);
 	margin-top: auto;
-	/* --sp-5 is the same width that the body padding inline */
-	margin-inline: calc(var(--sp-5) * -1);
-	padding: var(--sp-4) var(--sp-5);
+	/* Pulled back out to the card edges by exactly the body's inset. Both read
+	 * --card-pad, so there is no second value to keep in step. */
+	margin-inline: calc(var(--card-pad) * -1);
+	padding: var(--card-pad-block) var(--card-pad);
 	background-color: var(--cat-band);
 	color: var(--fg);
 }
 
 .english {
 	font-family: var(--ff-rubik);
-	font-size: var(--t-body);
+	font-size: var(--t-mili);
 	font-weight: 600;
 	min-width: 0;
 }
@@ -313,10 +361,6 @@ which is invalid and gets silently restructured by the parser.
 	white-space: nowrap;
 }
 
-.divider {
-	opacity: 0.5;
-}
-
 /* ---- Stub ---------------------------------------*/
 
 .stub {
@@ -327,9 +371,14 @@ which is invalid and gets silently restructured by the parser.
 	 * card instead of sitting in a fixed box at the top. */
 	grid-template-rows: 1fr auto;
 	gap: var(--sp-2);
-	flex: 0 0 var(--wdth-8);
-	padding: var(--sp-3) var(--sp-2);
-	background-color: var(--fg);
+	flex: 0 0 var(--card-stub);
+	padding-block: var(--sp-3);
+	padding-inline: var(--sp-1);
+	/* Named so the WIP block can restate it once and everything painted on top
+	 * of the stub — the prefix, mixed against it — follows without repeating the
+	 * mix. */
+	--stub-bg: var(--fg);
+	background-color: var(--stub-bg);
 	color: var(--bg);
 }
 
@@ -357,21 +406,14 @@ which is invalid and gets silently restructured by the parser.
 	color: var(--cat-surface);
 }
 
-/* Narrow by default, so the stub's own margin shows and the perforation reads
- * as a tear line. It only goes edge to edge once the card reaches its full
- * desktop width and the stub has room to spare. */
+/* Narrow, so the stub's own margin shows and the perforation reads as a tear
+ * line. There used to be a container query widening this to 100% on a big
+ * card; at a fixed 300px there is no big card left for it to fire on. */
 .barcode > svg {
 	display: block;
 	width: 78%;
 	height: 100%;
 	margin-inline: auto;
-}
-
-@container (width >= 28rem) {
-	.barcode > svg {
-		width: 100%;
-		margin-inline: 0;
-	}
 }
 
 /* The right-hand column of the stub. */
@@ -429,7 +471,7 @@ which is invalid and gets silently restructured by the parser.
 	writing-mode: vertical-rl;
 	transform: rotate(180deg);
 	font-family: var(--ff-pixel);
-	font-size: var(--t-intro);
+	font-size: var(--t-h2);
 	line-height: 1;
 	letter-spacing: var(--tracking-wide);
 }
@@ -438,94 +480,60 @@ which is invalid and gets silently restructured by the parser.
  * The post exists, is linked, with their sources and is indexable — 
  * that is the point, it starts ranking while it is written.
  *
- * The band drops --cat-band here so "in progress" looks the same across the
- * three sections rather than hiding behind seven different category hues.
- * The chip keeps its colour: the category IS settled.
+ * Nothing changes colour here, it only loses strength: chip, band and stub keep
+ * their own hues and fade towards the card's surface. The category and the
+ * section are settled facts — it is the post that is not finished.
  */
 
-/* The state used to have its own badge next to the code. */
+/* The state used to have its own badge next to the code. The code sits on the
+ * card's surface, not on the stub, so it mixes towards --fg-3 — where a
+ * finished ticket already prints it — rather than towards the stub's ink. */
 .card[data-wip] .code {
-	color: var(--c-wip-ink);
+	color: color-mix(in srgb, var(--cat-surface) 55%, var(--fg-3));
 }
 
 .card[data-wip] .title {
 	color: var(--fg-2);
 }
 
-/* Diagonal hatching, the same repeating-gradient trick as the perforation. */
+/* The chip and the stub are the two blocks of solid colour on the ticket, and
+ * at full strength they read as finished work no matter what the band says.
+ * They fade towards the card's own surface — the same move the title makes
+ * towards --fg-2 — so the whole ticket is muted, not just its text. The mix is
+ * partial on purpose: the category and the code still have to be readable. */
+.card[data-wip] .chip {
+	background-color: color-mix(in srgb, var(--cat-surface) 55%, var(--surface-1));
+	color: var(--fg-2);
+}
+
+.card[data-wip] .stub {
+	--stub-bg: color-mix(in srgb, var(--fg) 55%, var(--surface-1));
+	/* The barcode and the prefix keep the category colour they have on a
+	 * finished ticket, pulled towards the stub's ink so they sit at the weight
+	 * of the date beside them. Mixing towards --stub-bg instead only turns them
+	 * grey, which reads as a bigger jump than the full-strength colour did. */
+	--stub-cat: color-mix(in srgb, var(--cat-surface) 45%, var(--bg));
+}
+
+/* Same fade as the chip, on the band's own colour. It used to be red diagonal
+ * hatching, which shouted louder than anything else on the ticket. */
 .card[data-wip] .band {
-	background-color: var(--c-wip-surface);
-	background-image: repeating-linear-gradient(
-		45deg,
-		transparent 0 var(--sp-3),
-		var(--c-wip-stripe) var(--sp-3) var(--sp-6)
-	);
-	color: var(--c-wip-ink);
+	background-color: color-mix(in srgb, var(--cat-band) 55%, var(--surface-1));
+	color: var(--fg-2);
 }
 
 .card[data-wip] .barcode {
-	color: var(--c-wip-bars);
+	color: var(--stub-cat);
 }
 
 .card[data-wip] .stubPrefix {
-	color: var(--c-wip-bars);
+	color: var(--stub-cat);
 }
 
 /* ---- States -------------------------------------- */
 
 .card:hover {
 	box-shadow: var(--shadow-2);
-}
-
-/* ---- Responsive -----------------------------------
- * @container and not @media because this asks about the CARD, not the window,
- * and the two do not move together: at a 877px viewport the card is 371px
- * (two columns) while at 474px it is 453px (one column). The wider window
- * gives the narrower card, so no viewport breakpoint can express this.
- *
- * 31.5rem is not in global.css on purpose — the tokens there are page widths
- * (--screen-*) and element widths (--wdth-*), and this is neither: it is the
- * width at which THIS card runs out of room. It happens to line up with
- * --screen-xs (460px), where the page header reflows, but only indirectly:
- * 31.5rem = 441px of card, which is a 462px viewport once the body padding
- * is taken off. Writing --screen-xs here would read as "the same breakpoint"
- * and it is not the same measurement.
- *
- * Careful: rem resolves differently in the two at-rules. Inside @media it is
- * always 16px; inside @container it is the root font-size, 14px here. So
- * 31.5rem is 441px, not 504px.
- */
-
-@container (width < 31.5rem) {
-	.codeDate {
-		display: block;
-	}
-
-	.bandDate,
-	.bandDate + .divider {
-		display: none;
-	}
-
-	.body {
-		padding: var(--sp-4) var(--sp-4) 0;
-	}
-
-	.title {
-		font-size: var(--t-h1);
-	}
-
-	.question {
-		font-size: var(--t-mili);
-	}
-
-	.band {
-		margin-inline: calc(var(--sp-4) * -1);
-		padding-inline: var(--sp-4);
-	}
-
-	.stub {
-		padding-inline: var(--sp-1);
-	}
 }
 
 @media (prefers-reduced-motion: reduce) {

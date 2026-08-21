@@ -129,28 +129,8 @@ const prefix = SECTION_CODES[section];
 					>{englishTitle}</span
 				>
 				{
-					isWip ? (
-						<span class={styles.meta}>En revisión</span>
-					) : (
-						<span class={styles.meta}>
-							<time
-								class={styles.bandDate}
-								datetime={isoDate}
-							>
-								{displayDate}
-							</time>
-							{readingTime && (
-								<>
-									<span
-										class={styles.divider}
-										aria-hidden="true"
-									>
-										|
-									</span>
-									<span>{readingTime} MIN</span>
-								</>
-							)}
-						</span>
+					!isWip && readingTime && (
+						<span class={styles.meta}>{readingTime} MIN</span>
 					)
 				}
 			</section>
