@@ -17,23 +17,17 @@
 	margin-bottom: var(--sp-4);
 }
 
-/* Size and family come from typo.css, like every other h1 on the site — a book
- * review, a note, a project. This used to run its own clamp() up to 2.5rem,
- * which made a bias the biggest heading anywhere. Only the tracking is its
- * own. */
 .postTitle {
 	letter-spacing: var(--tracking-widest);
 }
 
-/* An <h2>, so it is already --t-h2: the question keeps the body family and the
- * dimmer ink, not a size of its own. */
 .postQuestion {
 	font-family: var(--ff-rubik);
 	font-weight: 300;
 	color: var(--fg-2);
+	text-wrap: pretty;
 }
 
-/* La fila de la categoría: la etiqueta y su píldora. */
 .meta {
 	display: flex;
 	flex-direction: row;
