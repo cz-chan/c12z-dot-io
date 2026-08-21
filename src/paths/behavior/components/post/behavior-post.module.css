@@ -42,6 +42,7 @@
 
 .publish {
 	display: flex;
+	justify-content: space-between;
 	gap: var(--sp-4);
 
 	& .text {
