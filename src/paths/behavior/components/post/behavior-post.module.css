@@ -17,22 +17,23 @@
 	margin-bottom: var(--sp-4);
 }
 
+/* Size and family come from typo.css, like every other h1 on the site — a book
+ * review, a note, a project. This used to run its own clamp() up to 2.5rem,
+ * which made a bias the biggest heading anywhere. Only the tracking is its
+ * own. */
 .postTitle {
-	font-family: var(--ff-pixel);
-	font-size: clamp(1.75rem, 4vw, 2.5rem);
-	line-height: var(--lh-h1);
 	letter-spacing: var(--tracking-widest);
 }
 
+/* An <h2>, so it is already --t-h2: the question keeps the body family and the
+ * dimmer ink, not a size of its own. */
 .postQuestion {
 	font-family: var(--ff-rubik);
 	font-weight: 300;
-	font-size: var(--t-h3);
-	line-height: var(--lh-h3);
 	color: var(--fg-2);
 }
 
-/* Ranura opcional: hoy solo la usan los sesgos, para su píldora de categoría. */
+/* La fila de la categoría: la etiqueta y su píldora. */
 .meta {
 	display: flex;
 	flex-direction: row;
@@ -55,4 +56,22 @@
 		line-height: var(--lh-micro);
 		color: var(--fg-3);
 	}
+}
+
+.pill {
+	color: var(--cat-surface);
+	border: var(--hairline);
+	border-color: color-mix(in srgb, var(--cat-surface) 55%, transparent);
+	background-color: color-mix(in srgb, var(--cat-surface) 18%, transparent);
+
+	width: fit-content;
+	padding: var(--sp-1) var(--sp-2);
+	border-radius: var(--r-pill);
+	font-family: var(--ff-pixel);
+	font-size: var(--t-micro);
+	line-height: var(--lh-micro);
+	letter-spacing: var(--tracking-widest);
+	font-weight: bold;
+	text-transform: capitalize;
+	white-space: nowrap;
 }
