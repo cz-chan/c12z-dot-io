@@ -67,9 +67,8 @@
 }
 
 .card {
-	/* Falls back to a neutral so a new enum value degrades instead of vanishing */
-	--cat-surface: var(--fg-3);
-	--cat-band: var(--fg-3);
+	/* --cat-surface and --cat-band arrive as an inline style, from
+	 * category-colors.ts — the same map the post pages read for their pill. */
 
 	/* Plain tokens, no clamp() and no cqi. The card is one size at every
 	 * breakpoint, so there is nothing left for type and spacing to interpolate
@@ -93,71 +92,6 @@
 	transition:
 		border-color var(--t-base) var(--ease),
 		box-shadow var(--t-base) var(--ease);
-}
-
-/* ---- Category colours ------------------------------------ */
-
-.card[data-section="biases"][data-category="velocidad"] {
-	--cat-surface: var(--c-bias-category-speed-surface);
-	--cat-band: var(--c-bias-category-speed-band);
-}
-.card[data-section="biases"][data-category="memoria"] {
-	--cat-surface: var(--c-bias-category-memory-surface);
-	--cat-band: var(--c-bias-category-memory-band);
-}
-.card[data-section="biases"][data-category="juicio"] {
-	--cat-surface: var(--c-bias-category-judgment-surface);
-	--cat-band: var(--c-bias-category-judgment-band);
-}
-.card[data-section="biases"][data-category="contexto"] {
-	--cat-surface: var(--c-bias-category-context-surface);
-	--cat-band: var(--c-bias-category-context-band);
-}
-.card[data-section="biases"][data-category="percepción"] {
-	--cat-surface: var(--c-bias-category-perception-surface);
-	--cat-band: var(--c-bias-category-perception-band);
-}
-
-.card[data-section="mentalModels"][data-category="pensamiento general"] {
-	--cat-surface: var(--c-model-category-general-surface);
-	--cat-band: var(--c-model-category-general-band);
-}
-.card[data-section="mentalModels"][data-category="física, química y biología"] {
-	--cat-surface: var(--c-model-category-science-surface);
-	--cat-band: var(--c-model-category-science-band);
-}
-.card[data-section="mentalModels"][data-category="sistemas"] {
-	--cat-surface: var(--c-model-category-systems-surface);
-	--cat-band: var(--c-model-category-systems-band);
-}
-.card[data-section="mentalModels"][data-category="matematicas"] {
-	--cat-surface: var(--c-model-category-maths-surface);
-	--cat-band: var(--c-model-category-maths-band);
-}
-.card[data-section="mentalModels"][data-category="economía"] {
-	--cat-surface: var(--c-model-category-economics-surface);
-	--cat-band: var(--c-model-category-economics-band);
-}
-.card[data-section="mentalModels"][data-category="militar y guerra"] {
-	--cat-surface: var(--c-model-category-war-surface);
-	--cat-band: var(--c-model-category-war-band);
-}
-.card[data-section="mentalModels"][data-category="humanidad y juicio"] {
-	--cat-surface: var(--c-model-category-judgment-surface);
-	--cat-band: var(--c-model-category-judgment-band);
-}
-
-.card[data-section="designLaws"][data-category="composición visual"] {
-	--cat-surface: var(--c-design-category-layout-surface);
-	--cat-band: var(--c-design-category-layout-band);
-}
-.card[data-section="designLaws"][data-category="interacción"] {
-	--cat-surface: var(--c-design-category-interaction-surface);
-	--cat-band: var(--c-design-category-interaction-band);
-}
-.card[data-section="designLaws"][data-category="percepción"] {
-	--cat-surface: var(--c-design-category-perception-surface);
-	--cat-band: var(--c-design-category-perception-band);
 }
 
 /* ---- Body --------------------------------------------------------------- */
