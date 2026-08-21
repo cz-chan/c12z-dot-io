@@ -1,9 +1,10 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { render } from "astro:content";
-
 import styles from "./behavior-post.module.css";
 
+import { render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+import { categoryStyle } from "@behavior-path/lib/category-colors.ts";
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 import WipNotice from "@behavior-path/components/wip/WipNotice.astro";
 import PostSources from "@sources-path/components/PostSources.astro";
@@ -21,8 +22,11 @@ interface Props {
 }
 
 const { entry, backHref, backTitle } = Astro.props;
+
+const section = entry.collection;
 const { data, id } = entry;
-const { title, question, publishDate, lastTimeEdited, backlog } = data;
+const { title, question, publishDate, lastTimeEdited, backlog, category } =
+	data;
 
 const isWip = backlog === "wip";
 const wasEdited = lastTimeEdited && lastTimeEdited !== publishDate;
@@ -51,18 +55,21 @@ const { Content, headings } = await render(entry);
 			</h1>
 			<h2 class={styles.postQuestion}>{question}</h2>
 
-			{
-				Astro.slots.has("meta") && (
-					<section class={styles.meta}>
-						<slot name="meta" />
-					</section>
-				)
-			}
+			<section class={styles.meta}>
+				<p>Categoría:</p>
+				<span
+					class={styles.pill}
+					style={categoryStyle(section, category)}
+					>{category}</span
+				>
+			</section>
 
 			<section class={styles.publish}>
-				<span class={styles.text}>Publicado: {publishDate}</span>
+				<span class={styles.text}>
+					Publicado: {isWip ? "por determinar" : publishDate}
+				</span>
 				{
-					wasEdited && (
+					!isWip && wasEdited && (
 						<span class={styles.text}>Editado: {lastTimeEdited}</span>
 					)
 				}
