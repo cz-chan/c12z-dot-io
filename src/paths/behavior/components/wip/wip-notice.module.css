@@ -3,6 +3,7 @@
 .notice {
 	display: flex;
 	flex-direction: column;
+	align-self: center;
 	gap: var(--sp-3);
 	max-width: var(--wdth-17);
 	margin-block: var(--sp-8);
@@ -10,20 +11,20 @@
 	border: var(--wdth) solid var(--c-wip);
 	border-radius: var(--r-md);
 	background-color: color-mix(in srgb, var(--c-wip) 8%, transparent);
-}
 
-.badge {
-	color: var(--c-wip);
-	font-family: var(--ff-pixel);
-	font-size: var(--t-h2);
-	line-height: var(--lh-h2);
-	letter-spacing: var(--tracking-wide);
-}
+	& .badge {
+		color: var(--c-wip);
+		font-family: var(--ff-pixel);
+		font-size: var(--t-h2);
+		line-height: var(--lh-h2);
+		letter-spacing: var(--tracking-wide);
+	}
 
-.text {
-	color: var(--fg-2);
-	font-family: var(--ff-rubik);
-	font-size: var(--t-body);
-	line-height: var(--lh-body);
-	text-wrap: pretty;
+	& .text {
+		color: var(--fg-2);
+		font-family: var(--ff-rubik);
+		font-size: var(--t-body);
+		line-height: var(--lh-body);
+		text-wrap: pretty;
+	}
 }
