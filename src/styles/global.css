@@ -171,12 +171,6 @@
 	--c-model-category-judgment-surface: #a34468;
 	--c-model-category-judgment-band: #572f41;
 
-	/* ---- WIP ticket ---------------------------------*/
-	--c-wip-surface: #301e1d;
-	--c-wip-stripe: #472623;
-	--c-wip-ink: #f6877f;
-	--c-wip-bars: #e04b3c;
-
 	/* design laws */
 	--c-design-category-layout-surface: #3c6fae;
 	--c-design-category-layout-band: #2b425f;
@@ -392,12 +386,6 @@
 	--c-model-category-war-band: #8e804d;
 	--c-model-category-judgment-surface: #b76c89;
 	--c-model-category-judgment-band: #b76c89;
-
-	/* wip ticket */
-	--c-wip-surface: #fbcdc8;
-	--c-wip-stripe: #fcddd9;
-	--c-wip-ink: #73302c;
-	--c-wip-bars: #c0392b;
 
 	/* design laws */
 	--c-design-category-layout-surface: #5985ba;
