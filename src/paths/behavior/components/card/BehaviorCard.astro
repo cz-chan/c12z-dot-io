@@ -9,6 +9,7 @@ import {
 	type BehaviorSectionKeys,
 } from "@behavior-path/lib/card/behavior-fancycodes.ts";
 import type { BehaviorEntry } from "@behavior-path/lib/card/behavior-card.types.ts";
+import { categoryStyle } from "@behavior-path/lib/category-colors.ts";
 
 import Barcode from "@behavior-path/icons/Barcode.astro";
 import Neuron from "@behavior-path/icons/Neuron.astro";
@@ -81,7 +82,7 @@ const prefix = SECTION_CODES[section];
 	<article
 		class={styles.card}
 		data-section={section}
-		data-category={category}
+		style={categoryStyle(section, category)}
 		data-wip={isWip ? "" : undefined}
 	>
 		<section class={styles.body}>
