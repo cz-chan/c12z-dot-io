@@ -9,11 +9,13 @@ const { entry } = Astro.props;
 
 const book = entry as CollectionEntry<"books">;
 const { data, id } = book;
-const { cover, title, keywords, publishDate, titleTag } = data;
+const { cover, title, keywords, publishDate, titleTag, description } = data;
 
 const postName = `${titleTag}`;
 
-const postDescription = `Resumen e insights del libro ${title}`;
+const postDescription = description
+	? description
+	: `Resumen e insights del libro ${title}`;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
