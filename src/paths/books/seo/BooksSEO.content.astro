@@ -1,7 +1,6 @@
 ---
 import { type CollectionEntry } from "astro:content";
 
-import { SITE_DEFAULT_CONFIG } from "@/global/site-info";
 import { convertDateToISO8601 } from "@utils/validating-date.ts";
 
 import ContentSEO from "@/seo/ContentSEO.astro";
@@ -12,9 +11,9 @@ const book = entry as CollectionEntry<"books">;
 const { data, id } = book;
 const { cover, title, keywords, publishDate, titleTag } = data;
 
-const postName = `${titleTag} - ${SITE_DEFAULT_CONFIG.title}`;
+const postName = `${titleTag}`;
 
-const postDescription = `Resumen e insights de ${title} - ${SITE_DEFAULT_CONFIG.title}`;
+const postDescription = `Resumen e insights del libro ${title}`;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
