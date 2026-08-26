@@ -91,7 +91,7 @@ const booksCollection = defineCollection({
 					"economics",
 					"creativity",
 					"philosophy",
-					"other",
+					"business",
 				]),
 				score: z
 					.number()
