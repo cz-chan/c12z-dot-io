@@ -23,15 +23,12 @@ const { data, id } = entry;
 const {
 	title,
 	score,
-	authors,
+	author,
 	readingTime,
 	publishDate,
 	quote,
 	lastTimeEdited,
 } = data;
-
-/** El schema acepta un autor suelto o una lista; aquí siempre es lista. */
-const authorsInArry = Array.isArray(authors) ? authors : [authors];
 
 const { Content, headings } = await render(entry);
 ---
@@ -55,7 +52,7 @@ const { Content, headings } = await render(entry);
 				{title}
 			</h1>
 			<span class={styles.author}>
-				de {authorsInArry[0].name}
+				de {author.name}
 			</span>
 			<BookScore
 				entry={entry}
@@ -86,19 +83,16 @@ const { Content, headings } = await render(entry);
 	</section>
 	<section class="lettering">
 		<h2>Autor(es)</h2>
-		{
-			authorsInArry.map((author) => (
-				<div class={styles.author}>
-					<a
-						class={styles.authorLink}
-						href={author.link}
-						target="_blank"
-						rel="noopener"
-					>
-						{author.name}
-					</a>
-				</div>
-			))
-		}
+
+		<div class={styles.author}>
+			<a
+				class={styles.authorLink}
+				href={author.link}
+				target="_blank"
+				rel="noopener"
+			>
+				{author.name}
+			</a>
+		</div>
 	</section>
 </article>
