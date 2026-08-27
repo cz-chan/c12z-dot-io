@@ -78,7 +78,6 @@ const booksCollection = defineCollection({
 					src: image(),
 					alt: z.string(),
 				}),
-				titleTag: z.string().max(60),
 				description: z.string().min(110).max(160),
 				abstract: z.string().min(250).max(410),
 				backlog: z.enum(["wip", "upload"]),
@@ -104,38 +103,19 @@ const booksCollection = defineCollection({
 					.int("The numbers must be integer"),
 				publishDate: dateField,
 				lastTimeEdited: dateField.optional(),
-				authors: z.union([
-					z.object({
-						name: z.string(),
-						link: z
-							.string()
-							.refine(
-								(link) =>
-									link.startsWith("https://www.") ||
-									link.startsWith("https://"),
-								{
-									message:
-										"The author's URL must start with 'https://www.' or 'https://'",
-								},
-							),
-					}),
-					z.array(
-						z.object({
-							name: z.string(),
-							link: z
-								.string()
-								.refine(
-									(link) =>
-										link.startsWith("https://www.") ||
-										link.startsWith("https://"),
-									{
-										message:
-											"The author's URL must start with 'https://www.' or 'https://'",
-									},
-								),
-						}),
-					),
-				]),
+				author: z.object({
+					name: z.string(),
+					link: z
+						.string()
+						.refine(
+							(link) =>
+								link.startsWith("https://www.") || link.startsWith("https://"),
+							{
+								message:
+									"The author's URL must start with 'https://www.' or 'https://'",
+							},
+						),
+				}),
 				readingTime: z.number().optional(),
 				keywords: z.array(z.string()),
 			})
