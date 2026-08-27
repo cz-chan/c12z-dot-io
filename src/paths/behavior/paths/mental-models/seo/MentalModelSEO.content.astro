@@ -1,23 +1,18 @@
 ---
-/**
- * !Este elemento va dentro de cada una de las rutas dinámicas y no de los index de las páginas generales
- */
-
 import { type CollectionEntry } from "astro:content";
 import ContentSEO from "@/seo/ContentSEO.astro";
-import { SITE_DEFAULT_CONFIG } from "@/global/site-info.ts";
 import { convertDateToISO8601 } from "@utils/validating-date.ts";
 
 const { entry } = Astro.props;
 
 const model = entry as CollectionEntry<"mentalModels">;
 const { data, id } = model;
-const { cover, description, keywords, publishDate, lastTimeEdited, titleTag } =
+const { cover, description, keywords, publishDate, lastTimeEdited, title } =
 	data;
 
-const postName = `${titleTag} - ${SITE_DEFAULT_CONFIG.title}`;
+const postName = `${title} - by cz`;
 
-const postDescription = `${description} - ${SITE_DEFAULT_CONFIG.title}`;
+const postDescription = `${description} - by cz`;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 

@@ -1,10 +1,5 @@
 ---
-/**
- * !Este elemento va dentro de cada una de las rutas dinámicas y no de los index de las páginas generales
- */
-
 import ContentSEO from "@/seo/ContentSEO.astro";
-import { SITE_DEFAULT_CONFIG } from "@/global/site-info";
 import { convertDateToISO8601 } from "@utils/validating-date.ts";
 import { type CollectionEntry } from "astro:content";
 
@@ -12,12 +7,12 @@ const { entry } = Astro.props;
 
 const bias = entry as CollectionEntry<"biases">;
 const { data, id } = bias;
-const { cover, description, keywords, publishDate, lastTimeEdited, titleTag } =
+const { cover, title, description, keywords, publishDate, lastTimeEdited } =
 	data;
 
-const postName = `${titleTag} - ${SITE_DEFAULT_CONFIG.title}`;
+const postName = `${title} - by cz`;
 
-const postDescription = `${description} - ${SITE_DEFAULT_CONFIG.title}`;
+const postDescription = `${description} - by cz`;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
