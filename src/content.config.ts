@@ -225,7 +225,7 @@ const sourceSchema = z.object({
  */
 const behaviorContentBaseSchema = (image: ImageFunction) =>
 	z.object({
-		title: z.string().max(80),
+		title: z.string().max(60),
 		englishTitle: z.string().max(80),
 		question: z.string().min(50).max(120),
 		contentCount: z.number().int().min(1).max(999),
@@ -233,7 +233,6 @@ const behaviorContentBaseSchema = (image: ImageFunction) =>
 			src: image().optional(),
 			alt: z.string().optional(),
 		}),
-		titleTag: z.string().max(60),
 		description: z.string().min(110).max(160),
 		backlog: z.enum(["wip", "upload"]),
 		publishDate: dateField,
