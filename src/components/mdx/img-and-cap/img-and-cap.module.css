@@ -5,14 +5,28 @@
 	gap: var(--sp-2);
 	text-align: left;
 
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+
+	/*
+	 * El ancho pedido va en `max-width`, nunca en `width`: un px en `width`
+	 * fija el `min-content` del bloque y estira el `main` (que es fit-content),
+	 * provocando scroll horizontal en móvil. `--inc-max` es el tamaño real del
+	 * archivo, para no escalar hacia arriba y que no se difumine.
+	 */
+	.theImage,
+	.theCaption {
+		width: 100%;
+		max-width: min(var(--inc-width, 90%), var(--inc-max, 100%));
+	}
+
 	.theImage {
-		width: 90%;
 		height: auto;
 		border-radius: var(--wdth-05);
 	}
 
 	.theCaption {
-		width: 90%;
 		color: var(--fg-3);
 		font-size: var(--t-micro);
 		line-height: var(--lh-mili);
