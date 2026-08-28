@@ -1,0 +1,44 @@
+---
+import ContentSEO from "@/seo/ContentSEO.astro";
+import { convertDateToISO8601 } from "@utils/validating-date.ts";
+import type { BehaviorEntry } from "@behavior-path/lib/card/behavior-card.types.ts";
+import { getBehaviorLinkSection } from "@/paths/behavior/lib/get-behavior-link-section.ts";
+
+interface Props {
+	entry: BehaviorEntry;
+}
+
+const { entry } = Astro.props;
+
+const { data, id, collection } = entry;
+const { cover, title, description, keywords, publishDate, lastTimeEdited } =
+	data;
+
+const collectionLink = getBehaviorLinkSection(collection);
+
+const postName = `${title} - by cz`;
+
+const postDescription = `${description} - by cz`;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// OG dinámico generado en build time (src/pages/og/behavior/<collection>/[...id].png.ts)
+const ogImageSrc = new URL(`/og/${collectionLink}/${id}.png`, Astro.site);
+const ogImageAlt = cover.alt || postName;
+
+const publisDateInISO = convertDateToISO8601(publishDate);
+const lastTimeEditedInISO = convertDateToISO8601(
+	!lastTimeEdited ? publishDate : lastTimeEdited,
+);
+---
+
+<ContentSEO
+	postName={postName}
+	postDescription={postDescription}
+	canonicalURL={canonicalURL}
+	ogImageSrc={ogImageSrc}
+	ogImageAlt={ogImageAlt}
+	publisDateInISO={publisDateInISO}
+	lastTimeEditedInISO={lastTimeEditedInISO}
+	keywords={keywords}
+/>

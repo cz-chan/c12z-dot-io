@@ -23,15 +23,14 @@ export async function getStaticPaths() {
 // Template C: carátula del libro + título + autor
 export const GET: APIRoute<Props> = async ({ props }) => {
 	const { entry } = props;
-	const { title, authors } = entry.data;
+	const { title, author } = entry.data;
 
-	const authorsInArray = Array.isArray(authors) ? authors : [authors];
 	const cover = await loadCover(entry);
 
 	return renderOgImage(
 		coverOgTemplate({
 			title,
-			subtitle: authorsInArray[0].name,
+			subtitle: author.name,
 			cover,
 			footerUrl: `c12z.io/biblioteca/${entry.id}`,
 		}),

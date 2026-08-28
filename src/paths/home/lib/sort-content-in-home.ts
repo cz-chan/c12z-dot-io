@@ -1,6 +1,6 @@
-import { SECTION_LISTS } from "./section-lists";
+import { SECTION_LISTS } from "./section-lists.ts";
 import { getCollection } from "astro:content";
-import type { SectionItem } from "./section-lists";
+import type { SectionItem } from "./section-lists.ts";
 import { formatNoteDate } from "@notes-path/lib/format-note-date.ts";
 
 const parseDate = (theDate: string) =>
@@ -48,13 +48,12 @@ const recentBook: SectionItem[] = uploadedBooks
 	.sort(byNewest)
 	.slice(0, 4)
 	.map((entry) => {
-		const authors = Array.isArray(entry.data.authors)
-			? entry.data.authors
-			: [entry.data.authors];
+		const { data, id } = entry;
+		const { author, title, publishDate } = data;
 		return {
-			text: entry.data.title,
-			href: `/biblioteca/${entry.id}`,
-			meta: `${authors[0]?.name ?? ""} · ${entry.data.publishDate.split("/")[2]}`,
+			text: title,
+			href: `/biblioteca/${id}`,
+			meta: `${author.name ?? ""} · ${publishDate.split("/")[2]}`,
 		};
 	});
 
