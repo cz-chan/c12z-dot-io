@@ -5,7 +5,8 @@
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "astro check && astro build && rm -rf dist && rm -rf .vercel/* && mkdir -p .vercel",
+		"build": "astro check && astro build",
+		"check:build": "astro check && astro build && rm -rf dist && rm -rf .vercel/* && mkdir -p .vercel",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
