@@ -2,7 +2,7 @@
 import ContentSEO from "@/seo/ContentSEO.astro";
 import { convertDateToISO8601 } from "@utils/validating-date.ts";
 import type { BehaviorEntry } from "@behavior-path/lib/card/behavior-card.types.ts";
-import { getBehaviorLinkSection } from "@/paths/behavior/lib/get-behavior-link-section.ts";
+import { getBehaviorLinkSection } from "@behavior-path/lib/get-behavior-link-section.ts";
 
 interface Props {
 	entry: BehaviorEntry;
@@ -23,7 +23,7 @@ const postDescription = `${description} - by cz`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 // OG dinámico generado en build time (src/pages/og/behavior/<collection>/[...id].png.ts)
-const ogImageSrc = new URL(`/og/${collectionLink}/${id}.png`, Astro.site);
+const ogImageSrc = new URL(`/og${collectionLink}/${id}.png`, Astro.site);
 const ogImageAlt = cover.alt || postName;
 
 const publisDateInISO = convertDateToISO8601(publishDate);
