@@ -2,8 +2,8 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
-import BiasSEO from "@biases-path/seo/BiasSEO.content.astro";
 import BiasDetail from "@biases-path/components/BiasDetail.astro";
+import BehaviorSEO from "@behavior-path/seo/BehaviorSEO.content.astro";
 
 interface Props {
 	entry: CollectionEntry<"biases">;
@@ -22,7 +22,7 @@ const { entry } = Astro.props;
 ---
 
 <MainLayout>
-	<BiasSEO
+	<BehaviorSEO
 		slot="head"
 		entry={entry}
 	/>

@@ -2,8 +2,8 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
-import DesignLawsSEO from "@design-laws-path/seo/DesignLawsSEO.content.astro";
 import DesignLawDetail from "@design-laws-path/components/DesignLawDetail.astro";
+import BehaviorSEO from "@behavior-path/seo/BehaviorSEO.content.astro";
 
 interface Props {
 	entry: CollectionEntry<"designLaws">;
@@ -22,7 +22,7 @@ const { entry } = Astro.props;
 ---
 
 <MainLayout>
-	<DesignLawsSEO
+	<BehaviorSEO
 		slot="head"
 		entry={entry}
 	/>

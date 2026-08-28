@@ -2,7 +2,7 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 
 import MainLayout from "@layouts/MainLayout.astro";
-import MentalModelSEO from "@mental-models-path/seo/MentalModelSEO.content.astro";
+import BehaviorSEO from "@behavior-path/seo/BehaviorSEO.content.astro";
 import MentalModelDetail from "@mental-models-path/components/MentalModelDetail.astro";
 
 interface Props {
@@ -22,7 +22,7 @@ const { entry } = Astro.props;
 ---
 
 <MainLayout>
-	<MentalModelSEO
+	<BehaviorSEO
 		slot="head"
 		entry={entry}
 	/>
