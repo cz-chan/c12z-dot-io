@@ -1,11 +1,10 @@
 ---
 import { getCollection } from "astro:content";
-import ProjectHeader from "./ProjectHeader.astro";
+import styles from "./project.module.css";
 
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
-import ProjectCard from "./ProjectCard.astro";
-
-import styles from "./project.module.css";
+import ProjectHeader from "@projects-path/components/ProjectHeader.astro";
+import ProjectCard from "@projects-path/components/ProjectCard.astro";
 
 const projects = await getCollection("projects");
 projects.sort((a, b) => {

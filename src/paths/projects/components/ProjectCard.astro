@@ -2,7 +2,7 @@
 import styles from "./project.module.css";
 import { getCollection, type CollectionEntry } from "astro:content";
 
-import ProjectCover from "./ProjectCover.astro";
+import ProjectCover from "@projects-path/components/ProjectCover.astro";
 
 interface Props {
 	entry: CollectionEntry<"projects">;

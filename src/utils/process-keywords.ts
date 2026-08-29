@@ -1,23 +1,23 @@
-import type { PageKeywords } from "@/lib/keywords";
+import type { PageKeywords } from "@/lib/keywords.ts";
 
 export default function processKeywords(
-  pageKeywords: PageKeywords | string[]
+	pageKeywords: PageKeywords | string[],
 ): PageKeywords {
-  if (!pageKeywords) {
-    return { keywords: [] };
-  }
+	if (!pageKeywords) {
+		return { keywords: [] };
+	}
 
-  // Si es un array, usarlo directamente
-  // Si es un objeto PageKeywords, usar su propiedad keywords
-  const keywords = Array.isArray(pageKeywords)
-    ? pageKeywords
-    : pageKeywords.keywords;
+	// Si es un array, usarlo directamente
+	// Si es un objeto PageKeywords, usar su propiedad keywords
+	const keywords = Array.isArray(pageKeywords)
+		? pageKeywords
+		: pageKeywords.keywords;
 
-  const uniqueKeywords = Array.from(
-    new Set(keywords.map((kw) => kw.toLowerCase().trim().replace(/\s+/g, "-")))
-  );
+	const uniqueKeywords = Array.from(
+		new Set(keywords.map((kw) => kw.toLowerCase().trim().replace(/\s+/g, "-"))),
+	);
 
-  return { keywords: uniqueKeywords };
+	return { keywords: uniqueKeywords };
 }
 
 // export default function processKeywords(pageKeywords: {
