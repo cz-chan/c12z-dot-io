@@ -7,7 +7,8 @@
 > state. For the OG images system see [`pages/og/og-images.md`](./pages/og/og-images.md)
 > and [`lib/og/og-render.md`](./lib/og/og-render.md); for the sources drawer,
 > [`paths/sources.md`](./paths/sources.md); for the Zod schemas of the
-> collections, [`content-config.md`](./content-config.md).
+> collections, [`content-config.md`](./content-config.md); for the `OwnThoughts`
+> callout, [`components/mdx/own-thoughts.md`](./components/mdx/own-thoughts.md).
 
 ## 0. Where the agent files are
 
@@ -222,7 +223,8 @@ everything else is `.astro`.**
 **`mdx/` exists to make a rule visible.** Those components have no importer in
 any `.astro` file — the `.mdx` posts import them. Zero imports is their normal
 state, not dead code. The same is true of the icons in `icons/` kept for manual
-use (`YingYang`, `Bulb`, `GoOut`, `Moon`, `Sun`).
+use (`YingYang`, `Bulb`, `GoOut`, `Moon`, `Sun`). `OwnThoughts` documents its props
+and its MDX usage in [`components/mdx/own-thoughts.md`](./components/mdx/own-thoughts.md).
 
 **Shared means 2+ paths, and that is enforced.** Anything a single path uses
 lives in that path, however generic it looks:
