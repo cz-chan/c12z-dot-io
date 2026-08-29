@@ -2,9 +2,10 @@
    Used by 3+ paths (biases, design-laws, mental-models), so it lives here
    rather than in any one of them.
 
-   Each icon composes these two classes and only declares what is its own,
-   through the two custom properties below. The icon owns its wrapper: a
-   header renders `<MapIcon />` and nothing else. */
+   Each icon imports this module from its .astro and sets its own value for
+   the two custom properties below (CSS `composes` is not used: a path alias
+   does not resolve inside a .css file). The icon owns its wrapper — a header
+   renders `<MapIcon />` and nothing else. */
 
 .wrap {
 	width: fit-content;

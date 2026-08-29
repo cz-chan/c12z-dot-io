@@ -33,7 +33,7 @@ import GoToIn404 from "./GoToIn404.astro";
 </section>
 
 <script>
-	import { initErrorPath } from "../scripts/error-path.ts";
+	import { initErrorPath } from "@error-path/scripts/error-path.ts";
 
 	initErrorPath();
 	document.addEventListener("astro:page-load", initErrorPath);

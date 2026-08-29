@@ -19,7 +19,7 @@
  */
 import styles from "./sources.module.css";
 
-import { getTopics, countSources } from "../lib/get-topics.ts";
+import { getTopics, countSources } from "@sources-path/lib/get-topics.ts";
 
 import TopicFolder from "./TopicFolder.astro";
 import FolderDialogScript from "./FolderDialogScript.astro";
@@ -94,7 +94,7 @@ const totalSources = countSources(topics);
 </section>
 
 <script>
-	import { initSourcesFilters } from "../scripts/sources-filters.ts";
+	import { initSourcesFilters } from "@sources-path/scripts/sources-filters.ts";
 
 	initSourcesFilters();
 	document.addEventListener("astro:page-load", initSourcesFilters);

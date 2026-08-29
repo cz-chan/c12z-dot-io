@@ -14,8 +14,8 @@ import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 import { pluralize } from "@utils/pluralize.ts";
 
 import { SOURCES_CATEGORY_LABELS } from "@/lib/content-categories/sources.categories.ts";
-import { countSourceTypes, buildTally } from "../lib/count-source-types.ts";
-import type { Topic } from "../lib/get-topics.ts";
+import { countSourceTypes, buildTally } from "@sources-path/lib/count-source-types.ts";
+import type { Topic } from "@sources-path/lib/get-topics.ts";
 
 interface Props {
 	/** built by `getTopics()` and handed over by `getStaticPaths` */
@@ -126,7 +126,7 @@ const TYPE_FILTERS = [...byType.keys()];
 </section>
 
 <script>
-	import { initTopicFilters } from "../scripts/topic-filters.ts";
+	import { initTopicFilters } from "@sources-path/scripts/topic-filters.ts";
 
 	initTopicFilters();
 	document.addEventListener("astro:page-load", initTopicFilters);
