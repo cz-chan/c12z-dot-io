@@ -1,13 +1,11 @@
 ---
 import styles from "./design-laws.module.css";
 
-import SplitScreenIcon from "../icons/SplitScreenIcon.astro";
+import SplitScreenIcon from "@design-laws-path/icons/SplitScreenIcon.astro";
 ---
 
 <header class={styles.designHeader}>
-	<div class={styles.splitScreenIcon}>
-		<SplitScreenIcon />
-	</div>
+	<SplitScreenIcon class={styles.splitScreenIcon} />
 
 	<section class={styles.desc}>
 		<h1

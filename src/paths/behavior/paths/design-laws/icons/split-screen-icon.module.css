@@ -1,0 +1,19 @@
+/* Lo único propio de este icono: el contraste entre los dos lados.
+   La forma compartida vive en src/paths/behavior/icons/section-icon.module.css
+   (los alias no resuelven dentro de un .css: se importa desde el .astro). */
+
+/* El lado roto: trazo fino y en rojo, se lee como error */
+.bad {
+	stroke: var(--c-wip);
+	stroke-width: 0.9;
+}
+
+/* El lado que funciona: color de la sección */
+.good {
+	stroke: var(--c-design);
+}
+
+/* Único trazo con peso de todo el icono: el CTA */
+.cta {
+	stroke-width: 1.9;
+}

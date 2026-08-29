@@ -1,0 +1,22 @@
+/* Shared shape for the big section icons that head a behavior page.
+   Used by 3+ paths (biases, design-laws, mental-models), so it lives here
+   rather than in any one of them.
+
+   Each icon composes these two classes and only declares what is its own,
+   through the two custom properties below. The icon owns its wrapper: a
+   header renders `<MapIcon />` and nothing else. */
+
+.wrap {
+	width: fit-content;
+	max-width: var(--wdth-12);
+	margin: auto;
+}
+
+.icon {
+	color: var(--icon-color, currentColor);
+	stroke-width: var(--icon-stroke, 1);
+	padding-inline: var(--sp-2);
+	width: 100%;
+	height: auto;
+	flex-shrink: 0;
+}

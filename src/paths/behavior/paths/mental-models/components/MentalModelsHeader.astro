@@ -2,7 +2,7 @@
 import styles from "./mental-models.module.css";
 
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
-import MapIcon from "../icons/MapIcon.astro";
+import MapIcon from "@mental-models-path/icons/MapIcon.astro";
 ---
 
 <GoBackInTop
@@ -11,9 +11,7 @@ import MapIcon from "../icons/MapIcon.astro";
 />
 
 <header class={styles.pageHeader}>
-	<div class={styles.mapIcon}>
-		<MapIcon />
-	</div>
+	<MapIcon class={styles.mapIcon} />
 
 	<section class={styles.desc}>
 		<h1

@@ -1,26 +1,38 @@
 ---
-import styles from "../components/mental-models.module.css";
+import styles from "@behavior-path/icons/section-icon.module.css";
+
+interface Props {
+	/** Clase del contenedor padre: colocación y visibilidad responsive. */
+	class?: string;
+}
+
+const { class: className } = Astro.props;
 ---
 
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	class={styles.icon}
-	viewBox="0 0 48 48"
-	fill="none"
-	stroke="currentColor"
-	stroke-linecap="round"
-	stroke-linejoin="round"
-	aria-hidden="true"
-	role="img"
+<div
+	class:list={[styles.wrap, className]}
+	style={`--icon-color: var(--c-mental-model)`}
 >
-	<!-- ruido: lo complejo que entra -->
-	<path
-		d="M3.4 14.6c1.5-2.1 2.6 1.7 4.2-.4s2.8 1.4 4.4-.6M2.6 22.9c1.8-2.4 3 2 4.9-.4 1.8-2.3 3.2 1.5 5-.7m-9.1 9.5c1.6-2.2 2.7 1.8 4.4-.4 1.7-2.1 2.9 1.4 4.6-.7"
-	></path>
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		class={styles.icon}
+		viewBox="0 0 48 48"
+		fill="none"
+		stroke="currentColor"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		aria-hidden="true"
+		role="img"
+	>
+		<!-- ruido: lo complejo que entra -->
+		<path
+			d="M3.4 14.6c1.5-2.1 2.6 1.7 4.2-.4s2.8 1.4 4.4-.6M2.6 22.9c1.8-2.4 3 2 4.9-.4 1.8-2.3 3.2 1.5 5-.7m-9.1 9.5c1.6-2.2 2.7 1.8 4.4-.4 1.7-2.1 2.9 1.4 4.6-.7"
+		></path>
 
-	<!-- el modelo: prisma que ordena -->
-	<path d="M18.6 8.7 31.8 23.9 18.4 39.2Z"></path>
+		<!-- el modelo: prisma que ordena -->
+		<path d="M18.6 8.7 31.8 23.9 18.4 39.2Z"></path>
 
-	<!-- señal: lo simple que sale -->
-	<path d="M34.4 14.1h9.9m-9.9 6.5h10.6m-10.6 6.6h9.4m-9.4 6.6h10.3"></path>
-</svg>
+		<!-- señal: lo simple que sale -->
+		<path d="M34.4 14.1h9.9m-9.9 6.5h10.6m-10.6 6.6h9.4m-9.4 6.6h10.3"></path>
+	</svg>
+</div>

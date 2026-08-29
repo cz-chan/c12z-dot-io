@@ -1,44 +1,56 @@
 ---
-import styles from "../components/mental-models.module.css";
+import styles from "@behavior-path/icons/section-icon.module.css";
+
+interface Props {
+	/** Clase del contenedor padre: colocación y visibilidad responsive. */
+	class?: string;
+}
+
+const { class: className } = Astro.props;
 ---
 
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	class={styles.icon}
-	viewBox="0 0 48 48"
-	fill="none"
-	stroke="currentColor"
-	stroke-linecap="round"
-	stroke-linejoin="round"
-	aria-hidden="true"
-	role="img"
+<div
+	class:list={[styles.wrap, className]}
+	style={`--icon-color: var(--c-mental-model)`}
 >
-	<path
-		d="M4.6 10.9c5.5-1.7 11.4 1.4 17.8-.5 6.7-2 13.6 1.1 20.8-.9l.7 27.9c-6.9 1.9-13.9-.9-20.5 1-6.4 1.8-12.4-.9-18.6.8Z"
-	></path>
-	<path d="M17.2 11.2c.5 9.2.6 18.4.4 27.6M30.7 10c-.4 9.1-.5 18.2-.3 27.3"
-	></path>
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		class={styles.icon}
+		viewBox="0 0 48 48"
+		fill="none"
+		stroke="currentColor"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		aria-hidden="true"
+		role="img"
+	>
+		<path
+			d="M4.6 10.9c5.5-1.7 11.4 1.4 17.8-.5 6.7-2 13.6 1.1 20.8-.9l.7 27.9c-6.9 1.9-13.9-.9-20.5 1-6.4 1.8-12.4-.9-18.6.8Z"
+		></path>
+		<path d="M17.2 11.2c.5 9.2.6 18.4.4 27.6M30.7 10c-.4 9.1-.5 18.2-.3 27.3"
+		></path>
 
-	<path d="M6.4 21.1 9.3 15.8l2.9 5.2m-1.1-2 1.4-.8 1.3 2.4"></path>
+		<path d="M6.4 21.1 9.3 15.8l2.9 5.2m-1.1-2 1.4-.8 1.3 2.4"></path>
 
-	<path d="M6 27c1-.9 2-.9 3 0s2 .9 3 0m-6 2.5c1-.9 2-.9 3 0"></path>
+		<path d="M6 27c1-.9 2-.9 3 0s2 .9 3 0m-6 2.5c1-.9 2-.9 3 0"></path>
 
-	<path
-		stroke-dasharray="2.8 1.9"
-		d="M10.8 33.9c3.4-2 1.5-6.5 5.2-7.9 3.9-1.5 5.5 2 9 1 3.8-1.1 4.1-5.1 8.3-8"
-	></path>
-	<circle
-		cx="10.8"
-		cy="33.9"
-		r="1.3"
-	></circle>
+		<path
+			stroke-dasharray="2.8 1.9"
+			d="M10.8 33.9c3.4-2 1.5-6.5 5.2-7.9 3.9-1.5 5.5 2 9 1 3.8-1.1 4.1-5.1 8.3-8"
+		></path>
+		<circle
+			cx="10.8"
+			cy="33.9"
+			r="1.3"
+		></circle>
 
-	<path d="M34.9 13.6l4.1 4.3m0-4.3-4.1 4.3"></path>
+		<path d="M34.9 13.6l4.1 4.3m0-4.3-4.1 4.3"></path>
 
-	<circle
-		cx="38"
-		cy="30.4"
-		r="3.4"
-	></circle>
-	<path d="M38 27l.9 2.5 2.5.9-2.5.9-.9 2.5-.9-2.5-2.5-.9 2.5-.9Z"></path>
-</svg>
+		<circle
+			cx="38"
+			cy="30.4"
+			r="3.4"
+		></circle>
+		<path d="M38 27l.9 2.5 2.5.9-2.5.9-.9 2.5-.9-2.5-2.5-.9 2.5-.9Z"></path>
+	</svg>
+</div>

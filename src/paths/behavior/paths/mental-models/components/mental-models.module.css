@@ -47,21 +47,6 @@
 	}
 }
 
-.mapIcon {
-	width: fit-content;
-	max-width: var(--wdth-12);
-	margin: auto;
-
-	& .icon {
-		color: var(--c-mental-model);
-		padding-inline: var(--sp-2);
-		width: 100%;
-		height: auto;
-		flex-shrink: 0;
-		stroke-width: 1;
-	}
-}
-
 /* ---- Sumario ------------------------------------------------ */
 
 .index {

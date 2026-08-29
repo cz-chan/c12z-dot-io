@@ -40,32 +40,3 @@
 
 /* ---- Icono -------------------------------------------------- */
 
-.splitScreenIcon {
-	width: fit-content;
-	max-width: var(--wdth-12);
-	margin: auto;
-
-	& .icon {
-		padding-inline: var(--sp-2);
-		width: 100%;
-		height: auto;
-		flex-shrink: 0;
-		stroke-width: 1;
-	}
-
-	/* El lado roto: trazo fino y en rojo, se lee como error */
-	& .bad {
-		stroke: var(--c-wip);
-		stroke-width: 0.9;
-	}
-
-	/* El lado que funciona: color de la sección */
-	& .good {
-		stroke: var(--c-design);
-	}
-
-	/* Único trazo con peso de todo el icono: el CTA */
-	& .cta {
-		stroke-width: 1.9;
-	}
-}

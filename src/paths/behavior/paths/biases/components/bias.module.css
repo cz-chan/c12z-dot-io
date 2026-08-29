@@ -66,20 +66,6 @@
 	}
 }
 
-.brainIcon {
-	width: fit-content;
-	max-width: var(--wdth-12);
-	margin: auto;
-
-	& .icon {
-		color: var(--c-bias);
-		padding-inline: var(--sp-2);
-		width: 100%;
-		height: auto;
-		flex-shrink: 0;
-	}
-}
-
 .biasCard {
 	position: relative;
 	display: flex;
