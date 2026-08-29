@@ -1,15 +1,14 @@
 ---
-import styles from "./book.module.css"
+import styles from "./book.module.css";
 import type { CollectionEntry } from "astro:content";
 
-/* Este componente va enfocado a mostra el abstract del libro pero a su vez, 
-estará optimizado para los LLMs y el archivo llms.txt.
-En este archivo, se le muestran a los LLMs qué es lo que hace el sitio y además,
-como no sabemos hasta que punto lo usan o cómo están funcionando, el incorporar esto es algo experimental.
+/* 
+This component is designed to display the book's abstract, but at the same time, 
+it will be optimized for LLMs and the llms.txt file.
 */
 
 interface Props {
-  entry: CollectionEntry<"books">;
+	entry: CollectionEntry<"books">;
 }
 
 const { entry } = Astro.props;
@@ -18,30 +17,25 @@ const { data } = entry;
 const { abstract } = data;
 ---
 
-<details
-  class={styles.bookSpoiler}
->
-  <summary
-    class={styles.summary}
-  >
-    <h2 class={styles.title}>
-      Spoiler
-      <svg
-        fill="none"
-        stroke="currentColor"
-        class={styles.arrow}
-        viewBox="0 0 24 24"
-        ><path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="m19 9-7 7-7-7"></path></svg
-      >
-    </h2>
-  </summary>
-  <section
-    class={styles.content}
-  >
-    <p class={styles.abstract}>{abstract}</p>
-  </section>
+<details class={styles.bookSpoiler}>
+	<summary class={styles.summary}>
+		<h2 class={styles.title}>
+			Spoiler
+			<svg
+				fill="none"
+				stroke="currentColor"
+				class={styles.arrow}
+				viewBox="0 0 24 24"
+				><path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="m19 9-7 7-7-7"
+				></path></svg
+			>
+		</h2>
+	</summary>
+	<section class={styles.content}>
+		<p class={styles.abstract}>{abstract}</p>
+	</section>
 </details>

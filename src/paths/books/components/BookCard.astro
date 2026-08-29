@@ -2,9 +2,9 @@
 import styles from "./book.module.css"
 import type { CollectionEntry } from "astro:content";
 
-import BookScore from "./BookScore.astro";
-import BookCover from "./BookCover.astro";
-import BookCategory from "./BookCategory.astro";
+import BookScore from "@books-path/components/BookScore.astro";
+import BookCover from "@books-path/components/BookCover.astro";
+import BookCategory from "@books-path/components/BookCategory.astro";
 
 interface Props {
   entry: CollectionEntry<"books">;

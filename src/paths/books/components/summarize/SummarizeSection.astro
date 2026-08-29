@@ -1,20 +1,14 @@
 ---
-import styles from "./summarize-section.module.css"
-import SummarizeLLMs from "./SummarizeLLMs.astro";
+import styles from "./summarize-section.module.css";
+import SummarizeLLMs from "@books-path/components/summarize/SummarizeLLMs.astro";
 ---
 
-<section
-  class={styles.summary}
->
-  <p
-    class={styles.what}
-  >
-    Puedes resumirlo con:
-  </p>
-  <div class={styles.llms}>
-    <SummarizeLLMs ai="chatgpt" />
-    <SummarizeLLMs ai="claude" />
-    <SummarizeLLMs ai="grok" />
-    <SummarizeLLMs ai="perplexity" />
-  </div>
+<section class={styles.summary}>
+	<p class={styles.what}>Puedes resumirlo con:</p>
+	<div class={styles.llms}>
+		<SummarizeLLMs ai="chatgpt" />
+		<SummarizeLLMs ai="claude" />
+		<SummarizeLLMs ai="grok" />
+		<SummarizeLLMs ai="perplexity" />
+	</div>
 </section>

@@ -1,26 +1,37 @@
 ---
-import styles from "./book.module.css"
+import styles from "./book.module.css";
 import { getCollection } from "astro:content";
-import BookCard from "./BookCard.astro";
-import LibraryHeader from "./LibraryHeader.astro";
+
+import BookCard from "@books-path/components/BookCard.astro";
+import LibraryHeader from "@books-path/components/LibraryHeader.astro";
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 
 const library = await getCollection("books");
 
 // Sort by publishDate descending (most recent first)
 library.sort((a, b) => {
-  const dateA = new Date(
-    a.data.publishDate.split("/").reverse().join("-")
-  ).getTime();
-  const dateB = new Date(
-    b.data.publishDate.split("/").reverse().join("-")
-  ).getTime();
-  return dateB - dateA;
+	const dateA = new Date(
+		a.data.publishDate.split("/").reverse().join("-"),
+	).getTime();
+	const dateB = new Date(
+		b.data.publishDate.split("/").reverse().join("-"),
+	).getTime();
+	return dateB - dateA;
 });
 ---
 
 <section class={styles.libraryPage}>
-  <GoBackInTop headPage="/" title="go home" />
-  <LibraryHeader />
-  {library.map((book, index) => <BookCard entry={book} index={index} />)}
+	<GoBackInTop
+		headPage="/"
+		title="go home"
+	/>
+	<LibraryHeader />
+	{
+		library.map((book, index) => (
+			<BookCard
+				entry={book}
+				index={index}
+			/>
+		))
+	}
 </section>

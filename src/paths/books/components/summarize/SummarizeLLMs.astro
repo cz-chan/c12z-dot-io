@@ -3,18 +3,23 @@
 
 import styles from "./summarize-llms.module.css";
 
-import Claude from "./icons/Claude.astro";
-import Grok from "./icons/Grok.astro";
-import ChatGPT from "./icons/ChatGPT.astro";
-// import DeepSeek from "./icons/DeepSeek.astro"; // no funciona. no detecta el prompt
-// import Gemini from "./icons/Gemini.astro"; // no funciona. no detecta el prompt
-import Perplexity from "./icons/Perplexity.astro";
+import Claude from "@books-path/components/summarize/icons/Claude.astro";
+import Grok from "@books-path/components/summarize/icons/Grok.astro";
+import ChatGPT from "@books-path/components/summarize/icons/ChatGPT.astro";
+import Perplexity from "@books-path/components/summarize/icons/Perplexity.astro";
+// import DeepSeek from "@books-path/components/summarize/icons/DeepSeek.astro"; // no funciona. no detecta el prompt
+// import Gemini from "@books-path/components/summarize/icons/Gemini.astro"; // no funciona. no detecta el prompt
 
-// es un único btn pero tendrá como props link a la AI, el nomber de la ai y los estilos de cada uno de ellos con sus colores específicos dentro de un style.module.css
+/*
+Emoji collage. The height is determined by the aspect ratio (there is no `height` property);
+the children are positioned absolutely with percentages relative to this container,
+so everything scales together when the width changes.
+Only visible in desktop view (>= 48rem);
+*/
 
 interface Props {
-  ai: "chatgpt" | "claude" | "grok" | "perplexity";
-  class?: string;
+	ai: "chatgpt" | "claude" | "grok" | "perplexity";
+	class?: string;
 }
 
 const { ai } = Astro.props;
@@ -23,30 +28,30 @@ const currentUrl = new URL(Astro.url.pathname, Astro.site);
 const prompt = `Please summarize the following page ${currentUrl} and give me the main and key ideas. Please give me the answer in Spanish.`;
 
 const AI_CONFIGS = {
-  chatgpt: {
-    name: "ChatGPT",
-    url: `https://chatgpt.com/?q=${prompt}`,
-    icon: ChatGPT,
-    colors: styles.chatgpt,
-  },
-  claude: {
-    name: "Claude",
-    url: `https://claude.ai/new?q=${prompt}`,
-    icon: Claude,
-    colors: styles.claude,
-  },
-  grok: {
-    name: "Grok",
-    url: `https://grok.com/?q=${prompt}`,
-    icon: Grok,
-    colors: styles.grok,
-  },
-  perplexity: {
-    name: "Perplexity",
-    url: `https://www.perplexity.ai/search/new?q=${prompt}`,
-    icon: Perplexity,
-    colors: styles.perplexity,
-  },
+	chatgpt: {
+		name: "ChatGPT",
+		url: `https://chatgpt.com/?q=${prompt}`,
+		icon: ChatGPT,
+		colors: styles.chatgpt,
+	},
+	claude: {
+		name: "Claude",
+		url: `https://claude.ai/new?q=${prompt}`,
+		icon: Claude,
+		colors: styles.claude,
+	},
+	grok: {
+		name: "Grok",
+		url: `https://grok.com/?q=${prompt}`,
+		icon: Grok,
+		colors: styles.grok,
+	},
+	perplexity: {
+		name: "Perplexity",
+		url: `https://www.perplexity.ai/search/new?q=${prompt}`,
+		icon: Perplexity,
+		colors: styles.perplexity,
+	},
 };
 
 const config = AI_CONFIGS[ai];
@@ -54,11 +59,11 @@ const Icon = config.icon;
 ---
 
 <a
-  href={config.url}
-  target="_blank"
-  rel="noopener noreferrer"
-  class:list={[styles.btn, config.colors]}
+	href={config.url}
+	target="_blank"
+	rel="noopener noreferrer"
+	class:list={[styles.btn, config.colors]}
 >
-  {Icon && <Icon class={styles.icon} />}
-  <span class={styles.ai}>{config.name}</span>
+	{Icon && <Icon class={styles.icon} />}
+	<span class={styles.ai}>{config.name}</span>
 </a>

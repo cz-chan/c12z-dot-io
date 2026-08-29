@@ -4,14 +4,14 @@ import { render } from "astro:content";
 
 import styles from "./book.module.css";
 
-import BookCover from "./BookCover.astro";
-import BookScore from "./BookScore.astro";
-import BookCategory from "./BookCategory.astro";
-import BookSpoiler from "./BookSpoiler.astro";
+import BookCover from "@books-path/components/BookCover.astro";
+import BookScore from "@books-path/components/BookScore.astro";
+import BookCategory from "@books-path/components/BookCategory.astro";
+import BookSpoiler from "@books-path/components/BookSpoiler.astro";
 
 import TOC from "@/ui/toc/Toc";
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
-import SummarizeSection from "./summarize/SummarizeSection.astro";
+import SummarizeSection from "@books-path/components/summarize/SummarizeSection.astro";
 
 interface Props {
 	entry: CollectionEntry<"books">;
