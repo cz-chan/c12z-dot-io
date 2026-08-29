@@ -87,7 +87,7 @@ const recentNotes: SectionItem[] = [...notesEntries]
 	.map((entry) => ({
 		text: entry.data.title,
 		href: `/notas/${entry.id}`,
-		meta: entry.data.publishDate,
+		meta: entry.data.category,
 	}));
 
 const sectionUpdates: Record<
