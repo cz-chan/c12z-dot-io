@@ -1,14 +1,17 @@
-import { SECTION_LISTS } from "./section-lists.ts";
 import { getCollection } from "astro:content";
-import type { SectionItem } from "./section-lists.ts";
-import { formatNoteDate } from "@notes-path/lib/format-note-date.ts";
 
-const parseDate = (theDate: string) =>
-	new Date(theDate.split("/").reverse().join("-")).getTime();
+import {
+	SECTION_LISTS,
+	type SectionItem,
+} from "@home-path/lib/section-lists.ts";
+import { parseDate } from "@utils/validating-date.ts";
+
 const byNewest = (
 	a: { data: { publishDate: string } },
 	b: { data: { publishDate: string } },
-) => parseDate(b.data.publishDate) - parseDate(a.data.publishDate);
+) =>
+	parseDate(b.data.publishDate).getTime() -
+	parseDate(a.data.publishDate).getTime();
 
 const BEHAVIOR_COLLECTIONS = {
 	biases: { basePath: "/behavior/sesgos", meta: "/sesgos" },
@@ -84,7 +87,7 @@ const recentNotes: SectionItem[] = [...notesEntries]
 	.map((entry) => ({
 		text: entry.data.title,
 		href: `/notas/${entry.id}`,
-		meta: formatNoteDate(entry.data.publishDate),
+		meta: entry.data.publishDate,
 	}));
 
 const sectionUpdates: Record<
