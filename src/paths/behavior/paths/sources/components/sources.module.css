@@ -8,7 +8,7 @@
  *   3. "Detrás de este post"        → .behindPost + .stack
  * The viewer (.sheet) is shared by all three.
  *
- * Three things to understand before editing (see .docs/paths/sources.md):
+ * Three things to understand before editing (see .agents/docs/paths/sources.md):
  *   - the folder silhouette is a clip-path, and a clip-path also cuts off
  *     box-shadows: that is why the shadow lives on the <li>, not the button;
  *   - the stack overlap comes from grid columns narrower than the folder
