@@ -20,13 +20,9 @@ drifted, reconcile them first — do not layer a new edit on top of a divergence
 
 ## Commands
 
-```bash
-pnpm dev          # Start Astro dev server
-pnpm build        # Type-check (astro check) then build
-pnpm preview      # Preview production build locally
-```
-
-No test or lint commands are configured.
+The standard Astro scripts are in `package.json` (`pnpm dev` / `build` /
+`preview`); `pnpm build` type-checks with `astro check` first. No test or lint
+commands are configured.
 
 **After every `pnpm build`, clean up the output** — the build is only ever run to type-check, never to keep its artifacts:
 
@@ -54,31 +50,22 @@ the server closes it; leave the port as you found it.
 
 ## Agent files live in `.agents/`
 
-Everything an agent needs is under one folder — there is no `.claude/` content
-of its own:
-
-```
-.agents/
-├── docs/     long-form documentation (start-here.md, paths/, lib/, pages/)
-└── skills/   project skills (frontend-design)
-.claude/
-└── skills → ../.agents/skills   symlink, the only thing .claude/ holds
-```
-
-The symlink exists because Claude Code only discovers project skills at
-`.claude/skills/`. **Never add a real file under `.claude/`** — write it in
-`.agents/` and let the link do the work. `CLAUDE.md` and `AGENTS.md` stay at the
-repo root: they are read by name, not by folder.
+Everything an agent needs is under one folder — `.agents/docs/` for long-form
+documentation and `.agents/skills/` for project skills. The only thing `.claude/`
+holds is a `skills → ../.agents/skills` symlink, which exists because Claude Code
+only discovers project skills at `.claude/skills/`. **Never add a real file under
+`.claude/`** — write it in `.agents/` and let the link do the work. `CLAUDE.md`
+and `AGENTS.md` stay at the repo root: they are read by name, not by folder.
 
 ## Architecture
 
-Personal blog/portfolio site built with **Astro 7** + **React 19** + **MDX**, deployed to Vercel (static output). **No Tailwind** — styling is plain CSS: design-token CSS variables in `src/styles/global.css` plus CSS Modules per component.
+**No Tailwind** — styling is plain CSS: design-token CSS variables in `src/styles/global.css` plus CSS Modules per component.
 
 Longer-form docs live in `.agents/docs/` (`start-here.md`, `paths/`, `lib/`, `pages/`).
 
 ### Key structural patterns
 
-**Path-based organization** — `src/paths/<name>/` encapsulates all domain logic. Top-level paths: `404`, `behavior`, `books`, `context`, `essays`, `home`, `notes`, `projects`.
+**Path-based organization** — `src/paths/<name>/` encapsulates all domain logic.
 
 Each path holds:
 
@@ -94,51 +81,24 @@ Something lives in the path that uses it. Once **2+ paths** need it, it graduate
 
 **Types follow the same rule — there is no `src/interfaces/` folder.** A type lives in the file that owns it: component props as `interface Props` inside the `.astro`/`.tsx` itself (never `Astro.props as X` — that silences errors), data shapes next to the data they describe. Only a type with 2+ consumers graduates to `src/lib/` (e.g. `PageKeywords` in `src/lib/keywords.ts`). Don't suffix names with `Interface`.
 
-**Nested paths** — a path that owns child routes puts them in its own `paths/` folder, recursively. Today only `behavior` has them:
-
-```
-src/paths/behavior/
-├── components/   ← behavior's own
-├── seo/
-├── lib/
-└── paths/        ← child paths
-    ├── biases/         → /behavior/sesgos
-    ├── mental-models/  → /behavior/modelos-mentales
-    ├── design-laws/    → /behavior/diseño
-    └── sources/        → /behavior/fuentes
-```
+**Nested paths** — a path that owns child routes puts them in its own `paths/` folder, recursively. Today only `behavior` has them (`biases`, `mental-models`, `design-laws`, `sources`).
 
 Folder names are plural when the path is a collection of items (`biases`, `essays`, `design-laws`, `books`, `notes`, `projects`, `sources`, `mental-models`) and singular when it's a single page or a domain (`behavior`, `home`, `context`, `404`).
 
-**Content Collections** — `src/content/` holds markdown/MDX validated by Zod schemas in `src/content.config.ts`. Registered collections: `biases`, `books` (book reviews), `projects`, `notes`, `mentalModels`, `designLaws`. An `essays` collection is defined but left out of the exports. **`content.config.ts` carries no comments** — the reasoning behind every schema lives in `.agents/docs/content-config.md`; change a schema, change that doc.
+**Content Collections** — `src/content/` holds markdown/MDX validated by Zod schemas in `src/content.config.ts`. An `essays` collection is defined but left out of the exports. **`content.config.ts` carries no comments** — the reasoning behind every schema lives in `.agents/docs/content-config.md`; change a schema, change that doc.
 
 A collection is named after **the item** it holds, never after the page that shows it — `books`, not `library`. The page keeps the other name: the `books` collection is rendered by `LibraryPage` at `/biblioteca`.
 
 **Sources are frontmatter, not a collection** — posts embed a `sources` array (`sourceSchema`: title, type enum, author, url…) in their own frontmatter. Adding a source type takes TWO steps, both in `src/lib/content-categories/sources.categories.ts`: `SOURCE_CATEGORIES` AND its label in `SOURCES_CATEGORY_LABELS` (build fails if you forget the second — intended). See `.agents/docs/paths/sources.md`.
 
-**Shared globals** — `src/global/`: `site-info.ts`, `pages-info.ts`, `socialmedia-links.ts`, `collection-keys.ts`.
-
-**Shared UI** — `src/components/`, split by role, one level deep:
-
-- `layout/` — Header, Footer, BottomBar
-- `seo/` — BaseHead, PagesSEO, ContentSEO, Error404SEO, Favicons
-- `analytics/` — GA4, GTM, Ahrefs, Overtracking
-- `icons/` — site-wide icons + `social/`
-- `ui/` — shared widgets: GoBackInTop, ToggleTheme, Toc
-- `mdx/` — components you drop into a post by hand: Link, OwnThoughts, ImgAndCap, QuoteCard
+**Shared UI** — `src/components/` is split by role, one level deep: `layout/`, `seo/`, `analytics/`, `icons/`, `ui/`, `mdx/`.
 
 **Inside `layout/`, `ui/` and `mdx/`, a component owning more than one file gets
 its own kebab-case folder** — the same rule `paths/*/components/` already follows
-with `card/`, `post/`, `wip/` and `summarize/`:
-
-```
-ui/toc/            Toc.tsx + ProgressCircle.tsx + toc.module.css
-ui/toggle-theme/   ToggleTheme.astro + .module.css + toggle-theme.ts
-```
-
-`ui/toc/` is the point of the rule: `ProgressCircle` is used only by `Toc` and
-shares its stylesheet, so they are one component in three files, not three loose
-ones. A single-file component stays flat (`mdx/QuoteCard.astro`).
+with `card/`, `post/`, `wip/` and `summarize/`. `ui/toc/` is the point of the
+rule: `ProgressCircle` is used only by `Toc` and shares its stylesheet, so they
+are one component in three files, not three loose ones. A single-file component
+stays flat (`mdx/QuoteCard.astro`).
 
 `mdx/` is why those have no importer in `.astro` files: the `.mdx` import them.
 That is their normal state, not dead code.
@@ -173,41 +133,9 @@ once, not three times.
 - A CSS Module is named after the component it styles — `go-back-in-top.module.css`,
   not `gbit.module.css`. No abbreviations.
 
-### Path aliases (tsconfig.json)
+### Path aliases
 
-Every path has its own `@<name>-path/*` alias — **always import through it**, never through a relative `../../` chain or a raw `src/paths/...` path. There is no generic `@/paths/*` alias on purpose: adding a path means adding its alias.
-
-```
-@biases-path/*        → src/paths/behavior/paths/biases/*
-@mental-models-path/* → src/paths/behavior/paths/mental-models/*
-@design-laws-path/*   → src/paths/behavior/paths/design-laws/*
-@sources-path/*       → src/paths/behavior/paths/sources/*
-@behavior-path/*      → src/paths/behavior/*
-@projects-path/*      → src/paths/projects/*
-@essays-path/*        → src/paths/essays/*
-@books-path/*         → src/paths/books/*
-@notes-path/*         → src/paths/notes/*
-@context-path/*       → src/paths/context/*
-@home-path/*          → src/paths/home/*
-@error-path/*         → src/paths/404/*
-```
-
-Cross-cutting aliases:
-
-```
-@/*           → src/*
-@/lib/*       → src/lib/*
-@/global/*    → src/global/*
-@/ui/*        → src/components/ui/*
-@/icons/*     → src/components/icons/*
-@/seo/*       → src/components/seo/*
-@/mdx/*       → src/components/mdx/*
-@/layout/*    → src/components/layout/*
-@/analytics/* → src/components/analytics/*
-@layouts/*    → src/layouts/*
-@utils/*      → src/utils/*
-@/assets/*    → src/assets/*
-```
+Every path has its own `@<name>-path/*` alias — **always import through it**, never through a relative `../../` chain or a raw `src/paths/...` path. There is no generic `@/paths/*` alias on purpose: adding a path means adding its alias. The full table lives in `tsconfig.json` under `compilerOptions.paths`.
 
 **Always import through an alias**, in `.mdx` files too — they were the last
 place still carrying `../../../components/...` chains. A `@/components/...` or
@@ -220,56 +148,29 @@ in `paths/books/`, and `Barcode`/`Neuron`/`Prism`/`Pattern` in
 
 ### Content collection schemas
 
-- **books** — book reviews; covers, score, authors, Amazon links, `category` enum: `SHARED_CATEGORIES` in `src/lib/content-categories/`
-- **biases** — cognitive biases; `category` enum: `velocidad`, `memoria`, `percepción`, `contexto`, `juicio`
-- **projects**, **notes**, **mentalModels**, **designLaws** — see `src/content.config.ts`
+The schemas themselves are in `src/content.config.ts`, their reasoning in
+`.agents/docs/content-config.md`. What neither file makes obvious:
+
 - `biases`, `mentalModels` and `designLaws` share `behaviorContentBaseSchema`. Each needs a `contentCount` unique **within its own collection** — the number feeds the card code (`DSG-001`), and `get-behavior-entries.ts` throws at build time on a duplicate. The three collections number independently.
 - `backlog: z.enum(["wip", "upload"])` gates unpublished entries
 
 ### Markdown pipeline
 
-`astro.config.mjs` wires a custom `unified` processor: `remark-math` + `rehype-katex` (math via `$$`), `rehype-external-links` (`target="_blank"`, `noopener noreferrer`).
+`astro.config.mjs` wires a custom `unified` processor — write math with `$$`
+(`remark-math` + `rehype-katex`); external links get `target="_blank"` and
+`noopener noreferrer` automatically, so don't add them by hand.
 
 ### Environment variables
 
-See `.env.template` (validated via `envField` in `astro.config.mjs`):
-
-- `GA4_MEASUREMENT_ID`, `GTM_MEASUREMENT_ID` (currently unused — cookie concerns)
-- `AHRFS_MEASUREMENT_ID`
-- `OVERTRACKING_MEASUREMENT_ID`
-
-### Deployment
-
-- Vercel adapter (`@astrojs/vercel`), static output mode
-- `vercel.json` disables trailing slashes
+See `.env.template` (validated via `envField` in `astro.config.mjs`).
+`GA4_MEASUREMENT_ID` and `GTM_MEASUREMENT_ID` are deliberately unused — cookie
+concerns.
 
 ## Design System
 
-All design tokens live in `src/styles/global.css` as plain CSS variables on `:root` (dark, default — palette "burntpaper") and `[data-theme="light"]` (light — "recycledpaper").
-
-### Aesthetic direction
-
 Dark-first, retro-digital, content-focused personal site. Lime accent on near-black backgrounds. Generous spacing, minimal chrome, no decorative fluff.
 
-### Typography
-
-| Role              | Font                         | Var          |
-| ----------------- | ---------------------------- | ------------ |
-| Display / headers | **Tamago** (pixel art)       | `--ff-pixel` |
-| Body              | **Rubik** (300–700 + italic) | `--ff-rubik` |
-| Code              | **Cascadia**                 | `--ff-mono`  |
-
-Type scale (`--t-*`/`--lh-*`), tracking (`--tracking-*`), 4pt spacing (`--sp-*`), widths (`--wdth-*`), radii (`--r-*`), motion (`--ease`, `--t-fast/base/slow`) are all tokenized — use them, don't invent values. Note: `html` font-size is `--t-body` (14px), so `1rem` = 14px.
-
-### Color tokens (see global.css for exact values)
-
-- Surfaces: `--bg`, `--surface-1..3`, `--border`, `--border-2/3`
-- Text: `--fg`, `--fg-2`, `--fg-3`, `--fg-inverse`
-- Accents: `--accent` (lime `#a2ce12`), `--accent-ink`, `--accent-2` (purple `#904fe7`)
-- Content sections: `--c-behavior`, `--c-bias`, `--c-mental-model`, `--c-source`, `--c-essay`, `--c-library`, `--c-project`, `--c-note`
-- Bias categories: `--c-bias-category-{speed,memory,judgment,context,perception}`
-- Content categories (books + notes): `--c-category-{health,product,culture,psychology,economics,creativity,philosophy,business}` + notes-only `{random,relationship,society,sport}`
-- Utility: `--c-goback`, `--c-wip`, `--ok`, `--warn`, `--err`
+All design tokens live in `src/styles/global.css` as plain CSS variables on `:root` (dark, default — palette "burntpaper") and `[data-theme="light"]` (light — "recycledpaper"). **That file is the source of truth.** The full token inventory and how to build with it live in the `frontend-design` skill (`.agents/skills/frontend-design/`) — invoke it when building or reshaping UI.
 
 ### UI conventions when building new components
 
