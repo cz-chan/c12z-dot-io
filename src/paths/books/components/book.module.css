@@ -343,6 +343,11 @@
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
 
+	/* every category paints itself through --c: the pill and its dot are
+	   styled once, and each class below only names its colour */
+	background-color: color-mix(in srgb, var(--c) 15%, transparent);
+	color: var(--c);
+
 	&::before {
 		content: "";
 		display: block;
@@ -350,93 +355,31 @@
 		height: var(--sp-1);
 		border-radius: 50%;
 		flex-shrink: 0;
+		background-color: var(--c);
 	}
 
 	&.health {
-		background-color: color-mix(in srgb, var(--c-book-health) 15%, transparent);
-		color: var(--c-book-health);
+		--c: var(--c-category-health);
 	}
-	&.health::before {
-		background-color: var(--c-book-health);
-	}
-
 	&.product {
-		background-color: color-mix(
-			in srgb,
-			var(--c-book-product) 15%,
-			transparent
-		);
-		color: var(--c-book-product);
+		--c: var(--c-category-product);
 	}
-	&.product::before {
-		background-color: var(--c-book-product);
-	}
-
 	&.culture {
-		background-color: color-mix(
-			in srgb,
-			var(--c-book-culture) 15%,
-			transparent
-		);
-		color: var(--c-book-culture);
+		--c: var(--c-category-culture);
 	}
-	&.culture::before {
-		background-color: var(--c-book-culture);
-	}
-
 	&.psychology {
-		background-color: color-mix(
-			in srgb,
-			var(--c-book-psychology) 15%,
-			transparent
-		);
-		color: var(--c-book-psychology);
+		--c: var(--c-category-psychology);
 	}
-	&.psychology::before {
-		background-color: var(--c-book-psychology);
-	}
-
 	&.economics {
-		background-color: color-mix(
-			in srgb,
-			var(--c-book-economics) 15%,
-			transparent
-		);
-		color: var(--c-book-economics);
+		--c: var(--c-category-economics);
 	}
-	&.economics::before {
-		background-color: var(--c-book-economics);
-	}
-
 	&.creativity {
-		background-color: color-mix(
-			in srgb,
-			var(--c-book-creativity) 15%,
-			transparent
-		);
-		color: var(--c-book-creativity);
+		--c: var(--c-category-creativity);
 	}
-	&.creativity::before {
-		background-color: var(--c-book-creativity);
-	}
-
 	&.philosophy {
-		background-color: color-mix(
-			in srgb,
-			var(--c-book-philosophy) 15%,
-			transparent
-		);
-		color: var(--c-book-philosophy);
+		--c: var(--c-category-philosophy);
 	}
-	&.philosophy::before {
-		background-color: var(--c-book-philosophy);
-	}
-
-	&.other {
-		background-color: color-mix(in srgb, var(--c-book-other) 15%, transparent);
-		color: var(--c-book-other);
-	}
-	&.other::before {
-		background-color: var(--c-book-other);
+	&.business {
+		--c: var(--c-category-business);
 	}
 }
