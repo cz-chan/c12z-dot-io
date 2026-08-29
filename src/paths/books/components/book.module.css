@@ -340,8 +340,8 @@
 	letter-spacing: var(--tracking-wider);
 	padding: var(--sp-2);
 	white-space: nowrap;
-	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
 
 	/* every category paints itself through --c: the pill and its dot are
 	   styled once, and each class below only names its colour */

@@ -14,8 +14,8 @@
 		padding-block: var(--sp-2);
 		padding-inline: var(--sp-2);
 		background-color: color-mix(in srgb, var(--surface-1) 65%, transparent);
-		backdrop-filter: blur(1.5rem);
 		-webkit-backdrop-filter: blur(1.5rem);
+		backdrop-filter: blur(1.5rem);
 		border: var(--wdth) solid var(--border-2);
 		color: var(--fg);
 		position: relative;

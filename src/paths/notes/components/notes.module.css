@@ -298,8 +298,8 @@
 	letter-spacing: var(--tracking-wider);
 	padding: var(--sp-2);
 	white-space: nowrap;
-	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
 
 	background-color: color-mix(in srgb, var(--c) 5%, transparent);
 	border: var(--sp-05) solid color-mix(in srgb, var(--c) 50%, transparent);
