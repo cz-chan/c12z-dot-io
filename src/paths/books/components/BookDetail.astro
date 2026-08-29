@@ -35,7 +35,7 @@ const { Content, headings } = await render(entry);
 
 <article class={styles.bookPage}>
 	<TOC
-		client:only="react"
+		client:load
 		headings={headings}
 		title={title}
 	/>

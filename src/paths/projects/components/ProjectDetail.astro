@@ -24,7 +24,7 @@ const { Content, headings } = await render(entry);
 
 <section class={styles.theProject}>
 	<TOC
-		client:only="react"
+		client:load
 		headings={headings}
 		title={projectTitle}
 	/>
