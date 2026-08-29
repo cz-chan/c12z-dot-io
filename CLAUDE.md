@@ -110,6 +110,43 @@ That is their normal state, not dead code.
 zero imports is their normal state. Don't delete them as unused. The same goes
 for everything in `components/mdx/`.
 
+### React islands: `client:load`, never `client:only`
+
+**Every `.tsx` island is hydrated with `client:load`.** `client:only` is
+forbidden here, and the reason is not style — it silently strips the component's
+CSS in production.
+
+Astro discovers which stylesheet a page needs by rendering the component at build
+time, in Node. `client:only` skips that render, so Astro never reaches the
+`import styles from "./x.module.css"` at the top of the component. The client
+bundle still applies the hashed class names; nothing on the page defines them.
+The component ships unstyled.
+
+**`pnpm dev` cannot catch this.** Vite injects the module's CSS at runtime from
+the JS import, so the island looks right locally and breaks only once built. This
+bit `Toc` and `BottomBar` in production for months: both had been styled with
+Tailwind utilities (global, so `client:only` was harmless), and migrating them to
+CSS Modules is what exposed the latent bug.
+
+`client:load` is not a cost here. The bundle is identical either way —
+`client:only` buys no smaller JS, it only forgoes the Node render. Every island
+in this repo keeps its DOM access inside `useEffect`, which never runs in Node,
+so all of them are safe to render there.
+
+Two things would justify `client:only`, and neither is true today: a component
+that throws in Node (touching `window` during render, or a DOM-only library like
+Leaflet), or one whose server HTML would be actively *wrong* rather than empty —
+a per-visitor value read from `localStorage`, where `client:load` gives a flash
+of the wrong content plus a hydration mismatch. If a future island really needs
+it, import its stylesheet by hand in the parent `.astro` and say why in a
+comment.
+
+Checking the rule holds is one grep:
+
+```bash
+grep -rn "client:only" src   # must print nothing
+```
+
 ### `src/pages/` only routes
 
 A page file is `getStaticPaths()` plus the SEO component plus one component from
