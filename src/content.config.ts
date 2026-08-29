@@ -89,7 +89,7 @@ const projectCollection = defineCollection({
 	schema: ({ image }) =>
 		z
 			.object({
-				projectTitle: z.string().max(80),
+				projectTitle: z.string().max(60),
 				projectDescription: z.string().min(110).max(160),
 				projectUrl: z.string().startsWith("https://"),
 				cover: z.object({
@@ -114,7 +114,7 @@ const notesCollection = defineCollection({
 	schema: ({ image }) =>
 		z
 			.object({
-				title: z.string().max(80),
+				title: z.string().max(60),
 				excerpt: z.string().min(50).max(300),
 				keywords: z.array(z.string()),
 				publishDate: dateField,
