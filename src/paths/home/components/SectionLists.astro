@@ -1,11 +1,10 @@
 ---
-import styles from "./section-lists.module.css";
-import type { Section } from "../lib/section-lists";
+import styles from "@home-path/components/section-lists.module.css";
+import type { Section } from "@home-path/lib/section-lists.ts";
 
 interface Props extends Section {}
 
-const { href, style, label, description, items, totalCount } =
-	Astro.props;
+const { href, style, label, description, items, totalCount } = Astro.props;
 
 const STYLE_CLASSES = {
 	essay: `${styles.essay}`,
