@@ -2,7 +2,7 @@ import { defineCollection, type ImageFunction } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
-import { isValidDateFormat, parseDate } from "@utils/validating-date.ts";
+import { isValidDateFormat, parseDate } from "@/utils/validating-date.ts";
 import { booksCategories } from "@/lib/content-categories/books.categories.ts";
 import { notesCategories } from "@/lib/content-categories/notes.categories.ts";
 import { sourceCategories } from "@/lib/content-categories/sources.categories.ts";

@@ -23,7 +23,7 @@ The tokens below are the contract of `src/styles/global.css`. **That file is the
 - Animations in React components use **Motion** (`motion/react`); `es-toolkit` for throttle/debounce
 - Props are declared as `interface Props` inside the component file. Never `Astro.props as X` — it silences errors
 
-**Path aliases — always import through the most specific one.** Never a `../../` chain across folders. Each path has `@<name>-path/*` (`@biases-path/*`, `@books-path/*`, `@behavior-path/*`, `@sources-path/*`…); cross-cutting are `@/*`, `@/lib/*`, `@/global/*`, `@/ui/*`, `@/icons/*`, `@/seo/*`, `@/mdx/*`, `@/layout/*`, `@/analytics/*`, `@layouts/*`, `@utils/*`, `@/assets/*`. There is no `@/paths/*` on purpose.
+**Path aliases — always import through the most specific one.** Never a `../../` chain across folders. Each path has `@<name>-path/*` (`@biases-path/*`, `@books-path/*`, `@behavior-path/*`, `@sources-path/*`…); cross-cutting are `@/*`, `@/lib/*`, `@/global/*`, `@/ui/*`, `@/icons/*`, `@/seo/*`, `@/mdx/*`, `@/layout/*`, `@/analytics/*`, `@/layouts/*`, `@/utils/*`, `@/assets/*`. There is no `@/paths/*` on purpose.
 
 **Where a component goes:** in the path that uses it. It graduates to `src/components/` only once **2+ paths** need it — not before, however generic it looks.
 
@@ -33,16 +33,16 @@ Tokens are CSS variables on `:root` (dark, default — palette **"burntpaper"**)
 
 ### Surfaces, text, accents
 
-| Role | Tokens |
-| ---- | ------ |
-| Surfaces | `--bg` · `--surface-1` `--surface-2` `--surface-3` |
-| Borders | `--border` `--border-2` `--border-3` · shorthand `--hairline`, `--hairline-2` |
-| Text | `--fg` (headers/body) · `--fg-2` (secondary) · `--fg-3` (muted) · `--fg-inverse` |
-| Accent | `--accent` lime `#a2ce12` · `--accent-ink` (its darker/hover pair) |
-| Second accent | `--accent-2` purple `#904fe7` |
-| Selection | `--accent-selection-bg` / `--accent-selection-fg` |
-| Fixed | `--ink-fixed` / `--paper-fixed` — do **not** flip with the theme, on purpose: they'd break contrast |
-| State | `--ok` `--warn` `--err` · `--c-wip` · `--c-goback` |
+| Role          | Tokens                                                                                              |
+| ------------- | --------------------------------------------------------------------------------------------------- |
+| Surfaces      | `--bg` · `--surface-1` `--surface-2` `--surface-3`                                                  |
+| Borders       | `--border` `--border-2` `--border-3` · shorthand `--hairline`, `--hairline-2`                       |
+| Text          | `--fg` (headers/body) · `--fg-2` (secondary) · `--fg-3` (muted) · `--fg-inverse`                    |
+| Accent        | `--accent` lime `#a2ce12` · `--accent-ink` (its darker/hover pair)                                  |
+| Second accent | `--accent-2` purple `#904fe7`                                                                       |
+| Selection     | `--accent-selection-bg` / `--accent-selection-fg`                                                   |
+| Fixed         | `--ink-fixed` / `--paper-fixed` — do **not** flip with the theme, on purpose: they'd break contrast |
+| State         | `--ok` `--warn` `--err` · `--c-wip` · `--c-goback`                                                  |
 
 **The lime `--accent` is the identity**, not pink. Purple is the second voice, used sparingly.
 
@@ -66,11 +66,11 @@ The category pill (`book.module.css .bookCategory`) paints itself through a loca
 
 ### Typography
 
-| Role | Font | Token |
-| ---- | ---- | ----- |
-| Display / headings / links | **Tamago** (pixel art) | `--ff-pixel` |
-| Body | **Rubik** (300–700 + italics) | `--ff-rubik` |
-| Code | **Cascadia** | `--ff-mono` |
+| Role                       | Font                          | Token        |
+| -------------------------- | ----------------------------- | ------------ |
+| Display / headings / links | **Tamago** (pixel art)        | `--ff-pixel` |
+| Body                       | **Rubik** (300–700 + italics) | `--ff-rubik` |
+| Code                       | **Cascadia**                  | `--ff-mono`  |
 
 `global.css` already sets `--ff-pixel` on `h1`–`h6` **and on `a`**, and `--ff-rubik` on the body. Don't restate that.
 

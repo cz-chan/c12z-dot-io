@@ -1,6 +1,6 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 
-import { parseDate } from "@utils/validating-date.ts";
+import { parseDate } from "@/utils/validating-date.ts";
 import type { Source } from "@sources-path/lib/source-types.ts";
 
 /**

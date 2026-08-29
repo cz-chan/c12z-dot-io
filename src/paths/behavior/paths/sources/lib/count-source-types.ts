@@ -1,4 +1,4 @@
-import { pluralize } from "@utils/pluralize.ts";
+import { pluralize } from "@/utils/pluralize.ts";
 
 import { SOURCES_CATEGORY_LABELS } from "@/lib/content-categories/sources.categories.ts";
 import type { Source } from "@sources-path/lib/source-types.ts";

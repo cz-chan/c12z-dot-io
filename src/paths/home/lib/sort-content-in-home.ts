@@ -4,7 +4,7 @@ import {
 	SECTION_LISTS,
 	type SectionItem,
 } from "@home-path/lib/section-lists.ts";
-import { parseDate } from "@utils/validating-date.ts";
+import { parseDate } from "@/utils/validating-date.ts";
 
 const byNewest = (
 	a: { data: { publishDate: string } },

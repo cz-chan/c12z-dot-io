@@ -123,11 +123,11 @@ exempt.
 
 Each path pairs a listing component with a detail one:
 
-| path       | listing       | detail           |
-| ---------- | ------------- | ---------------- |
-| `books`    | `LibraryPage` | `BookDetail`     |
-| `projects` | `ProjectPage` | `ProjectDetail`  |
-| `biases`   | `BiasPage`    | `BiasDetail`     |
+| path       | listing       | detail          |
+| ---------- | ------------- | --------------- |
+| `books`    | `LibraryPage` | `BookDetail`    |
+| `projects` | `ProjectPage` | `ProjectDetail` |
+| `biases`   | `BiasPage`    | `BiasDetail`    |
 
 `biases`, `mental-models` and `design-laws` are the same kind of post, so the
 three detail components render through
@@ -149,14 +149,14 @@ schemas (the date guard, the categories, `sourceSchema`,
 
 `glob` loader over `**/*.{md,mdx}`. Six collections are exported:
 
-| Collection     | Folder                        | Notes                                                                        |
-| -------------- | ----------------------------- | ---------------------------------------------------------------------------- |
-| `books`        | `content/books/{slug}/`       | reviews: cover, score 1-5, authors, category enum, quote, abstract           |
-| `projects`     | `content/projects/{slug}/`    | `projectUrl`, `why` (≤20 chars, meta on Home), optional `styleClass`         |
-| `notes`        | `content/notes/{slug}/`       | folder exists but holds **0 entries** — the build warns and `/notas` renders empty |
-| `biases`       | `content/biases/{slug}/`      | `category`: velocidad / memoria / percepción / contexto / juicio             |
-| `mentalModels` | `content/mental-models/{slug}/` | `category` from fs.blog's provisional list                                 |
-| `designLaws`   | `content/design-laws/{slug}/` | `category`: composición visual / interacción / percepción                    |
+| Collection     | Folder                          | Notes                                                                              |
+| -------------- | ------------------------------- | ---------------------------------------------------------------------------------- |
+| `books`        | `content/books/{slug}/`         | reviews: cover, score 1-5, authors, category enum, quote, abstract                 |
+| `projects`     | `content/projects/{slug}/`      | `projectUrl`, `why` (≤20 chars, meta on Home), optional `styleClass`               |
+| `notes`        | `content/notes/{slug}/`         | folder exists but holds **0 entries** — the build warns and `/notas` renders empty |
+| `biases`       | `content/biases/{slug}/`        | `category`: velocidad / memoria / percepción / contexto / juicio                   |
+| `mentalModels` | `content/mental-models/{slug}/` | `category` from fs.blog's provisional list                                         |
+| `designLaws`   | `content/design-laws/{slug}/`   | `category`: composición visual / interacción / percepción                          |
 
 `essays` is **defined but left out** of the exports, kept for later. That is
 why `astro check` reports `'essayCollection' is declared but its value is never
@@ -185,7 +185,7 @@ component is only for the visual style, the security behavior is automatic.
 
 ## 6. `src/components/` (shared UI)
 
-Split by **role**, one level deep. No `common/` wrapper: this folder *is* the
+Split by **role**, one level deep. No `common/` wrapper: this folder _is_ the
 shared bucket, so the extra level said nothing.
 
 ```
@@ -229,10 +229,10 @@ and its MDX usage in [`components/mdx/own-thoughts.md`](./components/mdx/own-tho
 **Shared means 2+ paths, and that is enforced.** Anything a single path uses
 lives in that path, however generic it looks:
 
-| what | where | why |
-| ---- | ----- | --- |
-| summarize-with-AI block + its 6 LLM icons | `paths/books/components/summarize/` | only the book pages offer it |
-| `Barcode`, `Neuron`, `Prism`, `Pattern` | `paths/behavior/icons/` | only the behavior cards draw them |
+| what                                      | where                               | why                               |
+| ----------------------------------------- | ----------------------------------- | --------------------------------- |
+| summarize-with-AI block + its 6 LLM icons | `paths/books/components/summarize/` | only the book pages offer it      |
+| `Barcode`, `Neuron`, `Prism`, `Pattern`   | `paths/behavior/icons/`             | only the behavior cards draw them |
 
 ## 7. `src/global/` — site configuration
 
@@ -246,35 +246,35 @@ lives in that path, however generic it looks:
 
 ## 8. Routes (`src/pages/`)
 
-| Route                                                    | What it is                                        |
-| -------------------------------------------------------- | ------------------------------------------------- |
-| `/`                                                      | Home — hero + latest items per collection         |
-| `/biblioteca`, `/biblioteca/[...id]`                     | books listing and detail                          |
-| `/proyectos`, `/proyectos/[...id]`                       | projects listing and detail                       |
-| `/behavior`                                              | hub for the three behavior sections               |
-| `/behavior/sesgos`, `/behavior/modelos-mentales`, `/behavior/diseño` | listing + detail each         |
-| `/behavior/fuentes`, `/behavior/fuentes/[...id]`         | sources drawer — see `paths/sources.md`           |
-| `/notas`, `/notas/[...id]`                               | timeline — collection empty today                 |
-| `/contexto`                                              | about me, renders `paths/context/components/context.mdx` |
-| `/ensayos`                                               | static placeholder — feature inactive             |
-| `/404`                                                   | uses `Layout404Error` (no Header/Footer)          |
-| `/llms.txt`, `/robots.txt`                               | text endpoints                                    |
-| `/og/**/[...id].png`                                     | OG images generated at build time                 |
-| `/_og-playground`                                        | dev tool; `_` keeps it out of the build           |
+| Route                                                                | What it is                                               |
+| -------------------------------------------------------------------- | -------------------------------------------------------- |
+| `/`                                                                  | Home — hero + latest items per collection                |
+| `/biblioteca`, `/biblioteca/[...id]`                                 | books listing and detail                                 |
+| `/proyectos`, `/proyectos/[...id]`                                   | projects listing and detail                              |
+| `/behavior`                                                          | hub for the three behavior sections                      |
+| `/behavior/sesgos`, `/behavior/modelos-mentales`, `/behavior/diseño` | listing + detail each                                    |
+| `/behavior/fuentes`, `/behavior/fuentes/[...id]`                     | sources drawer — see `paths/sources.md`                  |
+| `/notas`, `/notas/[...id]`                                           | timeline — collection empty today                        |
+| `/contexto`                                                          | about me, renders `paths/context/components/context.mdx` |
+| `/ensayos`                                                           | static placeholder — feature inactive                    |
+| `/404`                                                               | uses `Layout404Error` (no Header/Footer)                 |
+| `/llms.txt`, `/robots.txt`                                           | text endpoints                                           |
+| `/og/**/[...id].png`                                                 | OG images generated at build time                        |
+| `/_og-playground`                                                    | dev tool; `_` keeps it out of the build                  |
 
 OG routes follow the Spanish route names: `og/biblioteca`, `og/proyectos`,
 `og/notas`, `og/behavior/sesgos`.
 
 ## 9. Real status of each feature
 
-| Feature                     | Status                                                          |
-| --------------------------- | --------------------------------------------------------------- |
-| `home`, `books`, `projects` | complete and active                                             |
-| `behavior` + its 4 children | complete and active                                             |
-| `notes`                     | **code complete, no content**. Adding `.mdx` files is all it needs |
-| `context`                   | active, via direct MDX rather than a collection                 |
+| Feature                     | Status                                                                                   |
+| --------------------------- | ---------------------------------------------------------------------------------------- |
+| `home`, `books`, `projects` | complete and active                                                                      |
+| `behavior` + its 4 children | complete and active                                                                      |
+| `notes`                     | **code complete, no content**. Adding `.mdx` files is all it needs                       |
+| `context`                   | active, via direct MDX rather than a collection                                          |
 | `essays`                    | **inactive**: collection commented out, `/ensayos` a placeholder, its 3 components empty |
-| `404`                       | active                                                          |
+| `404`                       | active                                                                                   |
 
 ## 10. Design system
 
@@ -308,7 +308,7 @@ map of the site.
 ```
 
 Cross-cutting: `@/*`, `@/lib/*`, `@/global/*`, `@/ui/*`, `@/icons/*`, `@/seo/*`,
-`@/mdx/*`, `@/layout/*`, `@/analytics/*`, `@layouts/*`, `@utils/*`, `@/assets/*`.
+`@/mdx/*`, `@/layout/*`, `@/analytics/*`, `@/layouts/*`, `@/utils/*`, `@/assets/*`.
 
 **Always the most specific one, `.mdx` included.** The post files were the last
 place still carrying `../../../components/...` chains. A `@/components/...` or

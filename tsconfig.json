@@ -27,8 +27,8 @@
 			"@/mdx/*": ["./src/components/mdx/*"],
 			"@/layout/*": ["./src/components/layout/*"],
 			"@/analytics/*": ["./src/components/analytics/*"],
-			"@layouts/*": ["./src/layouts/*"],
-			"@utils/*": ["./src/utils/*"],
+			"@/layouts/*": ["./src/layouts/*"],
+			"@/utils/*": ["./src/utils/*"],
 			"@/assets/*": ["./src/assets/*"]
 		},
 		"jsx": "react-jsx",

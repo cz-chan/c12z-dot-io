@@ -2,7 +2,7 @@ import { getCollection } from "astro:content";
 
 import type { BehaviorSectionKeys } from "@behavior-path/lib/card/behavior-fancycodes.ts";
 
-import { parseDate } from "@utils/validating-date.ts";
+import { parseDate } from "@/utils/validating-date.ts";
 import { COLLECTION_KEYS } from "@/global/collection-keys.ts";
 
 export async function getBehaviorEntries(section: BehaviorSectionKeys) {
