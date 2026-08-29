@@ -60,7 +60,9 @@ Behavior cards use a `surface` + `band` pair per category, defined in both theme
 - **Mental models**: `--c-model-category-{general,science,systems,maths,economics,war,judgment}-{surface,band}`
 - **Design laws**: `--c-design-category-{layout,interaction,perception}-{surface,band}`
 
-Books have a flat scale: `--c-book-{health,product,culture,psychology,economics,creativity,philosophy,other}`.
+**Content categories** are a flat scale shared by `books` and `notes`, defined in both themes: `--c-category-{health,product,culture,psychology,economics,creativity,philosophy,business}` (the shared eight) plus `--c-category-{random,relationship,society,sport}` (notes only). They mirror `src/lib/content-categories/` one to one — a value added there needs its token here.
+
+The category pill (`book.module.css .bookCategory`) paints itself through a local `--c`: the pill and its dot are styled once, and each `&.<category>` class only sets `--c: var(--c-category-<name>)`. Follow that shape rather than repeating `background-color`/`color` per category.
 
 ### Typography
 
