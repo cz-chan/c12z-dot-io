@@ -1,4 +1,4 @@
-import { backgroundDataUri, logoDataUri } from "./og-assets.ts";
+import { backgroundDataUri, logoDataUri } from "@/lib/og/og-assets.ts";
 
 /**
  * Árboles de nodos (formato Satori, sin JSX) para los 4 templates OG:

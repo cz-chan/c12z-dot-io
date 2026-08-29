@@ -1,7 +1,7 @@
 import { ImageResponse } from "@vercel/og";
 import sharp from "sharp";
 
-import { cascadiaFont, tamagoFont } from "./og-assets.ts";
+import { cascadiaFont, tamagoFont } from "@/lib/og/og-assets.ts";
 
 /**
  * Rasteriza un árbol de nodos (og-templates) a PNG 1200×630 con las dos
