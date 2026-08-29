@@ -4,8 +4,6 @@
 	"exclude": ["dist"],
 	"compilerOptions": {
 		"paths": {
-			"@/*": ["./src/*"],
-
 			"@biases-path/*": ["./src/paths/behavior/paths/biases/*"],
 			"@mental-models-path/*": ["./src/paths/behavior/paths/mental-models/*"],
 			"@design-laws-path/*": ["./src/paths/behavior/paths/design-laws/*"],
@@ -19,17 +17,19 @@
 			"@home-path/*": ["./src/paths/home/*"],
 			"@error-path/*": ["./src/paths/404/*"],
 
-			"@/lib/*": ["./src/lib/*"],
-			"@/global/*": ["./src/global/*"],
 			"@/ui/*": ["./src/components/ui/*"],
 			"@/icons/*": ["./src/components/icons/*"],
 			"@/seo/*": ["./src/components/seo/*"],
 			"@/mdx/*": ["./src/components/mdx/*"],
 			"@/layout/*": ["./src/components/layout/*"],
 			"@/analytics/*": ["./src/components/analytics/*"],
+
+			"@/lib/*": ["./src/lib/*"],
+			"@/global/*": ["./src/global/*"],
 			"@/layouts/*": ["./src/layouts/*"],
 			"@/utils/*": ["./src/utils/*"],
-			"@/assets/*": ["./src/assets/*"]
+			"@/assets/*": ["./src/assets/*"],
+			"@/styles/*": ["./src/styles/*"]
 		},
 		"jsx": "react-jsx",
 		"jsxImportSource": "react"
