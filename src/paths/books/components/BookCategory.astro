@@ -1,6 +1,7 @@
 ---
 import styles from "./book.module.css";
 import type { CollectionEntry } from "astro:content";
+import { BOOKS_CATEGORY_LABELS } from "@/lib/content-categories/books.categories.ts";
 
 interface Props {
 	entry: CollectionEntry<"books">;
@@ -12,5 +13,5 @@ const { category } = data;
 ---
 
 <span class={`${styles.bookCategory} ${styles[category]}`}>
-	{category}
+	{BOOKS_CATEGORY_LABELS[category]}
 </span>
