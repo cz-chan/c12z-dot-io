@@ -1,8 +1,4 @@
-export function parseNoteDate(publishDate: string): Date {
-	const [day, month, year] = publishDate.split("/").map(Number);
-
-	return new Date(year, month - 1, day);
-}
+import { parseDate } from "@utils/validating-date.ts";
 
 /** Convert date from DD/MM/YYYY into timeline: "7 jul 2026". */
 export function formatNoteDate(publishDate: string): string {
@@ -11,6 +7,6 @@ export function formatNoteDate(publishDate: string): string {
 		month: "short",
 		year: "numeric",
 	})
-		.format(parseNoteDate(publishDate))
+		.format(parseDate(publishDate))
 		.replace(".", "");
 }

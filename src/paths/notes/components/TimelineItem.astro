@@ -2,14 +2,11 @@
 import type { CollectionEntry } from "astro:content";
 import { Picture } from "astro:assets";
 
-import styles from "./notes.module.css";
+import styles from "@notes-path/components/notes.module.css";
 import { convertDateToISO8601 } from "@utils/validating-date.ts";
-import { formatNoteDate } from "../lib/format-note-date.ts";
-import SourceBadges from "./SourceBadges.astro";
-import {
-	NOTES_CATEGORY_LABELS,
-	notesCategories,
-} from "@/lib/content-categories/notes.categories";
+import { formatNoteDate } from "@notes-path/lib/format-note-date.ts";
+import SourceBadges from "@notes-path/components/SourceBadges.astro";
+import { NOTES_CATEGORY_LABELS } from "@/lib/content-categories/notes.categories.ts";
 
 interface Props {
 	entry: CollectionEntry<"notes">;

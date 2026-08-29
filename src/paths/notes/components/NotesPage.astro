@@ -1,10 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 
-import styles from "./notes.module.css";
-import { parseNoteDate } from "../lib/format-note-date.ts";
-import Timeline from "./Timeline.astro";
-import SortToggle from "./SortToggle.tsx";
+import styles from "@notes-path/components/notes.module.css";
+import { parseDate } from "@utils/validating-date.ts";
+import Timeline from "@notes-path/components/Timeline.astro";
+import SortToggle from "@notes-path/components/SortToggle.tsx";
 
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 
@@ -12,8 +12,8 @@ const notes = await getCollection("notes");
 
 const sortedNotes = notes.sort(
 	(a, b) =>
-		parseNoteDate(b.data.publishDate).getTime() -
-		parseNoteDate(a.data.publishDate).getTime(),
+		parseDate(b.data.publishDate).getTime() -
+		parseDate(a.data.publishDate).getTime(),
 );
 ---
 

@@ -1,16 +1,26 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
-import styles from "./notes.module.css";
-import TimelineItem from "./TimelineItem.astro";
+import styles from "@notes-path/components/notes.module.css";
+import TimelineItem from "@notes-path/components/TimelineItem.astro";
 
 interface Props {
-  notes: CollectionEntry<"notes">[];
+	notes: CollectionEntry<"notes">[];
 }
 
 const { notes } = Astro.props;
 ---
 
-<ol class={styles.timeline} id="notes-timeline">
-  {notes.map((entry, index) => <TimelineItem entry={entry} index={index} />)}
+<ol
+	class={styles.timeline}
+	id="notes-timeline"
+>
+	{
+		notes.map((entry, index) => (
+			<TimelineItem
+				entry={entry}
+				index={index}
+			/>
+		))
+	}
 </ol>

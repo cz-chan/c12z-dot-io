@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import styles from "./notes.module.css";
+import styles from "@notes-path/components/notes.module.css";
 
 type Order = "desc" | "asc";
 
