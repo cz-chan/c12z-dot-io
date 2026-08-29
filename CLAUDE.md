@@ -137,9 +137,18 @@ once, not three times.
 
 Every path has its own `@<name>-path/*` alias — **always import through it**, never through a relative `../../` chain or a raw `src/paths/...` path. There is no generic `@/paths/*` alias on purpose: adding a path means adding its alias. The full table lives in `tsconfig.json` under `compilerOptions.paths`.
 
+**There is no `@/*` catch-all either.** Every alias is declared explicitly, in
+three groups: the `@<name>-path/*` domains, the six that collapse
+`src/components/` (`@/ui`, `@/icons`, `@/seo`, `@/mdx`, `@/layout`,
+`@/analytics`), and the rest of `src/` (`@/lib`, `@/global`, `@/layouts`,
+`@/utils`, `@/assets`, `@/styles`). Dropping the catch-all is what makes the
+previous rule enforced rather than merely documented: `@/paths/...` and
+`@/components/...` no longer resolve, so TypeScript fails the build instead of
+quietly letting the shortcut through. Adding a top-level folder under `src/`
+means adding its alias.
+
 **Always import through an alias**, in `.mdx` files too — they were the last
-place still carrying `../../../components/...` chains. A `@/components/...` or
-`@/paths/...` import means an alias was skipped, or that one is missing.
+place still carrying `../../../components/...` chains.
 
 **Shared means 2+ paths, and it is enforced.** Something used by a single path
 belongs in that path, even if it feels generic: the summarize-with-AI block lives
