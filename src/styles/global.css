@@ -179,15 +179,26 @@
 	--c-design-category-perception-surface: #6b4a9e;
 	--c-design-category-perception-band: #3f3258;
 
-	/* Books category colors */
-	--c-book-health: #13c985;
-	--c-book-product: #5ba4f5;
-	--c-book-culture: #f0a830;
-	--c-book-psychology: #a67ee8;
-	--c-book-economics: #4fbb6a;
-	--c-book-creativity: #ff6a3e;
-	--c-book-philosophy: #e0709a;
-	--c-book-other: #8c96a3;
+	/* ---- Content category colors -------------------------
+	Shared by `books` and `notes`: the first eight are
+	SHARED_CATEGORIES, the last four only notes uses. One scale,
+	so the same topic reads the same colour in both sections.
+	Source of truth for the values: src/lib/content-categories/.
+	*/
+	--c-category-health: #13c985;
+	--c-category-product: #5ba4f5;
+	--c-category-culture: #f0a830;
+	--c-category-psychology: #a67ee8;
+	--c-category-economics: #4fbb6a;
+	--c-category-creativity: #ff6a3e;
+	--c-category-philosophy: #e0709a;
+	--c-category-business: #2fc4b2;
+
+	/* notes only */
+	--c-category-random: #8c96a3;
+	--c-category-relationship: #ef6b6b;
+	--c-category-society: #7c8cf0;
+	--c-category-sport: #e0c341;
 
 	/* UI utility */
 	--c-goback: #f16f0e;
@@ -394,6 +405,24 @@
 	--c-design-category-interaction-band: #9f7c42;
 	--c-design-category-perception-surface: #9077b6;
 	--c-design-category-perception-band: #9077b6;
+
+	/* ---- Content categories (light) ----------------------
+	Darkened so they keep contrast as text on recycled paper.
+	*/
+	--c-category-health: #0f8f5f;
+	--c-category-product: #2f6fbe;
+	--c-category-culture: #a8710b;
+	--c-category-psychology: #6f4bb0;
+	--c-category-economics: #35864a;
+	--c-category-creativity: #c4441c;
+	--c-category-philosophy: #b04068;
+	--c-category-business: #14806f;
+
+	/* notes only */
+	--c-category-random: #6b7480;
+	--c-category-relationship: #b83a3a;
+	--c-category-society: #4453c4;
+	--c-category-sport: #8f7409;
 }
 
 /* === RESET ====================== */
