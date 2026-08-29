@@ -13,7 +13,7 @@ import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 
 import { pluralize } from "@utils/pluralize.ts";
 
-import { TYPE_LABELS } from "../lib/source-types.ts";
+import { SOURCES_CATEGORY_LABELS } from "@/lib/content-categories/sources.categories.ts";
 import { countSourceTypes, buildTally } from "../lib/count-source-types.ts";
 import type { Topic } from "../lib/get-topics.ts";
 
@@ -105,7 +105,7 @@ const TYPE_FILTERS = [...byType.keys()];
 							data-filter-type={type}
 							aria-pressed="false"
 						>
-							{TYPE_LABELS[type]}
+							{SOURCES_CATEGORY_LABELS[type]}
 						</button>
 					))}
 				</section>

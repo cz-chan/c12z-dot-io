@@ -16,7 +16,8 @@
  * a folder and its viewer.
  */
 import styles from "./sources.module.css";
-import { TYPE_LABELS, type Source } from "../lib/source-types.ts";
+import { SOURCES_CATEGORY_LABELS } from "@/lib/content-categories/sources.categories.ts";
+import type { Source } from "@sources-path/lib/source-types.ts";
 
 interface Props {
 	/** unique in the page: links the folder to its dialog */
@@ -50,7 +51,7 @@ const { id, title, titleHref, file = false, sources } = Astro.props;
 			class={styles.sheetTab}
 			data-sheet-type
 		>
-			{TYPE_LABELS[sources[0].type]}
+			{SOURCES_CATEGORY_LABELS[sources[0].type]}
 		</span>
 
 		<header class={styles.sheetHead}>
@@ -81,11 +82,11 @@ const { id, title, titleHref, file = false, sources } = Astro.props;
 						class={styles.slide}
 						data-slide={index}
 						data-type={source.type}
-						data-type-label={TYPE_LABELS[source.type]}
+						data-type-label={SOURCES_CATEGORY_LABELS[source.type]}
 						data-date={source.date}
 						hidden={index !== 0}
 					>
-						{source.type === "cita" ? (
+						{source.type === "quote" ? (
 							<blockquote class={`${styles.sheetQuote} ${styles.clamp4}`}>
 								“{source.title}”
 							</blockquote>

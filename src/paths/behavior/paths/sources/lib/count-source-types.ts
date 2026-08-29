@@ -1,6 +1,7 @@
 import { pluralize } from "@utils/pluralize.ts";
 
-import { TYPE_LABELS, type Source } from "./source-types.ts";
+import { SOURCES_CATEGORY_LABELS } from "@/lib/content-categories/sources.categories.ts";
+import type { Source } from "@sources-path/lib/source-types.ts";
 
 /** one entry of the header summary: the figure apart from its label */
 export interface TypeTally {
@@ -30,5 +31,5 @@ export const countSourceTypes = (
 export const buildTally = (counts: Map<Source["type"], number>): TypeTally[] =>
 	[...counts].map(([type, numb]) => ({
 		numb,
-		label: pluralize(numb, TYPE_LABELS[type]),
+		label: pluralize(numb, SOURCES_CATEGORY_LABELS[type]),
 	}));

@@ -24,7 +24,8 @@
  */
 import styles from "./sources.module.css";
 import SourceFiles from "./SourceFiles.astro";
-import { TYPE_LABELS, type Source } from "../lib/source-types.ts";
+import { SOURCES_CATEGORY_LABELS } from "@/lib/content-categories/sources.categories.ts";
+import type { Source } from "@sources-path/lib/source-types.ts";
 
 interface Props {
 	/** unique in the page: links the pile to its dialog (`data-folder-open`) */
@@ -70,7 +71,7 @@ const { id, label, title, loose = false, file = false, sources } = Astro.props;
 						data-index={i}
 						aria-haspopup="dialog"
 					>
-						<span class={styles.folderTab}>{TYPE_LABELS[source.type]}</span>
+						<span class={styles.folderTab}>{SOURCES_CATEGORY_LABELS[source.type]}</span>
 						<span class={styles.folderTitle}>{source.title}</span>
 						{/* the note itself if there is one; if the source is only a
 					    title, the drawn lines fill the sheet so it does not read
@@ -85,7 +86,7 @@ const { id, label, title, loose = false, file = false, sources } = Astro.props;
 								/>
 							))}
 						<span class={styles.srOnly}>
-							{`Abrir ${TYPE_LABELS[source.type]}: ${source.title}`}
+							{`Abrir ${SOURCES_CATEGORY_LABELS[source.type]}: ${source.title}`}
 						</span>
 					</button>
 				</li>
