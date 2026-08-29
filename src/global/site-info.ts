@@ -16,7 +16,7 @@ export interface Site404Config {
 	lang: string;
 }
 
-export const SITE_VERSION = "v1.12.00";
+export const SITE_VERSION = "v1.12.01";
 
 export const SITE_DEFAULT_CONFIG: SiteDefaultConfig = {
 	title: "Chema Ferrandez - c12z",
