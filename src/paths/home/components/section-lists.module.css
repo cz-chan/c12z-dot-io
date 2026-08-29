@@ -101,7 +101,7 @@
 
 			& .linkBar {
 				width: 100%;
-				padding-inline: var(--sp-1);
+				padding-inline: var(--sp-2);
 				padding-block: var(--sp-2);
 				border-radius: var(--r-sm);
 				display: flex;
@@ -123,11 +123,15 @@
 
 				& .links {
 					font-family: var(--ff-rubik);
+					flex: 1 1 auto;
+					min-width: 0;
 				}
 
 				& .extra {
 					color: var(--fg-3);
 					font-family: var(--ff-rubik);
+					flex: 0 0 40%;
+					text-align: right;
 				}
 			}
 		}
