@@ -3,33 +3,38 @@ import styles from "./page-error.module.css";
 import { Image } from "astro:assets";
 
 import Courege from "@/assets/images/404/courage-404-error.gif";
-import GoToIn404 from "./GoToIn404.astro";
+import GoToIn404 from "@error-path/components/GoToIn404.astro";
 ---
 
 <section class={styles.errorPage}>
-  <h1>Ups... hay un 404 entre manos 😅</h1>
-  <Image
-    class={styles.errorImage}
-    src={Courege}
-    width={400}
-    alt="courage dog terror gif to 404 page for c12z"
-    quality="low"
-    loading="eager"
-  />
-  <article class={styles.errorContent}>
-    <p>
-      La ruta <span id="error-in-path" class={styles.errorPath}></span> no existe.
-    </p>
-    <p>
-      ¿Es posible que hayas querido ir a <span class={styles.suggestedPath}>/ruta-sugerida-por-AI</span>?
-    </p>
-    <p class={styles.errorNote}>
-      Esto, a futuro, funcionará con AI y te mostrará la ruta a la cual querías
-      ir. Hasta entonces, solo te puedo decir que te fijes un poco más en las
-      rutas o si ha sido un error mio, me avises 😁
-    </p>
-    <GoToIn404 />
-  </article>
+	<h1>Ups... hay un 404 entre manos 😅</h1>
+	<Image
+		class={styles.errorImage}
+		src={Courege}
+		width={400}
+		alt="courage dog terror gif to 404 page for c12z"
+		quality="low"
+		loading="eager"
+	/>
+	<article class={styles.errorContent}>
+		<p>
+			La ruta <span
+				id="error-in-path"
+				class={styles.errorPath}
+			></span> no existe.
+		</p>
+		<p>
+			¿Es posible que hayas querido ir a <span class={styles.suggestedPath}
+				>/ruta-sugerida-por-AI</span
+			>?
+		</p>
+		<p class={styles.errorNote}>
+			Esto, a futuro, funcionará con AI y te mostrará la ruta a la cual querías
+			ir. Hasta entonces, solo te puedo decir que te fijes un poco más en las
+			rutas o si ha sido un error mio, me avises 😁
+		</p>
+		<GoToIn404 />
+	</article>
 </section>
 
 <script>
