@@ -209,7 +209,7 @@ const sourceSchema = z.object({
 		"cita",
 	]),
 	author: z.string().optional(),
-	url: z.string().startsWith("https://").optional(),
+	url: z.string().optional(),
 	date: dateField.optional(),
 	excerpt: z.string().optional(),
 });
