@@ -288,7 +288,7 @@
 	font-family: var(--ff-mono);
 	font-size: var(--t-micro);
 	line-height: 0;
-	text-transform: uppercase;
+	text-transform: lowercase;
 	letter-spacing: var(--tracking-eyebrow);
 	color: var(--c-note);
 	border: var(--hairline);

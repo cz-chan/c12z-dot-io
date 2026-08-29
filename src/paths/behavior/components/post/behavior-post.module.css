@@ -67,6 +67,6 @@
 	line-height: var(--lh-micro);
 	letter-spacing: var(--tracking-widest);
 	font-weight: bold;
-	text-transform: capitalize;
+	text-transform: lowercase;
 	white-space: nowrap;
 }
