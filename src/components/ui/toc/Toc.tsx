@@ -9,7 +9,7 @@ import { throttle } from "es-toolkit";
 
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 
-import ProgressCircle from "./ProgressCircle";
+import ProgressCircle from "@/ui/toc/ProgressCircle.tsx";
 
 interface Headings {
 	slug: string;
@@ -185,7 +185,9 @@ export default function TOC({ title, headings }: Props) {
 													onClick={(e) => {
 														e.preventDefault();
 														e.stopPropagation();
-														document.getElementById(slug)?.scrollIntoView({ behavior: "smooth" });
+														document
+															.getElementById(slug)
+															?.scrollIntoView({ behavior: "smooth" });
 													}}
 													className={`${styles.headingLink} ${
 														slug === activeSlug ? styles.here : styles.notHere
