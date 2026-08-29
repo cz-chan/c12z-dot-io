@@ -22,7 +22,7 @@ const { lang } = SITE_DEFAULT_CONFIG;
 		<Header />
 		<main>
 			<slot />
-			<BottomBar client:only="react" />
+			<BottomBar client:load />
 		</main>
 		<Footer />
 	</body>
