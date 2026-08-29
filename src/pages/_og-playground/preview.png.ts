@@ -8,8 +8,8 @@ import {
 	heroOgTemplate,
 	textOgTemplate,
 	type OgLayoutOverrides,
-} from "@/lib/og/og-templates";
-import { renderOgImage } from "@/lib/og/render-og-image";
+} from "@/lib/og/og-templates.ts";
+import { renderOgImage } from "@/lib/og/render-og-image.ts";
 
 /**
  * HERRAMIENTA DE DESARROLLO — pareja de /og-playground.
