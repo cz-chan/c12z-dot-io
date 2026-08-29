@@ -3,10 +3,7 @@ import MainLayout from "@layouts/MainLayout.astro";
 import SourcesSEO from "@sources-path/seo/SourcesSEO.content.astro";
 
 import TopicPage from "@sources-path/components/TopicPage.astro";
-import {
-	getTopics,
-	type Topic,
-} from "@sources-path/lib/get-topics";
+import { getTopics, type Topic } from "@sources-path/lib/get-topics.ts";
 
 interface Props {
 	topic: Topic;
