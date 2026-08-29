@@ -131,9 +131,12 @@ post appears. There is no separate `status` field.
 
 You have to touch **two** places, in this order:
 
-1. `src/content.config.ts` → add it to the `z.enum` of `sourceSchema`.
-2. `src/paths/behavior/paths/sources/lib/source-types.ts` → add its label to
-   `TYPE_LABELS` (what you read on the folder's tab).
+Both live in `src/lib/content-categories/sources.categories.ts`:
+
+1. add it to `SOURCE_CATEGORIES` (the array the `z.enum` of `sourceSchema` is
+   built from).
+2. add its label to `SOURCES_CATEGORY_LABELS` (what you read on the folder's
+   tab).
 
 If you forget step 2, TypeScript fails on `pnpm build` (the `Record` stops
 being exhaustive) — that's an intentional safety net, not a bug.
@@ -163,7 +166,7 @@ src/paths/behavior/paths/sources/
 │   └── topic-filters.ts           source-type toggles (topic page)
 ├── data/
 │   ├── get-topics.ts            builds the "topics" by reading bias + mentalModels + designLaws
-│   ├── source-types.ts          `Source` type + `TYPE_LABELS`
+│   ├── source-types.ts          `Source` type (labels live in `@/lib/content-categories/sources.categories.ts`)
 │   └── count-source-types.ts    the per-type tally of the topic header
 └── seo/
     ├── SourcesSEO.content.astro static OG shared by all views
@@ -489,7 +492,7 @@ contradict each other:
 | I want to…                               | File                                                         | What                                                                                |
 | ---------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
 | Add a source to a post                   | `src/content/{bias,mental-models}/<x>.mdx`                   | add an item to `sources:`                                                           |
-| A new source type                        | `content.config.ts` + `lib/source-types.ts`                 | the `z.enum` and `TYPE_LABELS` (both, §3.3)                                         |
+| A new source type                        | `src/lib/content-categories/sources.categories.ts`           | `SOURCE_CATEGORIES` and `SOURCES_CATEGORY_LABELS` (both, §3.3)                       |
 | See "Behind this post" on biases         | `src/pages/behavior/sesgos/[...id].astro`                    | uncomment the import and the `<PostSources />`                                      |
 | Change the size of the pieces            | `sources.module.css`                                         | `--folder-w` in `.stack`/`.stackFiles` (stack) / `minmax()` in `.topicGrid`         |
 | Make them stack more or less             | `sources.module.css`                                         | `--min-step` in `.stack` / `.stackLoose` / `.stackFiles`                            |
@@ -511,7 +514,8 @@ contradict each other:
    match.** It's the only link between the piece and its viewer.
 2. **The `id`s must be unique on the page.** That's why the drawer uses
    `sesgo-<id>` / `modelo-<id>` and not the bare id.
-3. **Don't add a type to the enum without adding it to `TYPE_LABELS`** (§3.3).
+3. **Don't add a type to `SOURCE_CATEGORIES` without adding it to
+   `SOURCES_CATEGORY_LABELS`** (§3.3).
 4. **Don't replace the piece's `border-left` or the `<li>`'s `drop-shadow`
    with a `box-shadow`**: the `clip-path` eats them (§7.1).
 5. **Don't put `z-index` on the `:hover` of `.stackItem`** (the closed

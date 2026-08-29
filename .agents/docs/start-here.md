@@ -6,7 +6,16 @@
 > must follow. This file holds the long version — the reasoning and the current
 > state. For the OG images system see [`pages/og/og-images.md`](./pages/og/og-images.md)
 > and [`lib/og/og-render.md`](./lib/og/og-render.md); for the sources drawer,
-> [`paths/sources.md`](./paths/sources.md).
+> [`paths/sources.md`](./paths/sources.md); for the Zod schemas of the
+> collections, [`content-config.md`](./content-config.md).
+
+## 0. Where the agent files are
+
+Everything an agent reads lives in `.agents/`: this documentation in
+`.agents/docs/`, project skills in `.agents/skills/`. The only thing under
+`.claude/` is a `skills → ../.agents/skills` symlink, because Claude Code
+discovers project skills only at that path — never add a real file there.
+`CLAUDE.md` and `AGENTS.md` stay at the repo root; they are read by name.
 
 ## 1. What it is
 
@@ -132,6 +141,11 @@ not be verified against rendered output.
 
 ## 5. Content collections (`content.config.ts`)
 
+**`content.config.ts` carries no comments on purpose** — every "why" behind the
+schemas (the date guard, the categories, `sourceSchema`,
+`behaviorContentBaseSchema`, the parked `essays` fields) lives in
+[`content-config.md`](./content-config.md). Change a schema, change that doc.
+
 `glob` loader over `**/*.{md,mdx}`. Six collections are exported:
 
 | Collection     | Folder                        | Notes                                                                        |
@@ -143,7 +157,7 @@ not be verified against rendered output.
 | `mentalModels` | `content/mental-models/{slug}/` | `category` from fs.blog's provisional list                                 |
 | `designLaws`   | `content/design-laws/{slug}/` | `category`: composición visual / interacción / percepción                    |
 
-`essays` is **defined but commented out** of the exports, kept for later. That is
+`essays` is **defined but left out** of the exports, kept for later. That is
 why `astro check` reports `'essayCollection' is declared but its value is never
 read` — expected, not a bug.
 
