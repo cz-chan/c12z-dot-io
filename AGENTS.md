@@ -220,7 +220,7 @@ in `paths/books/`, and `Barcode`/`Neuron`/`Prism`/`Pattern` in
 
 ### Content collection schemas
 
-- **books** — book reviews; covers, score, authors, Amazon links, `category` enum (`health`, `product`, `culture`, `psychology`, `economics`, `creativity`, `philosophy`, `other`)
+- **books** — book reviews; covers, score, authors, Amazon links, `category` enum: `SHARED_CATEGORIES` in `src/lib/content-categories/`
 - **biases** — cognitive biases; `category` enum: `velocidad`, `memoria`, `percepción`, `contexto`, `juicio`
 - **projects**, **notes**, **mentalModels**, **designLaws** — see `src/content.config.ts`
 - `biases`, `mentalModels` and `designLaws` share `behaviorContentBaseSchema`. Each needs a `contentCount` unique **within its own collection** — the number feeds the card code (`DSG-001`), and `get-behavior-entries.ts` throws at build time on a duplicate. The three collections number independently.
@@ -268,7 +268,7 @@ Type scale (`--t-*`/`--lh-*`), tracking (`--tracking-*`), 4pt spacing (`--sp-*`)
 - Accents: `--accent` (lime `#a2ce12`), `--accent-ink`, `--accent-2` (purple `#904fe7`)
 - Content sections: `--c-behavior`, `--c-bias`, `--c-mental-model`, `--c-source`, `--c-essay`, `--c-library`, `--c-project`, `--c-note`
 - Bias categories: `--c-bias-category-{speed,memory,judgment,context,perception}`
-- Book categories: `--c-book-{health,product,culture,psychology,economics,creativity,philosophy,other}`
+- Content categories (books + notes): `--c-category-{health,product,culture,psychology,economics,creativity,philosophy,business}` + notes-only `{random,relationship,society,sport}`
 - Utility: `--c-goback`, `--c-wip`, `--ok`, `--warn`, `--err`
 
 ### UI conventions when building new components
