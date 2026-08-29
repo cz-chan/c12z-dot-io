@@ -1,4 +1,4 @@
-import type { PageKeywords } from "@/lib/keywords";
+import type { PageKeywords } from "@/lib/keywords.ts";
 
 export const designLawsKeywords: PageKeywords = {
 	keywords: [

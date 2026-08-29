@@ -21,11 +21,11 @@ import styles from "./sources.module.css";
 
 import { getTopics, countSources } from "@sources-path/lib/get-topics.ts";
 
-import TopicFolder from "./TopicFolder.astro";
-import FolderDialogScript from "./FolderDialogScript.astro";
+import TopicFolder from "@sources-path/components/TopicFolder.astro";
+import FolderDialogScript from "@sources-path/components/FolderDialogScript.astro";
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 
-import TerminalSearch from "./TerminalSearch.astro";
+import TerminalSearch from "@sources-path/components/TerminalSearch.astro";
 
 const topics = await getTopics();
 

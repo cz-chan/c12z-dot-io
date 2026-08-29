@@ -23,7 +23,7 @@
  * It renders its own SourceSheets viewer, linked by `id`.
  */
 import styles from "./sources.module.css";
-import SourceFiles from "./SourceFiles.astro";
+import SourceFiles from "@sources-path/components/SourceFiles.astro";
 import { SOURCES_CATEGORY_LABELS } from "@/lib/content-categories/sources.categories.ts";
 import type { Source } from "@sources-path/lib/source-types.ts";
 
@@ -71,7 +71,9 @@ const { id, label, title, loose = false, file = false, sources } = Astro.props;
 						data-index={i}
 						aria-haspopup="dialog"
 					>
-						<span class={styles.folderTab}>{SOURCES_CATEGORY_LABELS[source.type]}</span>
+						<span class={styles.folderTab}>
+							{SOURCES_CATEGORY_LABELS[source.type]}
+						</span>
 						<span class={styles.folderTitle}>{source.title}</span>
 						{/* the note itself if there is one; if the source is only a
 					    title, the drawn lines fill the sheet so it does not read

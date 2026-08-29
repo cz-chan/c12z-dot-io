@@ -1,6 +1,6 @@
 import { getCollection } from "astro:content";
-import { BehaviorSectionData } from "./behavior-sections.data.ts";
-import type { BehaviorSection } from "./behavior-section.types.ts";
+import { BehaviorSectionData } from "@behavior-path/lib/behavior-sections.data.ts";
+import type { BehaviorSection } from "@behavior-path/lib/behavior-section.types.ts";
 
 const count = (num: number, singular: string, plural: string) =>
 	`${num} ${num === 1 ? singular : plural}`;

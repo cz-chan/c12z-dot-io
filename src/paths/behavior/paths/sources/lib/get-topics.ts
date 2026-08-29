@@ -1,7 +1,7 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 
 import { parseDate } from "@utils/validating-date.ts";
-import type { Source } from "./source-types.ts";
+import type { Source } from "@sources-path/lib/source-types.ts";
 
 /**
  * A topic = a bias, a mental model or design pattern that HAS sources. It is the unit the

@@ -1,4 +1,4 @@
-import type { BehaviorSectionKeys } from "./card/behavior-fancycodes.ts";
+import type { BehaviorSectionKeys } from "@behavior-path/lib/card/behavior-fancycodes.ts";
 
 /**
  * The one place a category turns into colour.
