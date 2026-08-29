@@ -21,15 +21,6 @@
 	}
 }
 
-/* ============================================================
- * Timeline.astro + TimelineItem.astro
- *
- * Dos regímenes responsive:
- *   - mobile/tablet (< 48rem / 768px): solo texto, sin collage de emojis
- *   - desktop (>= 48rem / 768px): dos columnas alternadas con línea central
- *     y collage de emojis en el lado opuesto al texto
- * ============================================================ */
-
 .timeline {
 	list-style: none;
 	position: relative;
@@ -67,14 +58,18 @@
 	& .node {
 		position: absolute;
 		top: 0;
-		/* Compensates for the padding-left of .timeline (the item's left edge)
-		   so the node lands on the line, plus half the line's own width. */
+		/* 
+		Compensates for the padding-left of .timeline (the item's left edge)
+		so the node lands on the line, plus half the line's own width. 
+		*/
 		left: calc(var(--sp-2) - var(--sp-6) + var(--wdth) / 2);
-		/* centers the "x" on the line: half its own width, which is --sp-5
-		   because box-sizing is border-box (the padding is already inside it).
-		   A transform is avoided on purpose: it would become the containing
-		   block for the fixed-attachment texture below and break its
-		   alignment with the page grain. */
+		/* 
+		centers the "x" on the line: half its own width, which is --sp-5
+		because box-sizing is border-box (the padding is already inside it).
+		A transform is avoided on purpose: it would become the containing
+		block for the fixed-attachment texture below and break its
+		alignment with the page grain. 
+		*/
 		margin-left: calc(var(--sp-5) / -2);
 
 		display: block;
@@ -88,12 +83,14 @@
 		padding: var(--sp-1);
 		transition: color var(--t-base) var(--ease);
 
-		/* The node hides the dashed line behind it, so it needs an opaque
-		   background — but a flat --bg patch reads as a solid box over the
-		   page's paper texture (body::before/::after sit at z-index -1, under
-		   the content). These two layers repaint the same grain + fleck on the
-		   node itself; `background-attachment: fixed` locks them to the
-		   viewport, exactly like the body layers, so the noise lines up. */
+		/* 
+		The node hides the dashed line behind it, so it needs an opaque
+		background — but a flat --bg patch reads as a solid box over the
+		page's paper texture (body::before/::after sit at z-index -1, under
+		the content). These two layers repaint the same grain + fleck on the
+		node itself; `background-attachment: fixed` locks them to the
+		viewport, exactly like the body layers, so the noise lines up. 
+		*/
 		&::before,
 		&::after {
 			content: "";
@@ -127,10 +124,10 @@
 	}
 
 	/*
-	*	Emoji collage. The height is determined by the aspect ratio (there is no `height` property);
-	* the children are positioned absolutely with percentages relative to this container,
-	* so everything scales together when the width changes.
-	* Solo visible en desktop (>= 48rem); oculto en mobile/tablet.
+	Emoji collage. The height is determined by the aspect ratio (there is no `height` property);
+	the children are positioned absolutely with percentages relative to this container,
+	so everything scales together when the width changes.
+	ONly visible in desktop (>= 48rem)
 	*/
 
 	& .figure {
@@ -139,8 +136,10 @@
 		margin: 0;
 		aspect-ratio: 4/1;
 
-		/* Cada emoji: top/left = posición, width = tamaño (% del figure),
-		 * rotate = inclinación, z-index = cuál queda encima al solaparse */
+		/* 
+		Each emoji: top/left = position, width = size (% of the figure),
+    rotate = rotation, z-index = which one is on top when they overlap
+		*/
 		& .illustrationItem {
 			position: absolute;
 			display: block;
@@ -199,8 +198,10 @@
 			grid-row: 1;
 		}
 
-		/* Tamaño fijo (tope 18rem) en vez de fluido: el collage no encoge
-		 * con la columna y el diseño no se deforma cerca del breakpoint */
+		/* 
+		Fixed size (maximum 18rem) instead of fluid: the collage does not shrink
+		The column and layout do not distort near the breakpoint 
+		*/
 		& .figure {
 			grid-row: 1;
 			position: relative;
@@ -283,17 +284,63 @@
 	}
 }
 
-/* TODO: THIS PILL IS GOING TO BE COMMENTED FOR A CATEGORY COMPONENT */
-.pill {
-	font-family: var(--ff-mono);
+/* ============================================================
+ * Note categories colors
+ * ============================================================ */
+.notesCategory {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	border-radius: var(--sp-10);
 	font-size: var(--t-micro);
+	font-weight: 500;
 	line-height: 0;
-	text-transform: lowercase;
-	letter-spacing: var(--tracking-eyebrow);
-	color: var(--c-note);
-	border: var(--hairline);
-	border-radius: var(--r-pill);
-	padding: 0.625rem var(--sp-3);
+	letter-spacing: var(--tracking-wider);
+	padding: var(--sp-2);
+	white-space: nowrap;
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+
+	background-color: color-mix(in srgb, var(--c) 5%, transparent);
+	border: var(--sp-05) solid color-mix(in srgb, var(--c) 50%, transparent);
+	color: var(--c);
+
+	&.health {
+		--c: var(--c-category-health);
+	}
+	&.product {
+		--c: var(--c-category-product);
+	}
+	&.culture {
+		--c: var(--c-category-culture);
+	}
+	&.psychology {
+		--c: var(--c-category-psychology);
+	}
+	&.economics {
+		--c: var(--c-category-economics);
+	}
+	&.creativity {
+		--c: var(--c-category-creativity);
+	}
+	&.philosophy {
+		--c: var(--c-category-philosophy);
+	}
+	&.business {
+		--c: var(--c-category-business);
+	}
+	&.random {
+		--c: var(--c-category-random);
+	}
+	&.relationship {
+		--c: var(--c-category-relationship);
+	}
+	&.society {
+		--c: var(--c-category-society);
+	}
+	&.sport {
+		--c: var(--c-category-sport);
+	}
 }
 
 .title {
@@ -331,8 +378,7 @@
 }
 
 /* ============================================================
- * SourceBadges.astro — fila de chips de fuente (la usan tanto
- * TimelineItem como el footer de src/pages/notas/[...id].astro)
+ * SourceBadges.astro 
  * ============================================================ */
 
 .sources {
@@ -415,8 +461,7 @@
 }
 
 /* ============================================================
- * src/pages/notas/[...id].astro — página de detalle de una nota.
- * .meta y .pill de la cabecera reutilizan las reglas de arriba.
+ * src/pages/notas/[...id].astro 
  * ============================================================ */
 
 .note {
@@ -428,6 +473,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--sp-3);
+
+		h1 {
+			text-wrap: pretty;
+		}
 	}
 
 	& .sourcesFooter {

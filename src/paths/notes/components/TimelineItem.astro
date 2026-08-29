@@ -6,6 +6,10 @@ import styles from "./notes.module.css";
 import { convertDateToISO8601 } from "@utils/validating-date.ts";
 import { formatNoteDate } from "../lib/format-note-date.ts";
 import SourceBadges from "./SourceBadges.astro";
+import {
+	NOTES_CATEGORY_LABELS,
+	notesCategories,
+} from "@/lib/content-categories/notes.categories";
 
 interface Props {
 	entry: CollectionEntry<"notes">;
@@ -13,7 +17,8 @@ interface Props {
 }
 
 const { entry, index } = Astro.props;
-const { title, excerpt, publishDate, sources, illustration } = entry.data;
+const { title, excerpt, publishDate, sources, illustration, category } =
+	entry.data;
 ---
 
 <li
@@ -48,8 +53,9 @@ const { title, excerpt, publishDate, sources, illustration } = entry.data;
 			<time datetime={convertDateToISO8601(publishDate)}>
 				{formatNoteDate(publishDate)}
 			</time>
-			{/* TODO: CATEGORY COMPONENT */}
-			<span class={styles.pill}>Nota</span>
+			<span class=`${styles.notesCategory} ${styles[category]}`
+				>{NOTES_CATEGORY_LABELS[category]}</span
+			>
 		</p>
 		<h2
 			class={styles.title}

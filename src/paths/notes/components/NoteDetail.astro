@@ -3,19 +3,20 @@ import type { CollectionEntry } from "astro:content";
 import { render } from "astro:content";
 
 import styles from "./notes.module.css";
-import SourceBadges from "./SourceBadges.astro";
 
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 
 import { convertDateToISO8601 } from "@utils/validating-date.ts";
-import { formatNoteDate } from "../lib/format-note-date.ts";
+import { formatNoteDate } from "@notes-path/lib/format-note-date.ts";
+import { NOTES_CATEGORY_LABELS } from "@/lib/content-categories/notes.categories.ts";
+import SourceBadges from "@notes-path/components/SourceBadges.astro";
 
 interface Props {
 	entry: CollectionEntry<"notes">;
 }
 
 const { entry } = Astro.props;
-const { title, publishDate, sources } = entry.data;
+const { title, publishDate, sources, category } = entry.data;
 
 const { Content } = await render(entry);
 ---
@@ -31,7 +32,9 @@ const { Content } = await render(entry);
 			<time datetime={convertDateToISO8601(publishDate)}>
 				{formatNoteDate(publishDate)}
 			</time>
-			<span class={styles.pill}>Nota</span>
+			<span class=`${styles.notesCategory} ${styles[category]}`
+				>{NOTES_CATEGORY_LABELS[category]}</span
+			>
 		</p>
 		<h1 transition:name={`${entry.id}-note-title`}>{title}</h1>
 	</header>
