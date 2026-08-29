@@ -15,65 +15,88 @@ import GTMHead from "@/analytics/GTMHead.astro";
 import AhrefsAnalytics from "@/analytics/AhrefsAnalytics.astro";
 import Overtracking from "@/analytics/Overtracking.astro";
 
-import Favicons from "./Favicons.astro";
+import Favicons from "@/seo/Favicons.astro";
 ---
 
 <head>
-  <script is:inline>
-    const getTheme = () =>
-      localStorage.getItem("theme") ??
-      (window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light");
+	<script is:inline>
+		const getTheme = () =>
+			localStorage.getItem("theme") ??
+			(window.matchMedia("(prefers-color-scheme: dark)").matches
+				? "dark"
+				: "light");
 
-    document.documentElement.setAttribute("data-theme", getTheme());
+		document.documentElement.setAttribute("data-theme", getTheme());
 
-    document.addEventListener("astro:before-swap", (e) => {
-      e.newDocument.documentElement.setAttribute("data-theme", getTheme());
-    });
-  </script>
+		document.addEventListener("astro:before-swap", (e) => {
+			e.newDocument.documentElement.setAttribute("data-theme", getTheme());
+		});
+	</script>
 
-  <ClientRouter />
-  <Favicons />
+	<ClientRouter />
+	<Favicons />
 
-  <GA4 />
-  <GTMHead />
-  <AhrefsAnalytics />
-  <Overtracking />
+	<GA4 />
+	<GTMHead />
+	<AhrefsAnalytics />
+	<Overtracking />
 
-  {/* IMPORT TAMAGO FONT TO PREVENT FLASHING */}
-  <link
-    rel="preload"
-    as="font"
-    href="/fonts/Tamago.woff2"
-    type="font/woff2"
-    crossorigin
-  />
-  <link
-    rel="preload"
-    as="font"
-    href="/fonts/rubik-regular-webfont.woff2"
-    type="font/woff2"
-    crossorigin
-  />
+	{/* IMPORT TAMAGO FONT TO PREVENT FLASHING */}
+	<link
+		rel="preload"
+		as="font"
+		href="/fonts/Tamago.woff2"
+		type="font/woff2"
+		crossorigin
+	/>
+	<link
+		rel="preload"
+		as="font"
+		href="/fonts/rubik-regular-webfont.woff2"
+		type="font/woff2"
+		crossorigin
+	/>
 
-  {/* Global Metadata */}
-  <meta charset="UTF-8" />
-  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="referrer" content="no-referrer-when-downgrade" />
-  <meta name="robots" content="index, follow" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=yes, shrink-to-fit=no"
-  />
-  <meta name="generator" content={Astro.generator} />
+	{/* Global Metadata */}
+	<meta charset="UTF-8" />
+	<meta
+		content="IE=edge"
+		http-equiv="X-UA-Compatible"
+	/>
+	<meta
+		name="format-detection"
+		content="telephone=no"
+	/>
+	<meta
+		name="referrer"
+		content="no-referrer-when-downgrade"
+	/>
+	<meta
+		name="robots"
+		content="index, follow"
+	/>
+	<meta
+		name="viewport"
+		content="width=device-width, initial-scale=1.0, user-scalable=yes, shrink-to-fit=no"
+	/>
+	<meta
+		name="generator"
+		content={Astro.generator}
+	/>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous" />
-  <link rel="sitemap" href="/sitemap-index.xml" />
-  {
-    /* TODO:: webmanifest y rss */
-    /*
+	<link
+		rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+		integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP"
+		crossorigin="anonymous"
+	/>
+	<link
+		rel="sitemap"
+		href="/sitemap-index.xml"
+	/>
+	{
+		/* TODO:: webmanifest y rss */
+		/*
       <link rel="manifest" href="/site.webmanifest" />
       <link
         rel="alternate"
@@ -82,7 +105,7 @@ import Favicons from "./Favicons.astro";
         href={new URL("rss.xml", Astro.site)}
       />
     */
-  }
+	}
 
-  <slot />
+	<slot />
 </head>
