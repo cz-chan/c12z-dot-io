@@ -1,9 +1,9 @@
 import type { APIRoute } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
-import { loadProjectHero } from "@/lib/og/load-cover";
-import { heroOgTemplate } from "@/lib/og/og-templates";
-import { renderOgImage } from "@/lib/og/render-og-image";
+import { loadProjectHero } from "@/lib/og/load-cover.ts";
+import { heroOgTemplate } from "@/lib/og/og-templates.ts";
+import { renderOgImage } from "@/lib/og/render-og-image.ts";
 
 export const prerender = true;
 
