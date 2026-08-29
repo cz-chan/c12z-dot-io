@@ -52,11 +52,29 @@ lsof -nP -iTCP:4321 -sTCP:LISTEN  # confirm nothing is left listening
 it by the PID that `lsof` reports, then check the port again. Whoever started
 the server closes it; leave the port as you found it.
 
+## Agent files live in `.agents/`
+
+Everything an agent needs is under one folder — there is no `.claude/` content
+of its own:
+
+```
+.agents/
+├── docs/     long-form documentation (start-here.md, paths/, lib/, pages/)
+└── skills/   project skills (frontend-design)
+.claude/
+└── skills → ../.agents/skills   symlink, the only thing .claude/ holds
+```
+
+The symlink exists because Claude Code only discovers project skills at
+`.claude/skills/`. **Never add a real file under `.claude/`** — write it in
+`.agents/` and let the link do the work. `CLAUDE.md` and `AGENTS.md` stay at the
+repo root: they are read by name, not by folder.
+
 ## Architecture
 
 Personal blog/portfolio site built with **Astro 7** + **React 19** + **MDX**, deployed to Vercel (static output). **No Tailwind** — styling is plain CSS: design-token CSS variables in `src/styles/global.css` plus CSS Modules per component.
 
-Longer-form docs live in `.docs/` (`start-here.md`, `paths/`, `lib/`, `pages/`).
+Longer-form docs live in `.agents/docs/` (`start-here.md`, `paths/`, `lib/`, `pages/`).
 
 ### Key structural patterns
 
@@ -92,11 +110,11 @@ src/paths/behavior/
 
 Folder names are plural when the path is a collection of items (`biases`, `essays`, `design-laws`, `books`, `notes`, `projects`, `sources`, `mental-models`) and singular when it's a single page or a domain (`behavior`, `home`, `context`, `404`).
 
-**Content Collections** — `src/content/` holds markdown/MDX validated by Zod schemas in `src/content.config.ts`. Registered collections: `biases`, `books` (book reviews), `projects`, `notes`, `mentalModels`, `designLaws`. An `essays` collection is defined but commented out of the exports.
+**Content Collections** — `src/content/` holds markdown/MDX validated by Zod schemas in `src/content.config.ts`. Registered collections: `biases`, `books` (book reviews), `projects`, `notes`, `mentalModels`, `designLaws`. An `essays` collection is defined but left out of the exports. **`content.config.ts` carries no comments** — the reasoning behind every schema lives in `.agents/docs/content-config.md`; change a schema, change that doc.
 
 A collection is named after **the item** it holds, never after the page that shows it — `books`, not `library`. The page keeps the other name: the `books` collection is rendered by `LibraryPage` at `/biblioteca`.
 
-**Sources are frontmatter, not a collection** — posts embed a `sources` array (`sourceSchema`: title, type enum, author, url…) in their own frontmatter. Adding a source type takes TWO steps: the `z.enum` in `content.config.ts` AND `TYPE_LABELS` in `behavior/paths/sources/lib/source-types.ts` (build fails if you forget the second — intended). See `.docs/paths/sources.md`.
+**Sources are frontmatter, not a collection** — posts embed a `sources` array (`sourceSchema`: title, type enum, author, url…) in their own frontmatter. Adding a source type takes TWO steps, both in `src/lib/content-categories/sources.categories.ts`: `SOURCE_CATEGORIES` AND its label in `SOURCES_CATEGORY_LABELS` (build fails if you forget the second — intended). See `.agents/docs/paths/sources.md`.
 
 **Shared globals** — `src/global/`: `site-info.ts`, `pages-info.ts`, `socialmedia-links.ts`, `collection-keys.ts`.
 
