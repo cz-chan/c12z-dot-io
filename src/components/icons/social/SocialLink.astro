@@ -1,19 +1,19 @@
 ---
-import styles from "./social.module.css"
+import styles from "./social.module.css";
 interface Props {
-  href: string;
-  title: string;
+	href: string;
+	title: string;
 }
 
 const { href, title } = Astro.props;
 ---
 
 <a
-  href={href}
-  title={title}
-  target="_blank"
-  rel="noopener noreferrer"
-  class={styles.smLink}
+	href={href}
+	title={title}
+	target="_blank"
+	rel="noopener noreferrer"
+	class={styles.smLink}
 >
-  <slot />
+	<slot />
 </a>
