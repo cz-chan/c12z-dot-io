@@ -1,11 +1,3 @@
-/* El header va en el flujo, sin `position`: se desplaza con la página.
-
-   De ahí sale todo lo que este archivo NO necesita. Nada pasa nunca por debajo,
-   así que no hace falta fondo opaco; sin fondo opaco no tapa las capas de
-   textura de `body::before/::after`, que se ven a través tal cual; y sin fondo
-   que cambie con el tema no hay transición que sincronizar ni `z-index` que
-   crear. El ancho y el centrado los pone el `body` (`global.css`), como a
-   cualquier otro hijo. */
 .header {
 	& .navElements {
 		display: flex;
