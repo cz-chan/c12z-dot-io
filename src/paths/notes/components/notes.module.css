@@ -341,6 +341,9 @@
 	&.sport {
 		--c: var(--c-category-sport);
 	}
+	&.programming {
+		--c: var(--c-category-programming);
+	}
 }
 
 .title {

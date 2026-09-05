@@ -199,6 +199,7 @@
 	--c-category-relationship: #ef6b6b;
 	--c-category-society: #7c8cf0;
 	--c-category-sport: #e0c341;
+	--c-category-programming: #2ed3e8;
 
 	/* UI utility */
 	--c-goback: #f16f0e;
@@ -423,6 +424,7 @@
 	--c-category-relationship: #b83a3a;
 	--c-category-society: #4453c4;
 	--c-category-sport: #8f7409;
+	--c-category-programming: #0e8fa3;
 }
 
 /* === RESET ====================== */
