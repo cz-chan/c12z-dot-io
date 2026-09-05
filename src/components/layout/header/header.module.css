@@ -1,39 +1,16 @@
+/* El header va en el flujo, sin `position`: se desplaza con la página.
+
+   De ahí sale todo lo que este archivo NO necesita. Nada pasa nunca por debajo,
+   así que no hace falta fondo opaco; sin fondo opaco no tapa las capas de
+   textura de `body::before/::after`, que se ven a través tal cual; y sin fondo
+   que cambie con el tema no hay transición que sincronizar ni `z-index` que
+   crear. El ancho y el centrado los pone el `body` (`global.css`), como a
+   cualquier otro hijo. */
 .header {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 50;
-	background-color: var(--bg);
-
-	/* Same paper texture as the page (tokens in global.css).
-	   `background-attachment: fixed` anchors the tiles to the viewport so the
-	   grain lines up with the body layer instead of restarting at the header. */
-	&::before {
-		content: "";
-		position: absolute;
-		inset: 0;
-		/* stacking context comes from the header's own z-index, so -1 lands
-		   above the header background but under the nav content */
-		z-index: -1;
-		pointer-events: none;
-		background-image: var(--texture-grain), var(--texture-fleck);
-		background-size: var(--texture-grain-size), var(--texture-fleck-size);
-		background-attachment: fixed, fixed;
-		opacity: var(--texture-grain-opacity);
-		mix-blend-mode: var(--texture-blend);
-	}
-
-	& .navbar {
-		margin-inline: auto;
-		max-width: var(--screen-n);
-	}
-
 	& .navElements {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin: var(--sp-3);
-		max-width: var(--screen-n);
+		padding-block: var(--sp-3);
 	}
 }
