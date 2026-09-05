@@ -4,7 +4,13 @@ import {
 	SHARED_CATEGORY_LABELS,
 } from "@/lib/content-categories/shared.categories.ts";
 
-const ONLY_FOR_NOTES = ["random", "relationship", "society", "sport"] as const;
+const ONLY_FOR_NOTES = [
+	"random",
+	"relationship",
+	"society",
+	"sport",
+	"programming",
+] as const;
 
 const NOTES_CATEGORIES = [...SHARED_CATEGORIES, ...ONLY_FOR_NOTES] as const;
 
@@ -16,6 +22,7 @@ export const NOTES_CATEGORY_LABELS: Record<NotesCategory, string> = {
 	relationship: "personas",
 	society: "sociedad",
 	sport: "deporte",
+	programming: "programación",
 };
 
 export const notesCategories = z.enum(NOTES_CATEGORIES);
