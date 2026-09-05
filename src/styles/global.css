@@ -109,14 +109,13 @@
 	--fg: #f3f4f6;
 	--fg-2: #c8cad0;
 	--fg-3: #70747c;
-	--fg-inverse: #16171b;
 
 	/* ---- Accents ---------------------------------------- */
 	--accent: #ff6e91;
 	--accent-ink: #e05a7a;
 
 	/* Second accent */
-	--accent-2: #e74fb4; /* magenta */
+	--accent-2: #ccff33; /* green/yellow */
 
 	/* text selection */
 	--accent-selection-fg: hsl(345, 85%, 16%);
@@ -181,9 +180,7 @@
 
 	/* ---- Content category colors -------------------------
 	Shared by `books` and `notes`: the first eight are
-	SHARED_CATEGORIES, the last four only notes uses. One scale,
-	so the same topic reads the same colour in both sections.
-	Source of truth for the values: src/lib/content-categories/.
+	SHARED_CATEGORIES, the last four only notes uses
 	*/
 	--c-category-health: #13c985;
 	--c-category-product: #5ba4f5;
@@ -211,7 +208,7 @@
 
 	/*
 	Fixed ink and paper: They do NOT change with the theme because 
-	if 	--fg/--fg-inverse would invert, they'll break the contrast. 
+	if 	--fg would invert, they'll break the contrast. 
 	*/
 	--ink-fixed: #16171b;
 	--paper-fixed: #ffffff;
@@ -324,7 +321,6 @@
 	--hairline-2: 0.0625rem solid var(--border-2);
 	--shadow-1: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.2);
 	--shadow-2: 0 0.75rem 2rem -1rem rgba(0, 0, 0, 0.4);
-	--inset-top: inset 0 0.0625rem 0 rgba(255, 255, 255, 0.06);
 
 	/* ---- Motion ----------------------------------------- */
 	--ease: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -333,10 +329,7 @@
 	--t-slow: 400ms;
 
 	/* ---- Layout ----------------------------------------- */
-	--maxw: 75rem;
 	--maxw-prose: 34rem;
-	--maxw-hero: 45rem;
-	--header-h: 4rem;
 }
 
 /* ---- RecycledPaper mode ------------------------------------------ */
@@ -350,11 +343,8 @@
 	--fg: #17161a;
 	--fg-2: #55544f;
 	--fg-3: #86847d;
-	--fg-inverse: #f5f4f0;
 	--accent: #e0447a;
 	--accent-ink: #c2325f;
-
-	--inset-top: inset 0 0.0625rem 0 rgba(255, 255, 255, 0.8);
 
 	/* Content section colors (light mode) */
 	--c-behavior: #d62ae9;
@@ -437,19 +427,10 @@
 	padding: 0;
 }
 
-*:not(dialog) {
-	margin: 0;
-}
-
 @media (prefers-reduced-motion: no-preference) {
 	html {
 		interpolate-size: allow-keywords;
 	}
-}
-
-body {
-	line-height: 1.5;
-	-webkit-font-smoothing: antialiased;
 }
 
 img,
@@ -493,11 +474,6 @@ h5,
 h6 {
 	text-wrap: balance;
 	line-height: 1.1;
-}
-
-#root,
-#__next {
-	isolation: isolate;
 }
 
 ul,
@@ -558,9 +534,7 @@ body {
 	font-family: var(--ff-rubik);
 	font-size: var(--t-body);
 	line-height: var(--lh-body);
-	-webkit-font-smoothing: antialiased;
 	text-wrap: pretty;
-	-moz-osx-font-smoothing: grayscale;
 	text-rendering: optimizeLegibility;
 	transition:
 		background-color 0.4s var(--ease),
@@ -593,6 +567,7 @@ body {
 		z-index: -1;
 		pointer-events: none;
 		mix-blend-mode: var(--texture-blend);
+		transition: opacity 0.4s var(--ease);
 	}
 
 	&::before {
@@ -645,20 +620,11 @@ a {
 }
 
 ::view-transition-old(root) {
-	animation: theme-fade-out 200ms cubic-bezier(0.4, 0, 1, 1) forwards;
+	animation: none;
 }
 
 ::view-transition-new(root) {
 	animation: theme-fade-in 400ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-@keyframes theme-fade-out {
-	from {
-		opacity: 1;
-	}
-	to {
-		opacity: 0;
-	}
 }
 
 @keyframes theme-fade-in {
