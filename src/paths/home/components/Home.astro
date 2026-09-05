@@ -1,32 +1,33 @@
 ---
-import styles from "@home-path/components/home.module.css";
+import styles from "./home.module.css";
 import SocialBlock from "@/icons/social/SocialBlock.astro";
 import ShowSortContent from "@home-path/components/ShowSortContent.astro";
 import { SITE_VERSION } from "@/global/site-info.ts";
 ---
 
 <section class={styles.home}>
-	<div class={styles.pillSection}>
-		<span class={styles.pill}>
-			{SITE_VERSION} · main
-		</span>
-	</div>
+	<section class={styles.greeting}>
+		<p>hi! <strong>cz</strong> here ✌🏽</p>
+		<div class={styles.pillSection}>
+			<span class={styles.pill}>
+				{SITE_VERSION} · main
+			</span>
+		</div>
+	</section>
 
-	<h1 class={styles.intro}>I'm a Growth who Programs.</h1>
+	<h1 class={styles.intro}>
+		I build products. I study why people use them. I make them grow.
+	</h1>
 	<section>
 		<p>
-			Comparto aquello que sé, aprendo y hago sobre Growth, Behavior & Code, con
-			el fin de crear y escalar productos. Documento mi proceso en Substack y
-			más de vez en cuando en LinkedIn y X en una especie de "learn in public"
-			de mi día a día.
+			I’m curious about Growth, Behavior & Code, and what happens when you put
+			them together. I learn by sharing what I’m building, thinking and figuring
+			out along the way.
 		</p>
 		<p>
-			Me fascian la industria EdTech, ClimateTech y los productos con Network
-			Effects.
-		</p>
-		<p>
-			Por cierto, soy Chema ✌🏽 amante del tattoo, del wellness y compito en
-			CrossFit.
+			I’m fascinated by EdTech, ClimateTech and products with Network Effects
+			and outside of work, you’ll probably find me around tattoos, wellness or
+			programming for fun.
 		</p>
 	</section>
 </section>
@@ -36,7 +37,8 @@ import { SITE_VERSION } from "@/global/site-info.ts";
 </section>
 
 <section class={styles.content}>
-	<h2 class={styles.what}>Aquello de lo que me gusta escribir</h2>
+	<h2 class={styles.what}>What I write about.</h2>
+	<p>Everything in Spanish!</p>
 
 	<ShowSortContent />
 </section>
