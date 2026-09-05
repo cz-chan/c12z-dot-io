@@ -10,6 +10,7 @@ import {
 } from "@behavior-path/lib/card/behavior-fancycodes.ts";
 import type { BehaviorEntry } from "@behavior-path/lib/card/behavior-card.types.ts";
 import { categoryStyle } from "@behavior-path/lib/category-colors.ts";
+import { categoryLabel } from "@behavior-path/lib/category-label.ts";
 
 import Barcode from "@behavior-path/icons/Barcode.astro";
 import Neuron from "@behavior-path/icons/Neuron.astro";
@@ -94,7 +95,7 @@ const prefix = SECTION_CODES[section];
 			</div>
 
 			<div class={styles.top}>
-				<span class={styles.chip}>{category}</span>
+				<span class={styles.chip}>{categoryLabel(section, category)}</span>
 				<span class={styles.codeGroup}>
 					<span class={styles.code}>{code}</span>
 					{
