@@ -37,30 +37,32 @@ Tokens are CSS variables on `:root` (dark, default — palette **"burntpaper"**)
 | ------------- | --------------------------------------------------------------------------------------------------- |
 | Surfaces      | `--bg` · `--surface-1` `--surface-2` `--surface-3`                                                  |
 | Borders       | `--border` `--border-2` `--border-3` · shorthand `--hairline`, `--hairline-2`                       |
-| Text          | `--fg` (headers/body) · `--fg-2` (secondary) · `--fg-3` (muted) · `--fg-inverse`                    |
-| Accent        | `--accent` lime `#a2ce12` · `--accent-ink` (its darker/hover pair)                                  |
-| Second accent | `--accent-2` purple `#904fe7`                                                                       |
+| Text          | `--fg` (headers/body) · `--fg-2` (secondary) · `--fg-3` (muted)                                     |
+| Accent        | `--accent` pink `#ff6e91` · `--accent-ink` (its darker pair, for text)                              |
+| Second accent | `--accent-2` lime `#ccff33` — `:root` only, does not flip in light                                  |
 | Selection     | `--accent-selection-bg` / `--accent-selection-fg`                                                   |
 | Fixed         | `--ink-fixed` / `--paper-fixed` — do **not** flip with the theme, on purpose: they'd break contrast |
 | State         | `--ok` `--warn` `--err` · `--c-wip` · `--c-goback`                                                  |
 
-**The lime `--accent` is the identity**, not pink. Purple is the second voice, used sparingly.
+**The pink `--accent` is the identity.** The lime `--accent-2` is the second voice, used sparingly.
 
 ### Content-section colors
 
 `--c-behavior` · `--c-bias` · `--c-mental-model` · `--c-design` · `--c-source` · `--c-essay` · `--c-library` · `--c-project` · `--c-note`
 
-Three of them have an `-ink` twin — `--c-design-ink`, `--c-mental-model-ink`, `--c-source-ink` — because the light theme needs a darker value where the dark one would wash out. **Use the `-ink` variant on text and thin strokes; the plain one on fills.** In dark mode both resolve to the same value.
+Three of them have an `-ink` twin — `--c-design-ink`, `--c-mental-model-ink`, `--c-source-ink` — because those three keep their dark-theme value in light mode (they sit on `--ink-fixed`, which never flips), and that value drops to 1.2–2.8:1 against the paper. **Use the `-ink` variant on text and thin strokes; the plain one on fills and on anything over `--ink-fixed`.** In dark mode both resolve to the same value.
+
+Only `--c-source-ink` is wired up today; design-laws and mental-models still underline with the base token and read weak in light mode.
 
 ### Category scales
 
 Behavior cards use a `surface` + `band` pair per category, defined in both themes:
 
-- **Biases**: `--c-bias-category-{speed,memory,judgment,context,perception}-{surface,band}` (plus the neutrals `--c-bias-soft`, `--c-bias-dark`)
+- **Biases**: `--c-bias-category-{speed,memory,judgment,context,perception}-{surface,band}` (plus the neutral `--c-bias-soft`; `--c-bias-dark` exists but nothing uses it)
 - **Mental models**: `--c-model-category-{general,science,systems,maths,economics,war,judgment}-{surface,band}`
 - **Design laws**: `--c-design-category-{layout,interaction,perception}-{surface,band}`
 
-**Content categories** are a flat scale shared by `books` and `notes`, defined in both themes: `--c-category-{health,product,culture,psychology,economics,creativity,philosophy,business}` (the shared eight) plus `--c-category-{random,relationship,society,sport}` (notes only). They mirror `src/lib/content-categories/` one to one — a value added there needs its token here.
+**Content categories** are a flat scale shared by `books` and `notes`, defined in both themes: `--c-category-{health,product,culture,psychology,economics,creativity,philosophy,business}` (the shared eight) plus `--c-category-{random,relationship,society,sport,programming}` (notes only). They mirror `src/lib/content-categories/` one to one — a value added there needs its token here.
 
 The category pill (`book.module.css .bookCategory`) paints itself through a local `--c`: the pill and its dot are styled once, and each `&.<category>` class only sets `--c: var(--c-category-<name>)`. Follow that shape rather than repeating `background-color`/`color` per category.
 
@@ -84,9 +86,9 @@ Tracking: `--tracking-wide` · `--tracking-wider` · `--tracking-eyebrow` (upper
 - **Spacing**, 4pt scale: `--sp-0` … `--sp-18` (`--sp-4` = 16px)
 - **Widths**: `--wdth` (1px hairline), `--wdth-0` … `--wdth-17`, `--wdth-pill`
 - **Breakpoints**: `--screen-xs` `-sm` `-md` `-n` `-lg` `-xl` `-2xl`. `body` is capped at `--screen-n`, `main` at `--screen-md`
-- **Layout**: `--maxw`, `--maxw-prose`, `--maxw-hero`, `--header-h`
+- **Layout**: `--maxw-prose`
 - **Radii**: `--r-xs` `--r-sm` `--r-md` `--r-lg` `--r-pill`
-- **Elevation**: `--shadow-1`, `--shadow-2`, `--inset-top`
+- **Elevation**: `--shadow-2` — borders carry almost all the hierarchy here, shadows are rare
 - **Motion**: `--ease` (`cubic-bezier(.2,.8,.2,1)`) with `--t-fast` 120ms / `--t-base` 200ms / `--t-slow` 400ms. Every transition uses these — no `ease-in-out`, no invented durations
 - **Full height**: `--viewport-full` then `--viewport-full-new` (dvh) as the override
 
@@ -102,10 +104,10 @@ Tracking: `--tracking-wide` · `--tracking-wider` · `--tracking-eyebrow` (upper
 
 Before generating any component:
 
-1. **Aesthetic anchor** — retro-digital, dark-first, content-focused. The pixel font on lime over near-black is the identity. Generous space, minimal chrome, no decorative fluff. Don't dilute it.
+1. **Aesthetic anchor** — retro-digital, dark-first, content-focused. The pixel font on pink over near-black is the identity. Generous space, minimal chrome, no decorative fluff. Don't dilute it.
 2. **Component role** — informational, navigational or interactive? Match the implementation's complexity to the role. Most things here are `.astro` and static.
 3. **Motion** — one well-orchestrated entrance beats scattered micro-interactions. Respect `prefers-reduced-motion`.
-4. **Spatial composition** — generous negative space, asymmetry where it earns it, grid-breaking accents in lime or purple.
+4. **Spatial composition** — generous negative space, asymmetry where it earns it, grid-breaking accents in pink or lime.
 5. **Both themes, always** — anything you write on `:root` must be checked under `[data-theme="light"]`. That is what the `-ink` twins exist for.
 
 ## What NOT to do

@@ -34,11 +34,13 @@ for a variable for every colour, size, space, radius, and duration.
 |---|---|---|
 | Surfaces | `--bg`, `--surface-1`, `--surface-2`, `--surface-3` | backgrounds, stacked from page to card |
 | Borders | `--border`, `--border-2`, `--border-3`, `--hairline`, `--hairline-2` | the last two are complete `border` shorthands |
-| Text | `--fg`, `--fg-2`, `--fg-3`, `--fg-inverse` | primary / secondary / muted / on-accent |
-| Accents | `--accent` (lime `#a2ce12`), `--accent-ink`, `--accent-2` (purple) | `--accent-ink` is the darker lime for text on light surfaces |
-| Content sections | `--c-behavior`, `--c-bias`, `--c-mental-model`, `--c-source`, `--c-essay`, `--c-library`, `--c-project`, `--c-note` | one hue per content type; use it for that section's accents |
-| Bias categories | `--c-bias-category-speed`, `-memory`, `-judgment`, `-context`, `-perception` | plus `--c-bias-soft` / `--c-bias-dark` neutrals |
-| Book categories | `--c-book-health`, `-product`, `-culture`, `-psychology`, `-economics`, `-creativity`, `-philosophy`, `-other` | |
+| Text | `--fg`, `--fg-2`, `--fg-3` | primary / secondary / muted |
+| Accents | `--accent` (pink `#ff6e91`), `--accent-ink`, `--accent-2` (lime `#ccff33`) | `--accent-ink` is the darker pink for text on light surfaces |
+| Content sections | `--c-behavior`, `--c-bias`, `--c-design`, `--c-mental-model`, `--c-source`, `--c-essay`, `--c-library`, `--c-project`, `--c-note` | one hue per content type; use it for that section's accents |
+| Section ink twins | `--c-design-ink`, `--c-mental-model-ink`, `--c-source-ink` | those three keep their dark value in light mode — use the `-ink` twin for text on the page background |
+| Fixed | `--ink-fixed`, `--paper-fixed` | never flip with the theme; the section hues are calibrated to sit on `--ink-fixed` |
+| Behavior categories | `--c-bias-category-*`, `--c-model-category-*`, `--c-design-category-*` | every one is a `-surface` + `-band` pair, e.g. `--c-bias-category-memory-surface` |
+| Content categories | `--c-category-{health,product,culture,psychology,economics,creativity,philosophy,business}` | shared by books and notes; notes adds `random`, `relationship`, `society`, `sport`, `programming` |
 | State | `--ok`, `--warn`, `--err`, `--c-wip`, `--c-goback` | `--c-wip` is the red for 🚧 work-in-progress boxes |
 | Type family | `--ff-pixel` (Tamago), `--ff-rubik` (Rubik), `--ff-mono` (Cascadia) | display/headings · body · code |
 | Type size | `--t-display`, `--t-intro`, `--t-h1`…`--t-h6`, `--t-body`, `--t-mili`, `--t-micro`, `--t-nano` | each pairs with a `--lh-*` of the same suffix |
@@ -47,9 +49,9 @@ for a variable for every colour, size, space, radius, and duration.
 | Widths | `--wdth-0` … `--wdth-17`, `--wdth-pill` | component sizing, avatars, cards |
 | Breakpoints | `--screen-xs`, `-sm`, `-md`, `-n`, `-lg`, `-xl`, `-2xl` | `--screen-n` (56rem) is the site's own content width |
 | Radii | `--r-xs`, `--r-sm`, `--r-md`, `--r-lg`, `--r-pill` | |
-| Elevation | `--shadow-1`, `--shadow-2`, `--inset-top` | used sparingly — borders carry most of the hierarchy |
+| Elevation | `--shadow-2` | used sparingly — borders carry most of the hierarchy |
 | Motion | `--ease`, `--t-fast`, `--t-base`, `--t-slow` | |
-| Layout | `--maxw`, `--maxw-prose`, `--maxw-hero`, `--header-h` | |
+| Layout | `--maxw-prose` | |
 
 Only three classes exist globally: **`.lettering`** (prose wrapper — see below), **`.au`**
 (fade-up entrance animation), and the KaTeX classes from the math pipeline. Everything else you
@@ -72,7 +74,7 @@ to be full-bleed or wider. `@import` it yourself only when reproducing a real c1
 
 ## Aesthetic
 
-Dark-first, retro-digital, content-focused. Lime on near-black. Generous spacing, minimal chrome,
+Dark-first, retro-digital, content-focused. Pink on near-black. Generous spacing, minimal chrome,
 no decorative fluff. Recurring motifs: **left or bottom borders** as the list-item divider
 (`border-left: 0.125rem solid var(--border-2)`) rather than boxes; pixel-font headings against
 Rubik body text; a fixed paper-grain texture behind everything (`tokens/texture.css`, already
@@ -94,7 +96,7 @@ applied to `body::before`/`::after`).
     fontSize: "var(--t-nano)",
     letterSpacing: "var(--tracking-eyebrow)",
     textTransform: "uppercase",
-    color: "var(--c-bias-category-memory)",
+    color: "var(--c-bias-category-memory-surface)",
   }}>memoria</span>
   <h3 style={{ fontFamily: "var(--ff-pixel)", fontSize: "var(--t-h3)", marginBlock: "var(--sp-1)" }}>
     Sesgo de disponibilidad

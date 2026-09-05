@@ -214,7 +214,7 @@ concerns.
 
 ## Design System
 
-Dark-first, retro-digital, content-focused personal site. Lime accent on near-black backgrounds. Generous spacing, minimal chrome, no decorative fluff.
+Dark-first, retro-digital, content-focused personal site. Pink accent on near-black backgrounds, with lime as a sparing second voice. Generous spacing, minimal chrome, no decorative fluff.
 
 All design tokens live in `src/styles/global.css` as plain CSS variables on `:root` (dark, default — palette "burntpaper") and `[data-theme="light"]` (light — "recycledpaper"). **That file is the source of truth.** The full token inventory and how to build with it live in the `frontend-design` skill (`.agents/skills/frontend-design/`) — invoke it when building or reshaping UI.
 
