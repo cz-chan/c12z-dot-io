@@ -112,15 +112,15 @@
 	--fg-inverse: #16171b;
 
 	/* ---- Accents ---------------------------------------- */
-	--accent: #a2ce12;
-	--accent-ink: #7ea10d;
+	--accent: #ff6e91;
+	--accent-ink: #e05a7a;
 
 	/* Second accent */
-	--accent-2: #904fe7; /* purple */
+	--accent-2: #e74fb4; /* magenta */
 
 	/* text selection */
-	--accent-selection-fg: hsl(74, 85%, 16%);
-	--accent-selection-bg: hsl(74, 84%, 71%);
+	--accent-selection-fg: hsl(345, 85%, 16%);
+	--accent-selection-bg: hsl(345, 84%, 71%);
 
 	/* Content section colors */
 	--c-behavior: #e22ef6;
@@ -351,8 +351,8 @@
 	--fg-2: #55544f;
 	--fg-3: #86847d;
 	--fg-inverse: #f5f4f0;
-	--accent: #a2ce12;
-	--accent-ink: #8ab00b;
+	--accent: #e0447a;
+	--accent-ink: #c2325f;
 
 	--inset-top: inset 0 0.0625rem 0 rgba(255, 255, 255, 0.8);
 
