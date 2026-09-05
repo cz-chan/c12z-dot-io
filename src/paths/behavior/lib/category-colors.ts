@@ -17,67 +17,67 @@ const CATEGORY_COLORS: Record<
 	Record<string, CategoryColors>
 > = {
 	biases: {
-		velocidad: {
+		speed: {
 			surface: "var(--c-bias-category-speed-surface)",
 			band: "var(--c-bias-category-speed-band)",
 		},
-		memoria: {
+		memory: {
 			surface: "var(--c-bias-category-memory-surface)",
 			band: "var(--c-bias-category-memory-band)",
 		},
-		juicio: {
+		judgment: {
 			surface: "var(--c-bias-category-judgment-surface)",
 			band: "var(--c-bias-category-judgment-band)",
 		},
-		contexto: {
+		context: {
 			surface: "var(--c-bias-category-context-surface)",
 			band: "var(--c-bias-category-context-band)",
 		},
-		percepción: {
+		perception: {
 			surface: "var(--c-bias-category-perception-surface)",
 			band: "var(--c-bias-category-perception-band)",
 		},
 	},
 	mentalModels: {
-		"pensamiento general": {
+		"general-thinking": {
 			surface: "var(--c-model-category-general-surface)",
 			band: "var(--c-model-category-general-band)",
 		},
-		"física, química y biología": {
+		"physics-chemistry-biology": {
 			surface: "var(--c-model-category-science-surface)",
 			band: "var(--c-model-category-science-band)",
 		},
-		sistemas: {
+		systems: {
 			surface: "var(--c-model-category-systems-surface)",
 			band: "var(--c-model-category-systems-band)",
 		},
-		matematicas: {
+		mathematics: {
 			surface: "var(--c-model-category-maths-surface)",
 			band: "var(--c-model-category-maths-band)",
 		},
-		economía: {
+		economics: {
 			surface: "var(--c-model-category-economics-surface)",
 			band: "var(--c-model-category-economics-band)",
 		},
-		"militar y guerra": {
+		"military-and-war": {
 			surface: "var(--c-model-category-war-surface)",
 			band: "var(--c-model-category-war-band)",
 		},
-		"humanidad y juicio": {
+		"humanity-and-judgment": {
 			surface: "var(--c-model-category-judgment-surface)",
 			band: "var(--c-model-category-judgment-band)",
 		},
 	},
 	designLaws: {
-		"composición visual": {
+		"visual-composition": {
 			surface: "var(--c-design-category-layout-surface)",
 			band: "var(--c-design-category-layout-band)",
 		},
-		interacción: {
+		interaction: {
 			surface: "var(--c-design-category-interaction-surface)",
 			band: "var(--c-design-category-interaction-band)",
 		},
-		percepción: {
+		perception: {
 			surface: "var(--c-design-category-perception-surface)",
 			band: "var(--c-design-category-perception-band)",
 		},
