@@ -5,6 +5,7 @@ import { render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
 import { categoryStyle } from "@behavior-path/lib/category-colors.ts";
+import { categoryLabel } from "@behavior-path/lib/category-label.ts";
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 import WipNotice from "@behavior-path/components/wip/WipNotice.astro";
 import PostSources from "@sources-path/components/PostSources.astro";
@@ -60,7 +61,7 @@ const { Content, headings } = await render(entry);
 				<span
 					class={styles.pill}
 					style={categoryStyle(section, category)}
-					>{category}</span
+					>{categoryLabel(section, category)}</span
 				>
 			</section>
 
