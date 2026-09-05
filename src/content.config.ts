@@ -6,6 +6,11 @@ import { isValidDateFormat, parseDate } from "@/utils/validating-date.ts";
 import { booksCategories } from "@/lib/content-categories/books.categories.ts";
 import { notesCategories } from "@/lib/content-categories/notes.categories.ts";
 import { sourceCategories } from "@/lib/content-categories/sources.categories.ts";
+import {
+	biasCategories,
+	designLawCategories,
+	mentalModelCategories,
+} from "@/lib/content-categories/behavior-content.categories";
 
 const dateField = z.string().refine(isValidDateFormat);
 
@@ -176,7 +181,7 @@ const designLawsCollection = defineCollection({
 	schema: ({ image }) =>
 		behaviorContentBaseSchema(image)
 			.extend({
-				category: z.enum(["composición visual", "interacción", "percepción"]),
+				category: designLawCategories,
 			})
 			.refine(editedAfterPublished, editedAfterPublishedError),
 });
@@ -189,15 +194,7 @@ const mentalModelsCollection = defineCollection({
 	schema: ({ image }) =>
 		behaviorContentBaseSchema(image)
 			.extend({
-				category: z.enum([
-					"pensamiento general",
-					"física, química y biología",
-					"sistemas",
-					"matematicas",
-					"economía",
-					"militar y guerra",
-					"humanidad y juicio",
-				]),
+				category: mentalModelCategories,
 			})
 			.refine(editedAfterPublished, editedAfterPublishedError),
 });
@@ -210,13 +207,7 @@ const biasCollection = defineCollection({
 	schema: ({ image }) =>
 		behaviorContentBaseSchema(image)
 			.extend({
-				category: z.enum([
-					"velocidad",
-					"memoria",
-					"percepción",
-					"contexto",
-					"juicio",
-				]),
+				category: biasCategories,
 			})
 			.refine(editedAfterPublished, editedAfterPublishedError),
 });
