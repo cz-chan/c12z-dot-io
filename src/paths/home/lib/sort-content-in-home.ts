@@ -5,6 +5,7 @@ import {
 	type SectionItem,
 } from "@home-path/lib/section-lists.ts";
 import { parseDate } from "@/utils/validating-date.ts";
+import { NOTES_CATEGORY_LABELS } from "@/lib/content-categories/notes.categories";
 
 const byNewest = (
 	a: { data: { publishDate: string } },
@@ -87,7 +88,7 @@ const recentNotes: SectionItem[] = [...notesEntries]
 	.map((entry) => ({
 		text: entry.data.title,
 		href: `/notas/${entry.id}`,
-		meta: entry.data.category,
+		meta: NOTES_CATEGORY_LABELS[entry.data.category],
 	}));
 
 const sectionUpdates: Record<
