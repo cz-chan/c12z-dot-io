@@ -1,0 +1,95 @@
+/* Rubik — body */
+@font-face {
+	font-family: "Rubik";
+	src:
+		url("/src/assets/fonts/rubik-light-webfont.woff2") format("woff2"),
+		url("/src/assets/fonts/rubik-light-webfont.woff") format("woff");
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Rubik";
+	src:
+		url("/src/assets/fonts/rubik-regular-webfont.woff2") format("woff2"),
+		url("/src/assets/fonts/rubik-regular-webfont.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Rubik";
+	src:
+		url("/src/assets/fonts/rubik-medium-webfont.woff2") format("woff2"),
+		url("/src/assets/fonts/rubik-medium-webfont.woff") format("woff");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Rubik";
+	src:
+		url("/src/assets/fonts/rubik-bold-webfont.woff2") format("woff2"),
+		url("/src/assets/fonts/rubik-bold-webfont.woff") format("woff");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Rubik";
+	src:
+		url("/src/assets/fonts/rubik-lightitalic-webfont.woff2") format("woff2"),
+		url("/src/assets/fonts/rubik-lightitalic-webfont.woff") format("woff");
+	font-weight: 300;
+	font-style: italic;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Rubik";
+	src:
+		url("/src/assets/fonts/rubik-italic-webfont.woff2") format("woff2"),
+		url("/src/assets/fonts/rubik-italic-webfont.woff") format("woff");
+	font-weight: 400;
+	font-style: italic;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Rubik";
+	src:
+		url("/src/assets/fonts/rubik-mediumitalic-webfont.woff2") format("woff2"),
+		url("/src/assets/fonts/rubik-mediumitalic-webfont.woff") format("woff");
+	font-weight: 500;
+	font-style: italic;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Rubik";
+	src:
+		url("/src/assets/fonts/rubik-bolditalic-webfont.woff2") format("woff2"),
+		url("/src/assets/fonts/rubik-bolditalic-webfont.woff") format("woff");
+	font-weight: 700;
+	font-style: italic;
+	font-display: swap;
+}
+
+/* Cascadia — monospace / código */
+@font-face {
+	font-family: "Cascadia";
+	src:
+		url("/src/assets/fonts/cascadia-webfont.woff2") format("woff2"),
+		url("/src/assets/fonts/cascadia-webfont.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Tamago — display / pixel / headings */
+@font-face {
+	font-family: "Tamago";
+	src:
+		url("/src/assets/fonts/Tamago.woff2") format("woff2"),
+		url("/src/assets/fonts/Tamago.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
