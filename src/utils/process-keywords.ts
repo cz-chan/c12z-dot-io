@@ -14,7 +14,8 @@ export default function processKeywords(
 		: pageKeywords.keywords;
 
 	const uniqueKeywords = Array.from(
-		new Set(keywords.map((kw) => kw.toLowerCase().trim().replace(/\s+/g, "-"))),
+		new Set(keywords.map((kw) => kw.toLowerCase().trim())),
+		// .replace(/\s+/g, "-"))),
 	);
 
 	return { keywords: uniqueKeywords };
