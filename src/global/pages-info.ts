@@ -31,9 +31,22 @@ const PAGE_INFO_SCHEMA = z.object({
 	keywords: z.array(z.string()).min(7).max(8).optional(),
 });
 
+const PAGES_SCHEMA = z.object({
+	context: PAGE_INFO_SCHEMA,
+	library: PAGE_INFO_SCHEMA,
+	behavior: PAGE_INFO_SCHEMA,
+	bias: PAGE_INFO_SCHEMA,
+	mentalModel: PAGE_INFO_SCHEMA,
+	design: PAGE_INFO_SCHEMA,
+	sources: PAGE_INFO_SCHEMA,
+	essay: PAGE_INFO_SCHEMA,
+	notes: PAGE_INFO_SCHEMA,
+	projects: PAGE_INFO_SCHEMA,
+});
+
 export type PagesInfo = z.infer<typeof PAGE_INFO_SCHEMA>;
 
-export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
+export const PAGES = PAGES_SCHEMA.parse({
 	context: {
 		title: "Quién soy, qué hago y por qué - cz ✌🏽",
 		description:
@@ -148,7 +161,7 @@ export const PAGES = z.record(z.string(), PAGE_INFO_SCHEMA).parse({
 		],
 	},
 	essay: {
-		title: "GEnsayos sobre growth, producto y comportamiento - c12z",
+		title: "Ensayos sobre growth, producto y comportamiento - c12z",
 		description:
 			"Textos largos donde pienso en voz alta: growth, producto, economía conductual y todo lo que aprendo construyendo y trabajando con equipos.",
 		ogImage: OG_IMAGE_ESSAY,
