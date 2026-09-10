@@ -12,7 +12,6 @@
 			"@projects-path/*": ["./src/paths/projects/*"],
 			"@essays-path/*": ["./src/paths/essays/*"],
 			"@books-path/*": ["./src/paths/books/*"],
-			"@works-path/*": ["./src/paths/works/*"],
 			"@notes-path/*": ["./src/paths/notes/*"],
 			"@context-path/*": ["./src/paths/context/*"],
 			"@home-path/*": ["./src/paths/home/*"],
