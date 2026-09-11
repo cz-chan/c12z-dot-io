@@ -12,6 +12,13 @@ import AhrefsAnalytics from "@/analytics/AhrefsAnalytics.astro";
 import Overtracking from "@/analytics/Overtracking.astro";
 
 import Favicons from "@/seo/Favicons.astro";
+
+interface Props {
+	robotsIndex?: "index" | "noindex";
+	robotsFollow?: "follow" | "nofollow";
+}
+
+const { robotsFollow = "follow", robotsIndex = "index" } = Astro.props;
 ---
 
 <head>
@@ -69,7 +76,7 @@ import Favicons from "@/seo/Favicons.astro";
 	/>
 	<meta
 		name="robots"
-		content="index, follow"
+		content=`${robotsIndex}, ${robotsFollow}`
 	/>
 	<meta
 		name="viewport"
