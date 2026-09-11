@@ -1,6 +1,6 @@
 ---
 import { SITE_404_CONFIG } from "@/global/site-info.ts";
-import Courage404Image from "@/assets/images/OpenGraph/404/og-404-error.avif";
+import Courage404Image from "@/assets/images/OpenGraph/404/og-404-error.webp";
 
 interface Props {
 	pageTitle: string;
@@ -18,7 +18,7 @@ const canonicalURL = `${SITE_404_CONFIG.url}/404`;
 
 const ogImage = pageThumbnail
 	? `${SITE_404_CONFIG.url}${pageThumbnail}`
-	: new URL("./og-image.png", Astro.site);
+	: new URL("./og-image.webp", Astro.site);
 const ogImageAlt = pageTitle;
 ---
 

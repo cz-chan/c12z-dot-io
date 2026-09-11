@@ -5,8 +5,6 @@ import PagesSEO from "@/seo/PagesSEO.astro";
 
 import { PAGES } from "@/global/pages-info.ts";
 
-import { contextKeywords } from "@context-path/seo/context.keywords.ts";
-
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 import Context from "@context-path/components/context.mdx";
 ---
@@ -18,7 +16,6 @@ import Context from "@context-path/components/context.mdx";
 		pageDescription={PAGES.context.description}
 		ogImage={PAGES.context.ogImage}
 		ogImageAlt={PAGES.context.ogImageAlt}
-		pageKeywords={contextKeywords}
 	/>
 	<section class={styles.contextPage}>
 		<GoBackInTop

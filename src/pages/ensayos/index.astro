@@ -7,8 +7,6 @@ import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 
 import PagesSEO from "@/seo/PagesSEO.astro";
 
-import { essaysKeywords } from "@essays-path/seo/essays.keywords.ts";
-
 // const essays = await getCollection("essay");
 ---
 
@@ -19,7 +17,6 @@ import { essaysKeywords } from "@essays-path/seo/essays.keywords.ts";
 		pageDescription={PAGES.essay.description}
 		ogImage={PAGES.essay.ogImage}
 		ogImageAlt={PAGES.essay.ogImageAlt}
-		pageKeywords={essaysKeywords}
 	/>
 	<GoBackInTop
 		headPage="/"

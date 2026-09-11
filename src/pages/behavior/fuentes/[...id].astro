@@ -1,9 +1,9 @@
 ---
+import { getTopics, type Topic } from "@sources-path/lib/get-topics.ts";
+
 import MainLayout from "@/layouts/MainLayout.astro";
 import SourcesSEO from "@sources-path/seo/SourcesSEO.content.astro";
-
 import TopicPage from "@sources-path/components/TopicPage.astro";
-import { getTopics, type Topic } from "@sources-path/lib/get-topics.ts";
 
 interface Props {
 	topic: Topic;
@@ -19,18 +19,12 @@ export async function getStaticPaths() {
 }
 
 const { topic } = Astro.props;
-
-const pageTitle = `${topic.name}: fuentes consultadas - c12z`;
-const pageDescription = `Las ${topic.sources.length} fuentes que he consultando para escribir sobre ${topic.name.toLowerCase()} - c12z.`;
 ---
 
 <MainLayout>
 	<SourcesSEO
 		slot="head"
-		pageTitle={pageTitle}
-		pageDescription={pageDescription}
-		ogImageAlt={`Fuentes sobre ${topic.name} - c12z`}
-		pageKeywords={{ keywords: [topic.name, `fuentes sobre ${topic.name}`] }}
+		topic={topic}
 	/>
 	<TopicPage topic={topic} />
 </MainLayout>

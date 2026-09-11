@@ -4,12 +4,7 @@ import { SITE_DEFAULT_CONFIG } from "@/global/site-info.ts";
 import MainLayout from "@/layouts/MainLayout.astro";
 
 import PagesSEO from "@/seo/PagesSEO.astro";
-import type { PageKeywords } from "@/lib/keywords.ts";
 import Home from "@home-path/components/Home.astro";
-
-const homeKeywords: PageKeywords = {
-	keywords: ["chema ferrandez", "c12z", "cz"],
-};
 ---
 
 <MainLayout>
@@ -17,7 +12,6 @@ const homeKeywords: PageKeywords = {
 		slot="head"
 		pageTitle={SITE_DEFAULT_CONFIG.title}
 		pageDescription={SITE_DEFAULT_CONFIG.description}
-		pageKeywords={homeKeywords}
 	/>
 	<Home />
 </MainLayout>

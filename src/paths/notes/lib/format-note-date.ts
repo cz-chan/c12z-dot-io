@@ -6,6 +6,7 @@ export function formatNoteDate(publishDate: string): string {
 		day: "numeric",
 		month: "short",
 		year: "numeric",
+		timeZone: "UTC",
 	})
 		.format(parseDate(publishDate))
 		.replace(".", "");

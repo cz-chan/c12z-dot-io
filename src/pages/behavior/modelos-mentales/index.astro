@@ -5,7 +5,6 @@ import PagesSEO from "@/seo/PagesSEO.astro";
 import { PAGES } from "@/global/pages-info.ts";
 
 import MentalModelsPage from "@mental-models-path/components/MentalModelsPage.astro";
-import { mentalModelsKeywords } from "@mental-models-path/seo/mental-models.keywords.ts";
 ---
 
 <MainLayout>
@@ -15,7 +14,6 @@ import { mentalModelsKeywords } from "@mental-models-path/seo/mental-models.keyw
 		pageDescription={PAGES.mentalModel.description}
 		ogImage={PAGES.mentalModel.ogImage}
 		ogImageAlt={PAGES.mentalModel.ogImageAlt}
-		pageKeywords={mentalModelsKeywords}
 	/>
 	<MentalModelsPage />
 </MainLayout>

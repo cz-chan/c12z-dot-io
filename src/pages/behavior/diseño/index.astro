@@ -5,7 +5,6 @@ import PagesSEO from "@/seo/PagesSEO.astro";
 import { PAGES } from "@/global/pages-info.ts";
 
 import DesignLawsPage from "@design-laws-path/components/DesignLawsPage.astro";
-import { designLawsKeywords } from "@design-laws-path/seo/design-laws.keywords.ts";
 ---
 
 <MainLayout>
@@ -15,7 +14,6 @@ import { designLawsKeywords } from "@design-laws-path/seo/design-laws.keywords.t
 		pageDescription={PAGES.design.description}
 		ogImage={PAGES.design.ogImage}
 		ogImageAlt={PAGES.design.ogImageAlt}
-		pageKeywords={designLawsKeywords}
 	/>
 	<DesignLawsPage />
 </MainLayout>

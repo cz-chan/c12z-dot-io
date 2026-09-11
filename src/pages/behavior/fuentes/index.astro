@@ -5,21 +5,22 @@
  * which is also the one that reads the content.
  */
 import MainLayout from "@/layouts/MainLayout.astro";
-import SourcesSEO from "@sources-path/seo/SourcesSEO.content.astro";
 
 import { PAGES } from "@/global/pages-info.ts";
 
 import SourcesPage from "@sources-path/components/SourcesPage.astro";
-import { sourcesKeywords } from "@sources-path/seo/sources.keywords.ts";
+import PagesSEO from "@/seo/PagesSEO.astro";
+
+const SOURCE_PAGE = PAGES.sources;
 ---
 
 <MainLayout>
-	<SourcesSEO
+	<PagesSEO
 		slot="head"
-		pageTitle={PAGES.sources.title}
-		pageDescription={PAGES.sources.description}
-		ogImageAlt={PAGES.sources.ogImageAlt}
-		pageKeywords={sourcesKeywords}
+		pageTitle={SOURCE_PAGE.title}
+		pageDescription={SOURCE_PAGE.description}
+		ogImage={SOURCE_PAGE.ogImage}
+		ogImageAlt={SOURCE_PAGE.ogImageAlt}
 	/>
 	<SourcesPage />
 </MainLayout>

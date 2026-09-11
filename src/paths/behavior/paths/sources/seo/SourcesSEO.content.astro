@@ -1,30 +1,39 @@
 ---
-/**
- * Generic SEO for the sources views (the index and the per-topic dynamic
- * routes). Sources are not content of their own, so they ALWAYS share the
- * same static OG image (PAGES.sources.ogImage) instead of generating one
- * per topic — unlike biases, books or projects, which do have a dynamic
- * OG route under src/pages/og/.
- */
-
-import PagesSEO from "@/seo/PagesSEO.astro";
-import type { PageKeywords } from "@/lib/keywords";
+import type { Topic } from "@sources-path/lib/get-topics.ts";
 import { PAGES } from "@/global/pages-info.ts";
+import { convertDateToISO8601 } from "@/utils/validating-date.ts";
+import ContentSEO from "@/seo/ContentSEO.astro";
 
 interface Props {
-	pageTitle: string;
-	pageDescription: string;
-	ogImageAlt?: string;
-	pageKeywords: PageKeywords;
+	topic: Topic;
 }
 
-const { pageTitle, pageDescription, ogImageAlt, pageKeywords } = Astro.props;
+const { topic } = Astro.props;
+const { name, date, sources } = topic;
+
+const SOURCE_PAGE = PAGES.sources;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const pageTitle = `${name}: fuentes consultadas - c12z`;
+const pageDescription = `Las ${sources.length} fuentes que he consultado para escribir sobre ${name}.`;
+
+const ogImageSrc = new URL(SOURCE_PAGE.ogImage, Astro.site);
+const ogImageAlt = SOURCE_PAGE.ogImageAlt;
+
+const publishDate = convertDateToISO8601(date);
+
+const sourceKeywords = [`Fuentes para aprender sobre ${name}`];
 ---
 
-<PagesSEO
-	pageTitle={pageTitle}
-	pageDescription={pageDescription}
-	ogImage={PAGES.sources.ogImage}
-	ogImageAlt={ogImageAlt ?? PAGES.sources.ogImageAlt}
-	pageKeywords={pageKeywords}
+<ContentSEO
+	slot="head"
+	postName={pageTitle}
+	postDescription={pageDescription}
+	canonicalURL={canonical}
+	ogImageSrc={ogImageSrc}
+	ogImageAlt={ogImageAlt}
+	publisDateInISO={publishDate}
+	lastTimeEditedInISO={publishDate}
+	keywords={sourceKeywords}
 />
