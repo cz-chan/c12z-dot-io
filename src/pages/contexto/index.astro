@@ -7,15 +7,17 @@ import { PAGES } from "@/global/pages-info.ts";
 
 import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 import Context from "@context-path/components/context.mdx";
+
+const CONTEXT = PAGES.context;
 ---
 
 <MainLayout>
 	<PagesSEO
 		slot="head"
-		pageTitle={PAGES.context.title}
-		pageDescription={PAGES.context.description}
-		ogImage={PAGES.context.ogImage}
-		ogImageAlt={PAGES.context.ogImageAlt}
+		pageTitle={CONTEXT.title}
+		pageDescription={CONTEXT.description}
+		ogImage={CONTEXT.ogImage}
+		ogImageAlt={CONTEXT.ogImageAlt}
 	/>
 	<section class={styles.contextPage}>
 		<GoBackInTop

@@ -5,15 +5,17 @@ import { PAGES } from "@/global/pages-info.ts";
 
 import ProjectPage from "@projects-path/components/ProjectPage.astro";
 import PagesSEO from "@/seo/PagesSEO.astro";
+
+const PROJECT_PAGE = PAGES.projects;
 ---
 
 <MainLayout>
 	<PagesSEO
 		slot="head"
-		pageTitle={PAGES.projects.title}
-		pageDescription={PAGES.projects.description}
-		ogImage={PAGES.projects.ogImage}
-		ogImageAlt={PAGES.projects.ogImageAlt}
+		pageTitle={PROJECT_PAGE.title}
+		pageDescription={PROJECT_PAGE.description}
+		ogImage={PROJECT_PAGE.ogImage}
+		ogImageAlt={PROJECT_PAGE.ogImageAlt}
 	/>
 	<ProjectPage />
 </MainLayout>

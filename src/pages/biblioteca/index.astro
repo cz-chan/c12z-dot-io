@@ -5,15 +5,17 @@ import MainLayout from "@/layouts/MainLayout.astro";
 
 import LibraryPage from "@books-path/components/LibraryPage.astro";
 import PagesSEO from "@/seo/PagesSEO.astro";
+
+const LIBRARY_PAGE = PAGES.library;
 ---
 
 <MainLayout>
 	<PagesSEO
 		slot="head"
-		pageTitle={PAGES.library.title}
-		pageDescription={PAGES.library.description}
-		ogImage={PAGES.library.ogImage}
-		ogImageAlt={PAGES.library.ogImageAlt}
+		pageTitle={LIBRARY_PAGE.title}
+		pageDescription={LIBRARY_PAGE.description}
+		ogImage={LIBRARY_PAGE.ogImage}
+		ogImageAlt={LIBRARY_PAGE.ogImageAlt}
 	/>
 	<LibraryPage />
 </MainLayout>

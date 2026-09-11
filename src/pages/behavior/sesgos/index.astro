@@ -5,15 +5,17 @@ import { PAGES } from "@/global/pages-info.ts";
 import BiasPage from "@biases-path/components/BiasPage.astro";
 
 import PagesSEO from "@/seo/PagesSEO.astro";
+
+const BIAS_PAGE = PAGES.bias;
 ---
 
 <MainLayout>
 	<PagesSEO
 		slot="head"
-		pageTitle={PAGES.bias.title}
-		pageDescription={PAGES.bias.description}
-		ogImage={PAGES.bias.ogImage}
-		ogImageAlt={PAGES.bias.ogImageAlt}
+		pageTitle={BIAS_PAGE.title}
+		pageDescription={BIAS_PAGE.description}
+		ogImage={BIAS_PAGE.ogImage}
+		ogImageAlt={BIAS_PAGE.ogImageAlt}
 	/>
 	<BiasPage />
 </MainLayout>

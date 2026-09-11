@@ -5,15 +5,17 @@ import PagesSEO from "@/seo/PagesSEO.astro";
 import { PAGES } from "@/global/pages-info.ts";
 
 import BehaviorPage from "@behavior-path/components/BehaviorPage.astro";
+
+const BEHAVIOR_PAGE = PAGES.behavior;
 ---
 
 <MainLayout>
 	<PagesSEO
 		slot="head"
-		pageTitle={PAGES.behavior.title}
-		pageDescription={PAGES.behavior.description}
-		ogImage={PAGES.behavior.ogImage}
-		ogImageAlt={PAGES.behavior.ogImageAlt}
+		pageTitle={BEHAVIOR_PAGE.title}
+		pageDescription={BEHAVIOR_PAGE.description}
+		ogImage={BEHAVIOR_PAGE.ogImage}
+		ogImageAlt={BEHAVIOR_PAGE.ogImageAlt}
 	/>
 	<BehaviorPage />
 </MainLayout>

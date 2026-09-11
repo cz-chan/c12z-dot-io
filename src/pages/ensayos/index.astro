@@ -8,15 +8,17 @@ import GoBackInTop from "@/ui/go-back-in-top/GoBackInTop.astro";
 import PagesSEO from "@/seo/PagesSEO.astro";
 
 // const essays = await getCollection("essay");
+
+const ESSAY_PAGE = PAGES.essay;
 ---
 
 <MainLayout>
 	<PagesSEO
 		slot="head"
-		pageTitle={PAGES.essay.title}
-		pageDescription={PAGES.essay.description}
-		ogImage={PAGES.essay.ogImage}
-		ogImageAlt={PAGES.essay.ogImageAlt}
+		pageTitle={ESSAY_PAGE.title}
+		pageDescription={ESSAY_PAGE.description}
+		ogImage={ESSAY_PAGE.ogImage}
+		ogImageAlt={ESSAY_PAGE.ogImageAlt}
 	/>
 	<GoBackInTop
 		headPage="/"

@@ -5,15 +5,17 @@ import PagesSEO from "@/seo/PagesSEO.astro";
 import { PAGES } from "@/global/pages-info.ts";
 
 import DesignLawsPage from "@design-laws-path/components/DesignLawsPage.astro";
+
+const DESIGN_LAW_PAGE = PAGES.design;
 ---
 
 <MainLayout>
 	<PagesSEO
 		slot="head"
-		pageTitle={PAGES.design.title}
-		pageDescription={PAGES.design.description}
-		ogImage={PAGES.design.ogImage}
-		ogImageAlt={PAGES.design.ogImageAlt}
+		pageTitle={DESIGN_LAW_PAGE.title}
+		pageDescription={DESIGN_LAW_PAGE.description}
+		ogImage={DESIGN_LAW_PAGE.ogImage}
+		ogImageAlt={DESIGN_LAW_PAGE.ogImageAlt}
 	/>
 	<DesignLawsPage />
 </MainLayout>

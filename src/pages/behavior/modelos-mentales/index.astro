@@ -5,15 +5,17 @@ import PagesSEO from "@/seo/PagesSEO.astro";
 import { PAGES } from "@/global/pages-info.ts";
 
 import MentalModelsPage from "@mental-models-path/components/MentalModelsPage.astro";
+
+const MENTAL_MODEL_PAGE = PAGES.mentalModel;
 ---
 
 <MainLayout>
 	<PagesSEO
 		slot="head"
-		pageTitle={PAGES.mentalModel.title}
-		pageDescription={PAGES.mentalModel.description}
-		ogImage={PAGES.mentalModel.ogImage}
-		ogImageAlt={PAGES.mentalModel.ogImageAlt}
+		pageTitle={MENTAL_MODEL_PAGE.title}
+		pageDescription={MENTAL_MODEL_PAGE.description}
+		ogImage={MENTAL_MODEL_PAGE.ogImage}
+		ogImageAlt={MENTAL_MODEL_PAGE.ogImageAlt}
 	/>
 	<MentalModelsPage />
 </MainLayout>

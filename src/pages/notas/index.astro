@@ -5,15 +5,17 @@ import PagesSEO from "@/seo/PagesSEO.astro";
 import { PAGES } from "@/global/pages-info.ts";
 
 import NotesPage from "@notes-path/components/NotesPage.astro";
+
+const NOTES_PAGE = PAGES.notes;
 ---
 
 <MainLayout>
 	<PagesSEO
 		slot="head"
-		pageTitle={PAGES.notes.title}
-		pageDescription={PAGES.notes.description}
-		ogImage={PAGES.notes.ogImage}
-		ogImageAlt={PAGES.notes.ogImageAlt}
+		pageTitle={NOTES_PAGE.title}
+		pageDescription={NOTES_PAGE.description}
+		ogImage={NOTES_PAGE.ogImage}
+		ogImageAlt={NOTES_PAGE.ogImageAlt}
 	/>
 	<NotesPage />
 </MainLayout>
