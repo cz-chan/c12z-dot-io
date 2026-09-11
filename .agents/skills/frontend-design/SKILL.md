@@ -23,7 +23,7 @@ The tokens below are the contract of `src/styles/global.css`. **That file is the
 - Animations in React components use **Motion** (`motion/react`); `es-toolkit` for throttle/debounce
 - Props are declared as `interface Props` inside the component file. Never `Astro.props as X` — it silences errors
 
-**Path aliases — always import through the most specific one.** Never a `../../` chain across folders. Each path has `@<name>-path/*` (`@biases-path/*`, `@books-path/*`, `@behavior-path/*`, `@sources-path/*`…); cross-cutting are `@/*`, `@/lib/*`, `@/global/*`, `@/ui/*`, `@/icons/*`, `@/seo/*`, `@/mdx/*`, `@/layout/*`, `@/analytics/*`, `@/layouts/*`, `@/utils/*`, `@/assets/*`. There is no `@/paths/*` on purpose.
+**Path aliases — always import through the most specific one.** Never a `../../` chain across folders. Each path has `@<name>-path/*` (`@biases-path/*`, `@books-path/*`, `@behavior-path/*`, `@sources-path/*`…); cross-cutting are `@/ui/*`, `@/icons/*`, `@/seo/*`, `@/mdx/*`, `@/layout/*`, `@/analytics/*`, `@/lib/*`, `@/global/*`, `@/layouts/*`, `@/utils/*`, `@/assets/*`, `@/styles/*`. There is no `@/*` catch-all and no `@/paths/*`, on purpose — a skipped alias fails the type-check.
 
 **Where a component goes:** in the path that uses it. It graduates to `src/components/` only once **2+ paths** need it — not before, however generic it looks.
 

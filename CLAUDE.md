@@ -61,7 +61,7 @@ and `AGENTS.md` stay at the repo root: they are read by name, not by folder.
 
 **No Tailwind** — styling is plain CSS: design-token CSS variables in `src/styles/global.css` plus CSS Modules per component.
 
-Longer-form docs live in `.agents/docs/` (`start-here.md`, `paths/`, `lib/`, `pages/`).
+Longer-form docs live in `.agents/docs/` (`start-here.md`, `content-config.md`, `paths/`, `pages/`, `components/`).
 
 ### Key structural patterns
 
@@ -70,16 +70,16 @@ Longer-form docs live in `.agents/docs/` (`start-here.md`, `paths/`, `lib/`, `pa
 Each path holds:
 
 - `components/` — Astro/React components specific to that path
-- `seo/` — keywords and metadata for that path
+- `seo/` — the `<Name>SEO.content.astro` component for that path's detail pages (see "SEO" below)
 - `lib/` — everything that isn't UI: static data, derivations/queries, and the types they share. One folder, not two — what changes together lives together.
 - `icons/` — icons used only by this path
 - `scripts/` — client-side JS loaded by the path's components (only where there is any)
 
 There is no `styles/` folder: a CSS Module lives next to the component it styles.
 
-Something lives in the path that uses it. Once **2+ paths** need it, it graduates to `src/components/common/`, `src/global/`, or `src/lib/` — not before.
+Something lives in the path that uses it. Once **2+ paths** need it, it graduates to `src/components/`, `src/global/`, or `src/lib/` — not before.
 
-**Types follow the same rule — there is no `src/interfaces/` folder.** A type lives in the file that owns it: component props as `interface Props` inside the `.astro`/`.tsx` itself (never `Astro.props as X` — that silences errors), data shapes next to the data they describe. Only a type with 2+ consumers graduates to `src/lib/` (e.g. `PageKeywords` in `src/lib/keywords.ts`). Don't suffix names with `Interface`.
+**Types follow the same rule — there is no `src/interfaces/` folder.** A type lives in the file that owns it: component props as `interface Props` inside the `.astro`/`.tsx` itself (never `Astro.props as X` — that silences errors), data shapes next to the data they describe. Only a type with 2+ consumers graduates to `src/lib/`. Don't suffix names with `Interface`.
 
 **Nested paths** — a path that owns child routes puts them in its own `paths/` folder, recursively. Today only `behavior` has them (`biases`, `mental-models`, `design-laws`, `sources`).
 
@@ -105,8 +105,8 @@ That is their normal state, not dead code.
 
 **OG images** — `src/lib/og/` renders social images with `@vercel/og` + `sharp` at build time.
 
-**Icons with no importer are not dead code.** `YingYang`, `Bulb`, `GoOut`,
-`Moon`, `Sun` and `LensIcon` are a library to drop into a post by hand, so having
+**Icons with no importer are not dead code.** `Bulb`, `GoOut`, `Moon`, `Sun`
+and `LensIcon` are a library to drop into a post by hand, so having
 zero imports is their normal state. Don't delete them as unused. The same goes
 for everything in `components/mdx/`.
 
@@ -163,6 +163,31 @@ which owns the shared markup and stylesheet. A section only adds what is its
 own — biases pass their category pill through the `meta` slot. Change the layout
 once, not three times.
 
+### SEO
+
+Two components in `src/components/seo/`, one per kind of page — pick by page,
+not by taste:
+
+- **Listing pages (`index.astro`) → `PagesSEO`**, fed straight from `PAGES` in
+  `src/global/pages-info.ts` (`title`, `description`, `ogImage`, `ogImageAlt`).
+  No keywords: `PagesSEO` doesn't accept them. Pass `ogImage` — without it the
+  page falls back to the generic `/og-image.webp`.
+- **Detail pages (`[...id].astro`) → the path's `seo/<Name>SEO.content.astro`**,
+  which takes the entry as a prop and builds the props of `ContentSEO` (title,
+  description, canonical, OG, dates, keywords → `article:tag`). The page only
+  passes the entry through: `getStaticPaths()` runs in page files only, so a
+  component never gets data any other way.
+
+What `ContentSEO` puts in the `<head>` is not type-checked beyond `string`, so
+three things are on you: `og:image` must be an **absolute** URL
+(`new URL(path, Astro.site)`); dates go through `convertDateToISO8601`, never raw
+`DD/MM/YYYY`; and keywords are a plain `string[]`.
+
+OG images are `.webp`/`.png`/`.jpg`, **never `.avif`** — X, Facebook and
+LinkedIn don't render it. Sources topic pages share the static
+`PAGES.sources.ogImage`; every other detail page has a generated one (see
+`.agents/docs/pages/og/og-images.md`).
+
 ### File naming
 
 - `lib/`, `seo/` and CSS Modules: `kebab-case.ts` / `kebab-case.module.css`
@@ -199,6 +224,23 @@ The schemas themselves are in `src/content.config.ts`, their reasoning in
 
 - `biases`, `mentalModels` and `designLaws` share `behaviorContentBaseSchema`. Each needs a `contentCount` unique **within its own collection** — the number feeds the card code (`DSG-001`), and `get-behavior-entries.ts` throws at build time on a duplicate. The three collections number independently.
 - `backlog: z.enum(["wip", "upload"])` gates unpublished entries
+- Category values are English keys, their Spanish UI label lives next to them in `src/lib/content-categories/` (`Record<Enum, string>`, so a value without a label fails the build).
+
+### Dates
+
+Frontmatter dates are `DD/MM/YYYY` and `src/utils/validating-date.ts` is the
+only place that turns one into a `Date` — never `new Date(string)`, which reads
+it as US `MM/DD`.
+
+**Dates are UTC end to end.** `parseDate` builds them with `Date.UTC`, so
+anything that reads one back must use UTC too: `getUTCDate()` & co., and
+`timeZone: "UTC"` in `Intl.DateTimeFormat`. Mixing a local getter with a UTC
+date works on a machine east of UTC (Madrid, Vercel) and shifts the day — or
+throws in the validator — west of it. Check with:
+
+```bash
+TZ=America/New_York pnpm build   # must pass like a normal build
+```
 
 ### Markdown pipeline
 

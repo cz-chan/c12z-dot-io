@@ -14,33 +14,33 @@
 
 ## 1. What it is and what it is NOT
 
-The drawer shows **the sources you consult to write each bias and each
-mental model**: books, videos, articles, quotes...
+The drawer shows **the sources you consult to write each bias, mental
+model and design law**: books, videos, articles, quotes...
 
 The most important design decision, and the one that explains everything
 else:
 
 > **`sources` has no content of its own.** There is no `sources`
 > collection, nor a `src/content/sources/` folder. Sources live in the
-> **frontmatter of the post itself** (the bias or the mental model), in a
-> `sources` array. The feature only **reads and paints** them.
+> **frontmatter of the post itself** (the bias, mental model or design law),
+> in a `sources` array. The feature only **reads and paints** them.
 
 Why: if sources lived in their own collection you'd have two places to
 keep in sync (the post and its sources) and duplicated content. This way,
 writing a source is adding 4 lines to the `.mdx` you're already writing.
 
 Practical consequence: **to add a source you don't touch anything in this
-feature**, only the `.mdx` of the bias/model (§3).
+feature**, only the `.mdx` of the post (§3).
 
 ---
 
 ## 2. The three views
 
-| Route                             | What it shows                                                                                      | Root component      |
-| --------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------- |
-| `/behavior/fuentes`               | **One folder per topic** (a bias or a model). Dense grid + filter panel. Designed for ~140 topics. | `SourcesPage.astro` |
-| `/behavior/fuentes/<slug>`        | The sources **of one topic**, each one a **sheet** with a folded corner, barely overlapping.       | `TopicPage.astro`   |
-| `/behavior/modelos-mentales/<id>` | **"Behind this post"** block at the end of the post, with its sources stacked like folders.        | `PostSources.astro` |
+| Route                                                   | What it shows                                                                                                | Root component      |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------- |
+| `/behavior/fuentes`                                     | **One folder per topic** (a bias, a model or a design law). Dense grid + filter panel. Designed for ~140 topics. | `SourcesPage.astro` |
+| `/behavior/fuentes/<slug>`                              | The sources **of one topic**, each one a **sheet** with a folded corner, barely overlapping.                 | `TopicPage.astro`   |
+| `/behavior/{sesgos,modelos-mentales,diseño}/<id>`       | **"Behind this post"** block at the end of the post, with its sources stacked like folders.                  | `PostSources.astro` |
 
 All three share the same **viewer** (`SourceFiles.astro`: the enlarged
 folder or sheet, with a slider).
@@ -50,11 +50,9 @@ The granularity of each view — important not to mix up:
 - In the **drawer**, 1 folder = **1 topic** (with N sources inside).
 - On the **topic page** and in **"Behind this post"**, 1 piece = **1 source**.
 
-⚠️ **Real status of "Behind this post"**: it's active in
-`src/pages/behavior/modelos-mentales/[...id].astro` and **commented out** in
-`src/pages/behavior/sesgos/[...id].astro` (lines 20 and 79). If you want it
-in biases too, just uncomment both: the component already returns `null`
-when the post has no sources.
+"Behind this post" is rendered once, by
+`behavior/components/post/BehaviorPostLayout.astro`, so it's active in all
+three sections. The component returns `null` when the post has no sources.
 
 ### Folder vs. sheet
 
@@ -78,22 +76,26 @@ box, stack, hover and viewer are the same.
 
 ### 3.1 The schema (`src/content.config.ts`)
 
-There's a shared `sourceSchema`, added as a `sources` field to the `bias`
-and `mentalModels` collections:
+There's a shared `sourceSchema`, part of `behaviorContentBaseSchema`, so the
+`biases`, `mentalModels` and `designLaws` collections all get a `sources`
+field:
 
 ```ts
 const sourceSchema = z.object({
-  title:   z.string().max(300),   // in a `cita`, the title IS the quoted fragment
-  type:    z.enum(["libro","articulo","paper","video","podcast","charla","web","cita"]),
+  title:   z.string().max(300),   // in a `quote`, the title IS the quoted fragment
+  type:    sourceCategories,      // book, article, paper, video, podcast, lecture, web, quote
   author:  z.string().optional(),
   url:     z.string().optional(),
-  date:    z.string().refine(isValidDateFormat).optional(),  // DD/MM/YYYY
-  excerpt: z.string().max(300).optional(),
+  date:    dateField.optional(),  // DD/MM/YYYY
+  excerpt: z.string().optional(),
 });
 
-// inside biasCollection and mentalModelsCollection:
+// inside behaviorContentBaseSchema:
 sources: z.array(sourceSchema).default([]),
 ```
+
+`type` takes the English key; the Spanish label shown on the folder's tab
+(`libro`, `frase`…) comes from `SOURCES_CATEGORY_LABELS` (§3.3).
 
 `default([])` means a post **without** `sources` is valid: it doesn't
 appear in the drawer and doesn't get the "Behind this post" block.
@@ -105,20 +107,20 @@ link. If it ever becomes annoying, that's the place to tighten it.
 ### 3.2 Adding a source = editing the post's `.mdx`
 
 ```yaml
-# src/content/bias/anclaje.mdx
+# src/content/biases/efecto-ancla/index.mdx
 ---
-biasName: "Sesgo de anclaje"
+title: "Efecto ancla"
 backlog: "wip" # ← wip = "estudiando" in the drawer; upload = "publicado"
-# ...rest of the bias frontmatter...
+# ...rest of the frontmatter...
 sources:
   - title: "Thinking, Fast and Slow"
-    type: "libro"
+    type: "book"
     author: "Daniel Kahneman"
     url: "https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow"
     date: "02/06/2026"
     excerpt: "Capítulo 11 (Anchors): el experimento de la ruleta trucada."
   - title: "Any number that you are asked to consider… will induce an anchoring effect."
-    type: "cita" # ← in a quote, the `title` is the quoted fragment
+    type: "quote" # ← in a quote, the `title` is the quoted fragment
     author: "Daniel Kahneman"
 ---
 ```
@@ -160,34 +162,39 @@ src/paths/behavior/paths/sources/
 │   ├── SourceFiles.astro         THE VIEWER: <dialog> with one sheet per source
 │   ├── FolderDialogScript.astro   loads the viewer script (once per page)
 │   └── sources.module.css       ALL of the feature's styling
-├── scripts/                     the feature's only JS (~200 lines in total)
+├── scripts/                     the feature's only JS (~390 lines in total)
 │   ├── folder-dialog.ts           open/close/navigate the viewer
+│   ├── filter-toggles.ts          shared toggle mechanics (claimRoot, bindToggles, passes)
 │   ├── sources-filters.ts         search box + topic-type toggles (drawer)
 │   └── topic-filters.ts           source-type toggles (topic page)
-├── data/
-│   ├── get-topics.ts            builds the "topics" by reading bias + mentalModels + designLaws
+├── lib/
+│   ├── get-topics.ts            builds the "topics" by reading biases + mentalModels + designLaws
 │   ├── source-types.ts          `Source` type (labels live in `@/lib/content-categories/sources.categories.ts`)
 │   └── count-source-types.ts    the per-type tally of the topic header
 └── seo/
-    ├── SourcesSEO.content.astro static OG shared by all views
-    └── sources.keywords.ts
+    └── SourcesSEO.content.astro SEO of a topic page (ContentSEO, static OG)
 ```
-
-Note: **there is no `styles/` folder** — the CSS Module lives next to the
-components (`components/sources.module.css`), unlike what the general
-convention in `start-here.md` suggests.
 
 Routes that consume it:
 
 ```
 src/pages/behavior/fuentes/
-├── index.astro      → SourcesPage
-└── [...id].astro    → TopicPage (getStaticPaths over getTopics())
+├── index.astro      → SourcesPage + PagesSEO (PAGES.sources)
+└── [...id].astro    → TopicPage + SourcesSEO (getStaticPaths over getTopics())
 ```
 
+**SEO.** The drawer index is a listing page, so it uses `PagesSEO` straight
+from `PAGES.sources`, with no keywords. A topic page passes its `topic` to
+`SourcesSEO`, which builds the title and description from the topic's name and
+number of sources, one keyword (`Fuentes para aprender sobre <name>`), the
+canonical URL, and the topic's `date` as the published/modified time. Sources
+have no content of their own, so there is **no generated OG image per topic**:
+every topic uses the static `PAGES.sources.ogImage`, made absolute with
+`new URL(…, Astro.site)`.
+
 Dates are NOT parsed here: `parseDate` in `src/utils/validating-date.ts` is
-the only place that turns "DD/MM/YYYY" into a `Date`, and both `get-topics.ts`
-and `behavior/paths/mental-models/components/MentalModelsPage.astro` sort with it.
+the only place that turns "DD/MM/YYYY" into a `Date`; `get-topics.ts` sorts
+with it and `SourcesSEO` converts with `convertDateToISO8601`.
 `new Date()` must never be used on a frontmatter date — it reads them as
 MM/DD/YYYY.
 
@@ -195,22 +202,25 @@ MM/DD/YYYY.
 
 ## 5. `get-topics.ts` — the single source of truth
 
-A **Topic** is "a bias or a mental model that has sources". The
-`getTopics()` function builds them and **both the grid and
+A **Topic** is "a bias, a mental model or a design law that has sources".
+The `getTopics()` function builds them and **both the grid and
 `getStaticPaths`** use it — that's why the slug and the order always match.
 
 ```ts
 interface Topic {
-	id: string; // "sesgo-anclaje" — id of the <dialog> in the HTML
-	slug: string; // "anclaje" — the URL /behavior/fuentes/anclaje
-	kind: "sesgo" | "modelo";
-	name: string; // biasName or modelName
+	id: string; // "sesgo-efecto-ancla" — id of the <dialog> in the HTML
+	slug: string; // "efecto-ancla" — the URL /behavior/fuentes/efecto-ancla
+	kind: "sesgo" | "modelo" | "diseño";
+	name: string; // the post's `title`
 	href?: string; // to the post, only if it's published
 	state: "estudiando" | "publicado"; // derived from backlog (wip/upload)
-	date: string;
+	date: string; // the post's publishDate, DD/MM/YYYY
 	sources: Source[];
 }
 ```
+
+Note `id` vs `slug`: the route is built from **`slug`**, `id` is only for
+the HTML. Anything that builds a URL to a topic uses `slug`.
 
 Three things it does that are worth knowing:
 
@@ -218,8 +228,8 @@ Three things it does that are worth knowing:
    drawer doesn't fill up with empty folders.
 2. **Sorts**: first what's `estudiando` (the drawer is the work desk),
    then by descending date.
-3. **Breaks slug ties**: if one day a bias and a model had the same id,
-   the slug gets prefixed with the type (`modelo-anclaje`). Without this
+3. **Breaks slug ties**: if one day two posts of different kinds had the
+   same id, the slug gets prefixed with the kind (`modelo-anclaje`). Without this
    `getStaticPaths` would blow up the build with two identical routes.
 
 **If you want to change the drawer's order, change it here** (the final
@@ -234,7 +244,7 @@ It's a **native `<dialog>`**, no React and no client state.
 - `SourceFiles.astro` paints **one `<dialog>` per folder** with **all**
   its sources inside: one `<div data-slide="i">` per source, all `hidden`
   except the first.
-- `scripts/folder-dialog.ts` is the viewer script (~100 lines). It listens
+- `scripts/folder-dialog.ts` is the viewer script (~240 lines). It listens
   for clicks on `document` (delegation) and:
   - `[data-folder-open="<id>"]` → `dialog.showModal()` + shows the
     `data-index` sheet (the folder you clicked).
@@ -448,10 +458,11 @@ already has a width of its own.
 
 ## 8. Filters and search
 
-They are **two separate scripts**, one per view. Both work only with
-`data-*` and `hidden`, **never by adding classes**: the classes of a CSS
-Module are hashed at build time (`_folder_1h04g_344`), so from the JS you
-can't write `classList.add("folder")` and expect it to work.
+They are **two separate scripts**, one per view, built on the same helpers
+in `scripts/filter-toggles.ts` (`claimRoot`, `bindToggles`, `passes`). Both
+work only with `data-*` and `hidden`, **never by adding classes**: the
+classes of a CSS Module are hashed at build time (`_folder_1h04g_344`), so
+from the JS you can't write `classList.add("folder")` and expect it to work.
 
 ### 8.1 The drawer — `scripts/sources-filters.ts`
 
@@ -464,7 +475,7 @@ State of 2 fields (`{ query, kinds }`), applied to each `[data-topic]`:
 - **search box** → compares against `data-name` (the lowercased name,
   precomputed in the HTML by `TopicFolder`).
 - **TOPIC-type toggles** → compares against `data-kind` (`sesgo` /
-  `modelo`).
+  `modelo` / `diseño`).
 
 The toggles are independent and **none enabled = everything passes**; that's
 why there's no "all" button. If nothing is left visible, the
@@ -491,14 +502,14 @@ contradict each other:
 
 | I want to…                               | File                                                         | What                                                                                |
 | ---------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
-| Add a source to a post                   | `src/content/{bias,mental-models}/<x>.mdx`                   | add an item to `sources:`                                                           |
+| Add a source to a post                   | `src/content/{biases,mental-models,design-laws}/<x>/index.mdx` | add an item to `sources:`                                                         |
 | A new source type                        | `src/lib/content-categories/sources.categories.ts`           | `SOURCE_CATEGORIES` and `SOURCES_CATEGORY_LABELS` (both, §3.3)                       |
-| See "Behind this post" on biases         | `src/pages/behavior/sesgos/[...id].astro`                    | uncomment the import and the `<PostSources />`                                      |
+| Change a topic page's title/description  | `seo/SourcesSEO.content.astro`                               | `pageTitle` / `pageDescription`                                                     |
 | Change the size of the pieces            | `sources.module.css`                                         | `--folder-w` in `.stack`/`.stackFiles` (stack) / `minmax()` in `.topicGrid`         |
 | Make them stack more or less             | `sources.module.css`                                         | `--min-step` in `.stack` / `.stackLoose` / `.stackFiles`                            |
 | Change the tab's shape                   | `sources.module.css`                                         | `--tab-h`, `--tab-w`, `--tab-slope` of whichever class                              |
 | Turn folders into sheets (or vice versa) | whoever uses `SourceStack`                                   | the `file` prop (and `loose` for the loose overlap)                                 |
-| Change the drawer's order                | `data/get-topics.ts`                                         | the final `.sort()`                                                                 |
+| Change the drawer's order                | `lib/get-topics.ts`                                          | the final `.sort()`                                                                 |
 | Keep a post OUT of the drawer            | its `.mdx`                                                   | remove its `sources` array                                                          |
 | Change what the closed piece shows       | `TopicFolder.astro` (drawer) / `SourceStack.astro` (sources) | the `<button>` markup                                                               |
 | Change what the open piece shows         | `SourceFiles.astro`                                          | the `<div data-slide>` markup                                                       |
@@ -513,7 +524,7 @@ contradict each other:
 1. **The `<dialog>`'s `id` and the button's `data-folder-open` must
    match.** It's the only link between the piece and its viewer.
 2. **The `id`s must be unique on the page.** That's why the drawer uses
-   `sesgo-<id>` / `modelo-<id>` and not the bare id.
+   `sesgo-<id>` / `modelo-<id>` / `diseño-<id>` and not the bare id.
 3. **Don't add a type to `SOURCE_CATEGORIES` without adding it to
    `SOURCES_CATEGORY_LABELS`** (§3.3).
 4. **Don't replace the piece's `border-left` or the `<li>`'s `drop-shadow`
@@ -543,16 +554,18 @@ pnpm dev     # and eyeball it:
 Quick checklist in the browser:
 
 - **Drawer**: collapse and expand the terminal; search by name; enable
-  "sesgos" (the models should disappear) and disable it (everything should
-  come back).
+  "sesgos" (models and design laws should disappear) and disable it
+  (everything should come back).
 - **Open a folder**: the counter should say `1 / N`; with the ← → arrows it
   should change sheet and go back to the first when reaching the end; the
   tab and the date should change with each sheet; `Esc` and clicking
   outside should close it.
-- **Topic page**: filter by "cita" → only the quote sheets should remain
-  **and** the viewer's counter should switch to `1 / <number of quotes>`.
+- **Topic page**: filter by "frase" (`quote`) → only the quote sheets should
+  remain **and** the viewer's counter should switch to `1 / <number of quotes>`.
+- **Topic page `<head>`**: `og:image` is an absolute URL and
+  `article:published_time` is ISO with the same day as the frontmatter.
 - **Responsive**: at 320px and 390px **there must be no horizontal scroll**
   (that's the classic failure here, §7.3).
-- **Topic page with few sources** (e.g. `pensamiento-inverso`, 3): on
+- **Topic page with few sources** (e.g. `sesgo-de-confirmacion`, 3): on
   desktop they should look **whole and barely overlapped**; on mobile, 2
   columns without overlap.

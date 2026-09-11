@@ -1,16 +1,19 @@
 # Dynamic OG images — implementation documentation
 
-> This document describes **the system as it's actually built**.
-> `src/og-images-spec.md` is the original spec (written before
-> implementation) and may differ in minor details (positions, names);
-> this document is the current source of truth.
+> This document describes **the system as it's actually built** and is the
+> source of truth for it.
 
 ## 1. What it does and when it runs
 
-For every entry in `library`, `projects` (and `bias` once it has content),
-Astro generates a 1200×630 PNG at **build time** (`pnpm build`), served at
-`/og/{section}/{slug}.png`. That PNG is what `og:image` / `twitter:image`
-point to in each page's `<head>`.
+For every entry in `books`, `projects`, `notes`, `biases`, `mentalModels` and
+`designLaws`, Astro generates a 1200×630 PNG at **build time** (`pnpm build`),
+served at `/og/{section}/{slug}.png`. That PNG is what `og:image` /
+`twitter:image` point to in each detail page's `<head>`.
+
+**Not everything is generated.** Listing pages and the sources topic pages use
+static images from `public/og/pages/*.webp`, referenced from `PAGES` in
+`src/global/pages-info.ts` (`public/og-image.webp` is the fallback). Static OG
+images are `.webp`, never `.avif`: X, Facebook and LinkedIn don't render it.
 
 There is no runtime generation, ever, in production: after the build,
 those URLs are static files served by Vercel, just like any other image on
@@ -19,16 +22,19 @@ the site. See "Security" (§8) for why that matters.
 ## 2. File map
 
 ```
-src/paths/og/                    ← all the logic (no URL of its own)
-  ogAssets.ts                       Reads fonts/background/logo once (bytes + data URI)
-  ogTemplates.ts                    The 4 templates (A/B/C/D) + DEFAULT_LAYOUT
-  loadCover.ts                      Loads book covers / project hero images
-  renderOgImage.ts                  Satori → PNG → palette recompression
+src/lib/og/                         ← all the logic (no URL of its own)
+  og-assets.ts                      Reads fonts/background/logo once (bytes + data URI)
+  og-templates.ts                   The 4 templates (A/B/C/D) + DEFAULT_LAYOUT
+  load-cover.ts                     Loads book covers / project hero images
+  render-og-image.ts                Satori → PNG → palette recompression
 
 src/pages/og/                       ← the endpoints (these DO have a URL)
-  biblioteca/[...id].png.ts         Template C — `library` collection
-  proyectos/[...id].png.ts          Template D — `projects` collection
-  behavior/sesgos/[...id].png.ts    Template B — `bias` collection
+  biblioteca/[...id].png.ts                  Template C — `books`
+  proyectos/[...id].png.ts                   Template D — `projects`
+  notas/[...id].png.ts                       Template B — `notes` (subtitle: excerpt)
+  behavior/sesgos/[...id].png.ts             Template B — `biases` (subtitle: question)
+  behavior/modelos-mentales/[...id].png.ts   Template B — `mentalModels` (subtitle: question)
+  behavior/diseño/[...id].png.ts             Template B — `designLaws` (subtitle: question)
 
 src/pages/_og-playground/           ← dev-only tool (see §7)
   index.astro                       UI with sliders
@@ -51,8 +57,8 @@ Cascadia Code Medium for secondary text).
 | Template | Function                         | Collection | Uses cover/hero               | Subtitle            |
 | -------- | -------------------------------- | ---------- | ----------------------------- | ------------------- |
 | **A**    | `textOgTemplate` (no subtitle)   | —          | no                            | no                  |
-| **B**    | `textOgTemplate` (with subtitle) | `bias`     | no                            | yes (bias question) |
-| **C**    | `coverOgTemplate`                | `library`  | yes, book cover on the left   | yes (author)        |
+| **B**    | `textOgTemplate` (with subtitle) | `biases`, `mentalModels`, `designLaws`, `notes` | no | yes (`question`; `excerpt` in notes) |
+| **C**    | `coverOgTemplate`                | `books`    | yes, book cover on the left   | yes (author)        |
 | **D**    | `heroOgTemplate`                 | `projects` | yes, centered hero/screenshot | no                  |
 
 `textOgTemplate` covers both A and B with a single function: pass it a
@@ -100,7 +106,7 @@ the hero + title already occupy the bottom band.
 ## 4. `DEFAULT_LAYOUT` — the single source of truth for measurements
 
 Every coordinate/size used by the 4 templates lives in one object in
-`ogTemplates.ts`:
+`og-templates.ts` (values as of this writing — the file wins if they differ):
 
 ```ts
 export const DEFAULT_LAYOUT = {
@@ -173,7 +179,7 @@ node tree (ogTemplates)
 
 `renderOgImage()` is the only function that knows how to rasterize; every
 endpoint and the playground go through it. See
-`src/paths/og/renderOgImage.ts`.
+`src/lib/og/render-og-image.ts`.
 
 **Why palette PNG and not WebP**: these images are only ever fetched by
 scraper bots (WhatsApp, LinkedIn, iMessage...), never by users browsing the
@@ -182,11 +188,11 @@ guarantee rendering WebP previews; PNG/JPEG is universally supported.
 Palette quantization achieves a similar (or better) size reduction without
 that risk.
 
-## 6. Loading content images (`loadCover.ts`)
+## 6. Loading content images (`load-cover.ts`)
 
 Two public functions, one shared private helper (`loadCoverImage`):
 
-- **`loadCover(entry: CollectionEntry<"library">)`** — for Template C.
+- **`loadCover(entry: CollectionEntry<"books">)`** — for Template C.
   Returns the cover **already scaled** to fit inside a 260×420 box without
   cropping (`Math.min` of the two ratios, like `object-fit: contain`). The
   template anchors it by its top edge (§3).
@@ -216,14 +222,16 @@ other format (`.webp`, `.avif`...) is converted **in memory** to PNG with
 **Always inside the content entry's own folder**, never in `src/assets/`
 or anywhere else:
 
-- Book covers → `src/content/library/{slug}/*.jpg|png|webp`
-  (already the case before this feature).
-- Project hero → `src/content/project/{slug}/*.png|jpg|webp`
-  (e.g. `src/content/project/la-vida-moderna-es/lavidamodernaes.png`).
+- Book covers → `src/content/books/{slug}/*.jpg|png|webp|avif`
+- Project hero → `src/content/projects/{slug}/*.png|jpg|webp|avif`
+  (e.g. `src/content/projects/la-vida-moderna-es/lavidamodernaes.avif`).
+
+`.avif` is fine **here**: the loader converts it to PNG in memory, so it never
+reaches a social network as-is.
 
 No extra "registration" step needed: the post's frontmatter just needs to
 point to that image via `cover.src` (the Zod schema in `content.config.ts`
-already requires that field for both `library` and `projects`).
+already requires that field for both `books` and `projects`).
 `getStaticPaths()` in the endpoint iterates the whole collection, so a new
 project/book with its `cover` set generates its OG image automatically on
 the next build — zero extra configuration.
@@ -268,8 +276,8 @@ function added to the build).
 
 ## 8. Security — summary
 
-- The real endpoints (`og/biblioteca`, `og/proyectos`,
-  `og/behavior/sesgos`) are `prerender = true`: in production there's no
+- The real endpoints (everything under `src/pages/og/`) are
+  `prerender = true`: in production there's no
   code running, only static files. They don't accept external input
   (no query params, no body), so there's no injection or CPU-DoS surface.
 - The only input to the entire pipeline is the repo's own content
@@ -281,25 +289,26 @@ function added to the build).
 ## 9. How to add a new template/collection (recipe)
 
 1. If it needs its own measurements, add them to `DEFAULT_LAYOUT` in
-   `ogTemplates.ts` (with a comment noting which template they belong to).
-2. Write the `xxxOgTemplate(props)` function in `ogTemplates.ts`, reusing
+   `og-templates.ts` (with a comment noting which template they belong to).
+2. Write the `xxxOgTemplate(props)` function in `og-templates.ts`, reusing
    `header()`, `footer()`, `root()`, `autoTitleFontSize()`.
 3. If it needs to load an image from the content, add/reuse a function in
-   `loadCover.ts` (reuse `loadCoverImage` if applicable).
+   `load-cover.ts` (reuse `loadCoverImage` if applicable).
 4. Create the endpoint at `src/pages/og/{section}/[...id].png.ts`:
    `prerender = true` + `getStaticPaths()` over the collection + a `GET`
    that assembles the template and calls `renderOgImage(...)`.
-5. Point that section's SEO component's `og:image`/`twitter:image` to
-   `/og/{section}/{id}.png` (pattern already used in `BooksSEO`,
-   `ProjectsSEO`, `BiasSEO`).
+5. Point that section's SEO component's `ogImageSrc` to an **absolute** URL,
+   since `ContentSEO` prints it as-is (pattern already used in `BooksSEO`,
+   `ProjectsSEO`, `NotesSEO`, `BehaviorSEO`):
+
+   ```ts
+   const ogImageSrc = new URL(`/og/{section}/${id}.png`, Astro.site);
+   ```
 6. (Optional) add the template to the playground's selector so it can be
    tuned visually.
 
 ## 10. Known gaps
 
-- The `bias` collection is currently empty (`src/content/bias/` has no
-  entries) → the `og/behavior/sesgos/[...id].png.ts` endpoint generates 0
-  images until there's content. The code is already in place.
 - There's no build cache keyed by content hash (evaluated and deliberately
   skipped: at the current content volume the saving is <1s per build; the
   pattern to add it if the site grows a lot has been discussed but isn't

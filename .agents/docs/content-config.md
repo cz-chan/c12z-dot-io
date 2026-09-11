@@ -18,6 +18,11 @@ const dateField = z.string().refine(isValidDateFormat);
 Dates are `DD/MM/YYYY`. `isValidDateFormat` (`src/utils/validating-date.ts`)
 throws when the format or the date itself is wrong.
 
+It catches an impossible date (`31/02`) by building it with `parseDate` and
+checking the day, month and year didn't overflow. `parseDate` builds in UTC, so
+that check reads with `getUTC*()` — a local getter would read the previous day on
+a machine west of UTC and reject every valid date there.
+
 ### `editedAfterPublished` + `editedAfterPublishedError`
 
 A post cannot be edited before it was published.
@@ -39,29 +44,35 @@ error is reported on.
 The category enums are built in `src/lib/content-categories/`, so that the label
 shown in the UI can never drift from the value allowed in the frontmatter:
 
-| File                     | Exports                                                       | Used by            |
-| ------------------------ | ------------------------------------------------------------- | ------------------ |
-| `shared.categories.ts`   | `SHARED_CATEGORIES`, `SHARED_CATEGORY_LABELS`                  | books + notes      |
-| `books.categories.ts`    | `booksCategories` (`z.enum`), `BOOKS_CATEGORY_LABELS`          | `books`            |
-| `notes.categories.ts`    | `notesCategories`, `NOTES_CATEGORY_LABELS`                     | `notes`            |
-| `sources.categories.ts`  | `sourceCategories`, `SOURCES_CATEGORY_LABELS`                  | `sourceSchema`     |
+| File                              | Exports                                                                                              | Used by                                 |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| `shared.categories.ts`            | `SHARED_CATEGORIES`, `SHARED_CATEGORY_LABELS`                                                        | books + notes                           |
+| `books.categories.ts`             | `booksCategories` (`z.enum`), `BOOKS_CATEGORY_LABELS`                                                | `books`                                 |
+| `notes.categories.ts`             | `notesCategories`, `NOTES_CATEGORY_LABELS`                                                           | `notes`                                 |
+| `sources.categories.ts`           | `sourceCategories`, `SOURCES_CATEGORY_LABELS`                                                        | `sourceSchema`                          |
+| `behavior-content.categories.ts`  | `biasCategories`, `mentalModelCategories`, `designLawCategories` + their `*_CATEGORY_LABELS`         | `biases`, `mentalModels`, `designLaws`  |
 
 Notes are the shared list plus `random`, `relationship`, `society`, `sport`.
+
+**Values are English keys, labels are the Spanish UI copy.** The frontmatter
+writes the key (`category: "judgment"`, `type: "quote"`); the page shows the
+label (`juicio`, `frase`).
 
 Each labels object is typed `Record<<Enum>, string>`, so **adding a value to the
 array without adding its label fails `pnpm build`**. That type error is the
 safety net, not a bug.
 
-The three behavior collections (`biases`, `mentalModels`, `designLaws`) still
-declare their `category` enum inline, in Spanish, because they are the
-user-facing pills of each section and nothing else consumes them:
+The behavior categories:
 
-- `biases`: `velocidad`, `memoria`, `percepción`, `contexto`, `juicio`
-- `designLaws`: `composición visual`, `interacción`, `percepción`
-- `mentalModels`: `pensamiento general`, `física, química y biología`,
-  `sistemas`, `matematicas`, `economía`, `militar y guerra`,
-  `humanidad y juicio` — a provisional list taken from
-  <https://fs.blog/mental-models/>
+- `biases`: `speed`, `memory`, `perception`, `context`, `judgment`
+- `designLaws`: `visual-composition`, `interaction`, `perception`
+- `mentalModels`: `general-thinking`, `physics-chemistry-biology`, `systems`,
+  `mathematics`, `economics`, `military-and-war`, `humanity-and-judgment` — a
+  provisional list taken from <https://fs.blog/mental-models/>
+
+Each category also has a colour pair in `global.css`
+(`--c-bias-category-*`, `--c-model-category-*`, `--c-design-category-*`); a new
+value needs its tokens too.
 
 ## 3. `sourceSchema` — sources are frontmatter, not a collection
 
@@ -87,7 +98,9 @@ described once. Only `category` stays per collection, since each has its own
 enum (§2).
 
 It is **a function, not a plain object**, because `cover` needs `image()`, which
-only exists inside the `schema` callback of `defineCollection`.
+only exists inside the `schema` callback of `defineCollection`. Each collection
+calls it, `.extend()`s it with its `category`, then applies
+`editedAfterPublished`.
 
 `contentCount` must be unique **within its own collection**: it feeds the card
 code (`DSG-001`), and `get-behavior-entries.ts` throws at build time naming the
