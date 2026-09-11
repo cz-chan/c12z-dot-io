@@ -9,11 +9,10 @@ interface Props {
 	pageDescription: string;
 	ogImage?: string;
 	ogImageAlt?: string;
-	pageKeywords: PageKeywords;
+	pageKeywords?: PageKeywords;
 }
 
-const { pageTitle, pageDescription, ogImage, ogImageAlt, pageKeywords } =
-	Astro.props;
+const { pageTitle, pageDescription, ogImage, ogImageAlt } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -22,8 +21,6 @@ const ogImageUrl = ogImage
 	? new URL(ogImage, Astro.site)
 	: new URL("./og-image.webp", Astro.site);
 const ogImageUrlAlt = ogImageAlt || pageTitle;
-
-const keywords = processKeywords(pageKeywords).keywords;
 ---
 
 <title>{pageTitle}</title>
@@ -95,19 +92,8 @@ const keywords = processKeywords(pageKeywords).keywords;
 {/* SOLO PARA EL MAIN: NO HAY TAGS*/}
 <meta
 	property="og:type"
-	content="article"
+	content="website"
 />
-{
-	keywords &&
-		keywords.map((keyword: string) => {
-			return (
-				<meta
-					property="article:tag"
-					content={keyword}
-				/>
-			);
-		})
-}
 
 {/* Twitter */}
 <meta
