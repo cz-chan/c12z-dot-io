@@ -21,7 +21,7 @@ export const SITE_VERSION = "v1.14.05";
 export const SITE_DEFAULT_CONFIG: SiteDefaultConfig = {
 	title: "Chema Ferrandez - c12z",
 	description:
-		"Un 'building(me) in public' donde comparto aquello que voy haciendo, aprendiendo y pensando en mi carrera sobre Growth, Behavioral Dev y Product.",
+		"Un building(me) in public donde comparto aquello que voy haciendo, aprendiendo y pensando en mi carrera sobre Growth, Behavioral, Code y Producto.",
 	url: "https://c12z.io",
 	author: "Chema Ferrandez | cz",
 	location: "es_ES",
