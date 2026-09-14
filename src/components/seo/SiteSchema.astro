@@ -1,0 +1,42 @@
+---
+import { OWN_PROJECTS } from "@/global/own-projects.ts";
+import { SITE_DEFAULT_CONFIG } from "@/global/site-info.ts";
+import {
+	PERSON_ID,
+	projectsToSchema,
+} from "@/utils/seo/structured-data.schema.ts";
+
+const SITE_URL = SITE_DEFAULT_CONFIG.url;
+
+const schema = {
+	"@context": "https://schema.org",
+	"@graph": [
+		{
+			"@type": "Person",
+			"@id": PERSON_ID,
+			name: "Chema Ferrández",
+			url: `${SITE_URL}`,
+			sameAs: [
+				"https://works.c12z.io",
+				"https://github.com/cz-chan",
+				"https://linkedin.com/in/chemaferrandez",
+			],
+		},
+		{
+			"@type": "WebSite",
+			"@id": "https://c12z.io/#website",
+			name: "c12z.io",
+			url: `${SITE_URL}`,
+			author: { "@id": PERSON_ID },
+			publisher: { "@id": PERSON_ID },
+		},
+		...projectsToSchema(OWN_PROJECTS),
+	],
+};
+---
+
+<script
+	is:inline
+	type="application/ld+json"
+	set:html={JSON.stringify(schema)}
+/>

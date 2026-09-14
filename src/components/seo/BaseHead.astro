@@ -1,9 +1,4 @@
 ---
-/**
- * TODO: HACER EL RSS -> <link rel="alternate" type="application/rss+xml" title={SITE.title} href={new URL("rss.xml", Astro.site)}/>
- * TODO: HACER MANIFEST -> <link rel="manifest" href="/site.webmanifest" />
- *
- */
 import { ClientRouter } from "astro:transitions";
 
 import GA4 from "@/analytics/GA4.astro";
@@ -12,6 +7,7 @@ import AhrefsAnalytics from "@/analytics/AhrefsAnalytics.astro";
 import Overtracking from "@/analytics/Overtracking.astro";
 
 import Favicons from "@/seo/Favicons.astro";
+import SiteSchema from "@/seo/SiteSchema.astro";
 
 interface Props {
 	robotsIndex?: "index" | "noindex";
@@ -97,18 +93,8 @@ const { robotsFollow = "follow", robotsIndex = "index" } = Astro.props;
 		rel="sitemap"
 		href="/sitemap-index.xml"
 	/>
-	{
-		/* TODO:: webmanifest y rss */
-		/*
-      <link rel="manifest" href="/site.webmanifest" />
-      <link
-        rel="alternate"
-        type="application/rss+xml"
-        title={SITE.title}
-        href={new URL("rss.xml", Astro.site)}
-      />
-    */
-	}
+
+	<SiteSchema />
 
 	<slot />
 </head>
