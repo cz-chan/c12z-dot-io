@@ -11,9 +11,9 @@ const SOURCE_CATEGORIES = [
 	"quote",
 ] as const;
 
-export type SourceCatgeoreis = (typeof SOURCE_CATEGORIES)[number];
+export type SourceCatgeories = (typeof SOURCE_CATEGORIES)[number];
 
-export const SOURCES_CATEGORY_LABELS: Record<SourceCatgeoreis, string> = {
+export const SOURCES_CATEGORY_LABELS: Record<SourceCatgeories, string> = {
 	article: "artículo",
 	book: "libro",
 	lecture: "charla",
