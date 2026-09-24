@@ -1,18 +1,21 @@
 ---
-import styles from "./footer.module.css"
+import styles from "./footer.module.css";
 import SocialBlock from "@/icons/social/SocialBlock.astro";
-
 ---
 
 <footer class={styles.footer}>
-  <hr class={styles.divider} />
-  <section class={styles.elements}>
-    <p class={styles.love}>
-      with 🖤 - <a
-        class={styles.context}
-        href="/contexto"
-        title="Contexto de Chema Ferréndez - c12z">chema</a>
-    </p>
-  <SocialBlock />
-  </section>
+	<hr class={styles.divider} />
+	<section class={styles.elements}>
+		<p class={styles.love}>
+			with 🖤 - <a
+				class={styles.toWorks}
+				target="_blank"
+				rel="noopener"
+				href="https://works.c12z.io/context"
+				title="Contexto de Chema Ferréndez - c12z"
+				>chema</a
+			>
+		</p>
+		<SocialBlock />
+	</section>
 </footer>

@@ -27,6 +27,26 @@
 				color: var(--accent);
 				letter-spacing: var(--tracking-widest);
 			}
+
+			& .toWorks {
+				text-decoration: underline;
+				text-decoration-color: #614f68;
+				text-decoration-thickness: var(--sp-05);
+				text-underline-offset: var(--sp-1);
+
+				&::after {
+					content: "";
+					display: inline-block;
+					width: var(--sp-4);
+					height: var(--sp-4);
+					margin-left: var(--sp-1);
+					vertical-align: middle;
+					background-color: currentColor;
+					mask-image: url("/icons/go-out.svg");
+					mask-size: contain;
+					mask-repeat: no-repeat;
+				}
+			}
 		}
 	}
 }
