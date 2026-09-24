@@ -53,11 +53,21 @@
 	}
 }
 
+/* --cat-surface is tuned as a background (the card chip carries --fg on it),
+ * so as text it sits at ~2.5:1. The pill keeps its hue and chroma but pins
+ * the lightness per theme, which lands every category above 6:1. */
 .pill {
-	color: var(--cat-surface);
+	--pill-ink: oklch(from var(--cat-surface) 0.7 calc(c * 1.15) h);
+	--pill-fill: 30%;
+
+	color: var(--pill-ink);
 	border: var(--hairline);
-	border-color: color-mix(in srgb, var(--cat-surface) 55%, transparent);
-	background-color: color-mix(in srgb, var(--cat-surface) 12%, white 2%);
+	border-color: var(--pill-ink);
+	background-color: color-mix(
+		in srgb,
+		var(--cat-surface) var(--pill-fill),
+		transparent
+	);
 
 	width: fit-content;
 	padding: var(--sp-1) var(--sp-2);
@@ -67,4 +77,9 @@
 	font-weight: bold;
 	text-transform: lowercase;
 	white-space: nowrap;
+}
+
+:global([data-theme="light"]) .pill {
+	--pill-ink: oklch(from var(--cat-surface) 0.45 calc(c * 1.15) h);
+	--pill-fill: 14%;
 }
