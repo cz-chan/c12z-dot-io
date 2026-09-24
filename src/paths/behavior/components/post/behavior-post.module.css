@@ -57,15 +57,13 @@
 	color: var(--cat-surface);
 	border: var(--hairline);
 	border-color: color-mix(in srgb, var(--cat-surface) 55%, transparent);
-	background-color: color-mix(in srgb, var(--cat-surface) 18%, transparent);
+	background-color: color-mix(in srgb, var(--cat-surface) 12%, white 2%);
 
 	width: fit-content;
 	padding: var(--sp-1) var(--sp-2);
 	border-radius: var(--r-pill);
-	font-family: var(--ff-pixel);
 	font-size: var(--t-micro);
-	line-height: var(--lh-micro);
-	letter-spacing: var(--tracking-widest);
+	letter-spacing: 0.2em;
 	font-weight: bold;
 	text-transform: lowercase;
 	white-space: nowrap;
