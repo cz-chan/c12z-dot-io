@@ -82,7 +82,7 @@ src/paths/behavior/
 ```
 
 **Naming.** Something lives in the path that uses it; once 2+ paths need it, it
-graduates to `src/components/`, `src/global/` or `src/lib/` — not before.
+graduates to `src/components/`, `src/config/` or `src/lib/` — not before.
 
 A folder is named after **the item** it holds, in English, plural when it is a
 collection (`biases`, `books`, `design-laws`, `mental-models`, `notes`,
@@ -103,14 +103,18 @@ src/
 ├── components/        shared UI by role — see §6
 ├── content/           content entries (md/mdx), one folder per collection
 ├── content.config.ts  Zod schemas — see §5
+├── config/            site data & constants — see §7
 ├── paths/             one folder per domain — see §2 and §9
-├── global/            site config — see §7
 ├── layouts/           MainLayout.astro, Layout404Error.astro
-├── lib/               cross-cutting non-UI code (content-categories/, og/)
+├── lib/               project logic, non-UI (content-categories/, og/, seo/)
 ├── pages/             routes, and nothing else — see §4 and §8
 ├── styles/            global.css (tokens), typo.css, lettering.css
-└── utils/             pluralize, validating-date
+└── utils/             generic helpers, no domain knowledge (pluralize, date)
 ```
+
+`utils/` vs `lib/` vs `config/`: a util could be copied to another project
+unchanged; `lib/` knows this site (its content, its SEO, its OG images);
+`config/` is data, not logic.
 
 ## 4. `src/pages/` only routes
 
@@ -178,7 +182,7 @@ number independently: biases 1..n, mental models 1..n, design laws 1..n.
 `backlog: "wip" | "upload"` is the site-wide draft switch: it decides whether a
 card is clickable or shown as not available yet.
 
-Dates are `DD/MM/YYYY`, validated by `src/utils/validating-date.ts`. A post
+Dates are `DD/MM/YYYY`, validated by `src/utils/date.ts`. A post
 cannot be edited before it was published — enforced with `.refine()` after the
 object, since it needs two fields at once.
 
@@ -252,7 +256,7 @@ one of them:
 
 | Page                  | Component                                      | Fed by                                              |
 | --------------------- | ---------------------------------------------- | --------------------------------------------------- |
-| listing (`index`)     | `PagesSEO`                                     | `PAGES.<section>` in `src/global/pages-info.ts`     |
+| listing (`index`)     | `PagesSEO`                                     | `PAGES.<section>` in `src/config/pages-info.ts`     |
 | detail (`[...id]`)    | `paths/<name>/seo/<Name>SEO.content.astro` → `ContentSEO` | the entry (or the topic, in sources)  |
 | `/404`                | `Error404SEO`                                  | `SITE_404_CONFIG`                                   |
 
@@ -276,12 +280,13 @@ absolute URL (`new URL(path, Astro.site)`), dates go through
 `convertDateToISO8601`, and OG images are `.webp`/`.png`/`.jpg` — never
 `.avif`, which X, Facebook and LinkedIn don't render.
 
-## 7. `src/global/` — site configuration
+## 7. `src/config/` — site configuration
 
 - **`site-info.ts`** — `SITE_VERSION`, `SITE_DEFAULT_CONFIG`, `SITE_404_CONFIG`
 - **`pages-info.ts`** — `PAGES`, per-section SEO metadata with its OG images,
   validated at build time by a Zod schema (title ≤60, description 110-160)
 - **`socialmedia-links.ts`** — `SOCIAL_LINKS`
+- **`own-projects.ts`** — `OWN_PROJECTS`, fed to the JSON-LD in `SiteSchema`
 - **`collection-keys.ts`** — `COLLECTION_KEYS`, guarded by
   `satisfies Record<CollectionKey, CollectionKey>`, so commenting a collection
   out of `content.config.ts` without updating this file fails the type-check
@@ -354,7 +359,7 @@ map of the site.
 
 Cross-cutting, one per folder: `@/ui/*`, `@/icons/*`, `@/seo/*`, `@/mdx/*`,
 `@/layout/*`, `@/analytics/*` (the six that collapse `src/components/`), plus
-`@/lib/*`, `@/global/*`, `@/layouts/*`, `@/utils/*`, `@/assets/*`, `@/styles/*`.
+`@/lib/*`, `@/config/*`, `@/layouts/*`, `@/utils/*`, `@/assets/*`, `@/styles/*`.
 
 **There is no `@/*` catch-all.** That is what enforces the rule: `@/components/...`
 and `@/paths/...` don't resolve, so a skipped alias fails the type-check instead
@@ -396,7 +401,7 @@ There is no fetching or state library: the site is 100% static.
 - **Change how a behavior post looks** → `behavior/components/post/`, once for
   all three sections.
 - **SEO/meta** → `components/seo/` (shared) or `paths/<name>/seo/` — §6.
-- **Dates** → `src/utils/validating-date.ts`, UTC only — §5.
+- **Dates** → `src/utils/date.ts`, UTC only — §5.
 - **OG images** → `src/lib/og/` + `src/pages/og/`, and read `og-images.md` first.
 - **The sources drawer** → `paths/behavior/paths/sources/`, and `paths/sources.md`.
 - **Theming/colors** → `src/styles/global.css`.

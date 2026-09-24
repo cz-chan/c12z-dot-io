@@ -12,7 +12,7 @@ served at `/og/{section}/{slug}.png`. That PNG is what `og:image` /
 
 **Not everything is generated.** Listing pages and the sources topic pages use
 static images from `public/og/pages/*.webp`, referenced from `PAGES` in
-`src/global/pages-info.ts` (`public/og-image.webp` is the fallback). Static OG
+`src/config/pages-info.ts` (`public/og-image.webp` is the fallback). Static OG
 images are `.webp`, never `.avif`: X, Facebook and LinkedIn don't render it.
 
 There is no runtime generation, ever, in production: after the build,

@@ -77,7 +77,7 @@ Each path holds:
 
 There is no `styles/` folder: a CSS Module lives next to the component it styles.
 
-Something lives in the path that uses it. Once **2+ paths** need it, it graduates to `src/components/`, `src/global/`, or `src/lib/` — not before.
+Something lives in the path that uses it. Once **2+ paths** need it, it graduates to `src/components/`, `src/config/`, or `src/lib/` — not before.
 
 **Types follow the same rule — there is no `src/interfaces/` folder.** A type lives in the file that owns it: component props as `interface Props` inside the `.astro`/`.tsx` itself (never `Astro.props as X` — that silences errors), data shapes next to the data they describe. Only a type with 2+ consumers graduates to `src/lib/`. Don't suffix names with `Interface`.
 
@@ -102,6 +102,12 @@ stays flat (`mdx/QuoteCard.astro`).
 
 `mdx/` is why those have no importer in `.astro` files: the `.mdx` import them.
 That is their normal state, not dead code.
+
+**`utils/` vs `lib/` vs `config/`** — `src/utils/` holds generic helpers with no
+domain knowledge (`pluralize`, `date`): they could be copied to another project
+unchanged. `src/lib/` is non-UI code that knows this site (`content-categories/`,
+`og/`, `seo/structured-data.ts`). `src/config/` is data, not logic (site info,
+`PAGES`, social links, `COLLECTION_KEYS`).
 
 **OG images** — `src/lib/og/` renders social images with `@vercel/og` + `sharp` at build time.
 
@@ -169,7 +175,7 @@ Two components in `src/components/seo/`, one per kind of page — pick by page,
 not by taste:
 
 - **Listing pages (`index.astro`) → `PagesSEO`**, fed straight from `PAGES` in
-  `src/global/pages-info.ts` (`title`, `description`, `ogImage`, `ogImageAlt`).
+  `src/config/pages-info.ts` (`title`, `description`, `ogImage`, `ogImageAlt`).
   No keywords: `PagesSEO` doesn't accept them. Pass `ogImage` — without it the
   page falls back to the generic `/og-image.webp`.
 - **Detail pages (`[...id].astro`) → the path's `seo/<Name>SEO.content.astro`**,
@@ -202,7 +208,7 @@ Every path has its own `@<name>-path/*` alias — **always import through it**, 
 **There is no `@/*` catch-all either.** Every alias is declared explicitly, in
 three groups: the `@<name>-path/*` domains, the six that collapse
 `src/components/` (`@/ui`, `@/icons`, `@/seo`, `@/mdx`, `@/layout`,
-`@/analytics`), and the rest of `src/` (`@/lib`, `@/global`, `@/layouts`,
+`@/analytics`), and the rest of `src/` (`@/lib`, `@/config`, `@/layouts`,
 `@/utils`, `@/assets`, `@/styles`). Dropping the catch-all is what makes the
 previous rule enforced rather than merely documented: `@/paths/...` and
 `@/components/...` no longer resolve, so TypeScript fails the build instead of
@@ -228,7 +234,7 @@ The schemas themselves are in `src/content.config.ts`, their reasoning in
 
 ### Dates
 
-Frontmatter dates are `DD/MM/YYYY` and `src/utils/validating-date.ts` is the
+Frontmatter dates are `DD/MM/YYYY` and `src/utils/date.ts` is the
 only place that turns one into a `Date` — never `new Date(string)`, which reads
 it as US `MM/DD`.
 

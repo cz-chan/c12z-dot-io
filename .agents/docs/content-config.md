@@ -15,7 +15,7 @@
 const dateField = z.string().refine(isValidDateFormat);
 ```
 
-Dates are `DD/MM/YYYY`. `isValidDateFormat` (`src/utils/validating-date.ts`)
+Dates are `DD/MM/YYYY`. `isValidDateFormat` (`src/utils/date.ts`)
 throws when the format or the date itself is wrong.
 
 It catches an impossible date (`31/02`) by building it with `parseDate` and
@@ -138,7 +138,7 @@ Note the original draft validated dates with its own inline `.refine()` on
 `editedAfterPublished` (§1), like every other collection.
 
 To revive it: add `essays: essayCollection` to the `collections` export, and add
-the key to `COLLECTION_KEYS` in `src/global/collection-keys.ts` — the
+the key to `COLLECTION_KEYS` in `src/config/collection-keys.ts` — the
 `satisfies Record<CollectionKey, CollectionKey>` there fails the type-check if
 the two files disagree.
 

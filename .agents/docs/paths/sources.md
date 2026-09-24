@@ -192,7 +192,7 @@ have no content of their own, so there is **no generated OG image per topic**:
 every topic uses the static `PAGES.sources.ogImage`, made absolute with
 `new URL(…, Astro.site)`.
 
-Dates are NOT parsed here: `parseDate` in `src/utils/validating-date.ts` is
+Dates are NOT parsed here: `parseDate` in `src/utils/date.ts` is
 the only place that turns "DD/MM/YYYY" into a `Date`; `get-topics.ts` sorts
 with it and `SourcesSEO` converts with `convertDateToISO8601`.
 `new Date()` must never be used on a frontmatter date — it reads them as
