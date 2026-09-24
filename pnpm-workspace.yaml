@@ -5,6 +5,10 @@ minimumReleaseAgeExclude:
   - react-dom@19.2.8
   - react@19.2.8
   - astro@7.2.9
+  - '@lucide/astro@1.48.0'
+  - framer-motion@13.4.2
+  - motion-dom@13.4.2
+  - motion@13.4.2
 onlyBuiltDependencies:
   - esbuild
   - sharp
