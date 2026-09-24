@@ -1,4 +1,4 @@
-import type { Project } from "@/utils/seo/structured-data.schema.ts";
+import type { Project } from "@/lib/seo/structured-data.ts";
 
 export const OWN_PROJECTS: Project[] = [
 	{ type: "WebApplication", name: "qiip", url: "https://qiip.me" },
