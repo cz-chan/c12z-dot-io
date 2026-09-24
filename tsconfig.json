@@ -25,7 +25,7 @@
 			"@/analytics/*": ["./src/components/analytics/*"],
 
 			"@/lib/*": ["./src/lib/*"],
-			"@/global/*": ["./src/global/*"],
+			"@/config/*": ["./src/config/*"],
 			"@/layouts/*": ["./src/layouts/*"],
 			"@/utils/*": ["./src/utils/*"],
 			"@/assets/*": ["./src/assets/*"],
