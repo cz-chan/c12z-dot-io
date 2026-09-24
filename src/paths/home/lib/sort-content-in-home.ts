@@ -4,7 +4,7 @@ import {
 	SECTION_LISTS,
 	type SectionItem,
 } from "@home-path/lib/section-lists.ts";
-import { parseDate } from "@/utils/validating-date.ts";
+import { parseDate } from "@/utils/date.ts";
 import { NOTES_CATEGORY_LABELS } from "@/lib/content-categories/notes.categories";
 
 const byNewest = (
