@@ -413,6 +413,10 @@ main {
 	flex: 1;
 	margin-top: var(--sp-7);
 	padding-bottom: var(--sp-9);
+
+	@media (width < 64rem) {
+		margin-top: var(--sp-2);
+	}
 	max-width: var(--screen-md);
 	margin-inline: auto;
 	transition: color 0.4s var(--ease);
