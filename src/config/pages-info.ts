@@ -12,7 +12,7 @@
 
 import { z } from "astro/zod";
 
-const OG_IMAGE_DEFAULT = "/og/og-image.webp";
+export const OG_IMAGE_DEFAULT = "/og/og-image.webp";
 const OG_IMAGE_LIBRARY = "/og/pages/og-image-library.webp";
 const OG_IMAGE_BEHAVIOR = "/og/pages/og-image-behavior.webp";
 const OG_IMAGE_SOURCES = "/og/pages/og-image-sources.webp";

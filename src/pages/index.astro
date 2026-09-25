@@ -1,4 +1,5 @@
 ---
+import { OG_IMAGE_DEFAULT } from "@/config/pages-info.ts";
 import { SITE_DEFAULT_CONFIG } from "@/config/site-info.ts";
 
 import MainLayout from "@/layouts/MainLayout.astro";
@@ -12,6 +13,7 @@ import Home from "@home-path/components/Home.astro";
 		slot="head"
 		pageTitle={SITE_DEFAULT_CONFIG.title}
 		pageDescription={SITE_DEFAULT_CONFIG.description}
+		ogImage={OG_IMAGE_DEFAULT}
 	/>
 	<Home />
 </MainLayout>
