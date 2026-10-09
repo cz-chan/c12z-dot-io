@@ -2,6 +2,8 @@
 import styles from "./book.module.css"
 import type { CollectionEntry } from "astro:content";
 
+import { ContentRoute } from "@/lib/routes/content-route.ts";
+
 import BookScore from "@books-path/components/BookScore.astro";
 import BookCover from "@books-path/components/BookCover.astro";
 import BookCategory from "@books-path/components/BookCategory.astro";
@@ -14,6 +16,8 @@ interface Props {
 const { entry, index } = Astro.props;
 const { data, id } = entry;
 const { quote, title, readingTime, backlog } = data;
+
+const href = ContentRoute.getLink(entry)
 const eager = index < 4;
 ---
 
@@ -24,7 +28,7 @@ const eager = index < 4;
     {
       backlog === "upload" ? (
         <a
-          href={`/biblioteca/${id}`}
+          href={href}
           class={styles.link}
         >
           <BookCover
@@ -48,7 +52,7 @@ const eager = index < 4;
       {
         backlog === "upload" ? (
           <h2>
-            <a class={styles.bookTitle} href={`/biblioteca/${id}`}>{title}</a>
+            <a class={styles.bookTitle} href={href}>{title}</a>
           </h2>
         ) : (
           <h2 class={styles.wip}>{title}</h2>
