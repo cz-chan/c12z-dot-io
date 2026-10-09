@@ -5,7 +5,8 @@ import {
 	type SectionItem,
 } from "@home-path/lib/section-lists.ts";
 import { parseDate } from "@/utils/date.ts";
-import { NOTES_CATEGORY_LABELS } from "@/lib/content-categories/notes.categories";
+import { NOTES_CATEGORY_LABELS } from "@/lib/content-categories/notes.categories.ts";
+import { ContentRoute } from "@/lib/routes/content-route.ts";
 
 const byNewest = (
 	a: { data: { publishDate: string } },
@@ -14,10 +15,10 @@ const byNewest = (
 	parseDate(b.data.publishDate).getTime() -
 	parseDate(a.data.publishDate).getTime();
 
-const BEHAVIOR_COLLECTIONS = {
-	biases: { basePath: "/behavior/sesgos", meta: "/sesgos" },
-	mentalModels: { basePath: "/behavior/modelos-mentales", meta: "/modelos" },
-	designLaws: { basePath: "/behavior/diseño", meta: "/diseño" },
+const BEHAVIOR_META = {
+	biases: "/sesgos",
+	mentalModels: "/modelos",
+	designLaws: "/diseño",
 } as const;
 
 const [
@@ -52,11 +53,11 @@ const recentBook: SectionItem[] = uploadedBooks
 	.sort(byNewest)
 	.slice(0, 4)
 	.map((entry) => {
-		const { data, id } = entry;
+		const { data } = entry;
 		const { author, title, publishDate } = data;
 		return {
 			text: title,
-			href: `/biblioteca/${id}`,
+			href: ContentRoute.getLink(entry),
 			meta: `${author.name ?? ""} · ${publishDate.split("/")[2]}`,
 		};
 	});
@@ -65,11 +66,10 @@ const recentBehavior: SectionItem[] = uploadedBehavior
 	.sort(byNewest)
 	.slice(0, 4)
 	.map((entry) => {
-		const { basePath, meta } = BEHAVIOR_COLLECTIONS[entry.collection];
 		return {
 			text: entry.data.title,
-			href: `${basePath}/${entry.id}`,
-			meta,
+			href: ContentRoute.getLink(entry),
+			meta: BEHAVIOR_META[entry.collection],
 		};
 	});
 
@@ -78,7 +78,7 @@ const recentProject: SectionItem[] = uploadedProject
 	.slice(0, 4)
 	.map((entry) => ({
 		text: entry.data.projectTitle,
-		href: `/proyectos/${entry.id}`,
+		href: ContentRoute.getLink(entry),
 		meta: `@${entry.data.why}`,
 	}));
 
@@ -87,7 +87,7 @@ const recentNotes: SectionItem[] = [...notesEntries]
 	.slice(0, 4)
 	.map((entry) => ({
 		text: entry.data.title,
-		href: `/notas/${entry.id}`,
+		href: ContentRoute.getLink(entry),
 		meta: NOTES_CATEGORY_LABELS[entry.data.category],
 	}));
 
