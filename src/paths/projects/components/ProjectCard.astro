@@ -1,31 +1,25 @@
 ---
 import styles from "./project.module.css";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { type CollectionEntry } from "astro:content";
 
 import ProjectCover from "@projects-path/components/ProjectCover.astro";
+import { ContentRoute } from "@/lib/routes/content-route";
 
 interface Props {
 	entry: CollectionEntry<"projects">;
 	index: number;
 }
 
-export async function getStaticPaths() {
-	const projects = await getCollection("projects");
-
-	return projects.map((entry) => ({
-		params: { id: entry.id },
-		props: { entry },
-	}));
-}
-
 const { entry, index } = Astro.props;
 const { data, id } = entry;
 const { projectTitle, projectDescription } = data;
 const eager = index < 6;
+
+const href = ContentRoute.getLink(entry);
 ---
 
 <section class={styles.projectCard}>
-	<a href={`/proyectos/${id}`}>
+	<a href={href}>
 		<ProjectCover
 			entry={entry}
 			eager={eager}
