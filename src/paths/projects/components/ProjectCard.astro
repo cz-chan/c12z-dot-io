@@ -2,8 +2,9 @@
 import styles from "./project.module.css";
 import { type CollectionEntry } from "astro:content";
 
+import { ContentRoute } from "@/lib/routes/content-route.ts";
+
 import ProjectCover from "@projects-path/components/ProjectCover.astro";
-import { ContentRoute } from "@/lib/routes/content-route";
 
 interface Props {
 	entry: CollectionEntry<"projects">;
