@@ -7,6 +7,7 @@ import { convertDateToISO8601 } from "@/utils/date.ts";
 import { formatNoteDate } from "@notes-path/lib/format-note-date.ts";
 import SourceBadges from "@notes-path/components/SourceBadges.astro";
 import { NOTES_CATEGORY_LABELS } from "@/lib/content-categories/notes.categories.ts";
+import { ContentRoute } from "@/lib/routes/content-route";
 
 interface Props {
 	entry: CollectionEntry<"notes">;
@@ -16,6 +17,8 @@ interface Props {
 const { entry, index } = Astro.props;
 const { title, excerpt, publishDate, sources, illustration, category } =
 	entry.data;
+
+const href = ContentRoute.getLink(entry);
 ---
 
 <li
@@ -58,12 +61,12 @@ const { title, excerpt, publishDate, sources, illustration, category } =
 			class={styles.title}
 			transition:name={`${entry.id}-note-title`}
 		>
-			<a href={`/notas/${entry.id}`}>{title}</a>
+			<a href={href}>{title}</a>
 		</h2>
 		<p class={styles.excerpt}>{excerpt}</p>
 		<a
 			class={styles.readLink}
-			href={`/notas/${entry.id}`}
+			href={href}
 			>Leer nota</a
 		>
 		{
