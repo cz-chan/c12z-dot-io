@@ -16,6 +16,7 @@ import Barcode from "@behavior-path/icons/Barcode.astro";
 import Neuron from "@behavior-path/icons/Neuron.astro";
 import Prism from "@behavior-path/icons/Prism.astro";
 import Pattern from "@behavior-path/icons/Pattern.astro";
+import { ContentRoute } from "@/lib/routes/content-route";
 
 interface Props {
 	entry: BehaviorEntry;
@@ -58,15 +59,7 @@ const WATERMARKS = {
 
 const Watermark = WATERMARKS[section];
 
-const basePath = BehaviorSectionData.find(
-	(item) => item.collection === section,
-)?.href;
-
-if (!basePath) {
-	throw new Error(
-		`[BehaviorCard] no href in BehaviorSectionData for the "${section}" collection.`,
-	);
-}
+const href = ContentRoute.getLink(entry);
 
 const code = formatCode(section, contentCount);
 
@@ -117,7 +110,7 @@ const prefix = SECTION_CODES[section];
 			>
 				<a
 					class={styles.link}
-					href={`${basePath}/${entry.id}`}
+					href={href}
 					>{title}</a
 				>
 			</h2>
