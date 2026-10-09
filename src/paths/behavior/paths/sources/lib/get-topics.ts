@@ -2,6 +2,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 
 import { parseDate } from "@/utils/date.ts";
 import type { Source } from "@sources-path/lib/source-types.ts";
+import { ContentRoute } from "@/lib/routes/content-route";
 
 /**
  * A topic = a bias, a mental model or design pattern that HAS sources. It is the unit the
@@ -35,36 +36,37 @@ const toState = (backlog: "wip" | "upload"): Topic["state"] =>
 	backlog === "wip" ? "estudiando" : "publicado";
 
 /**
- * The shape of a topic, in one place. Both collections share `id`,
- * `backlog`, `publishDate` and `sources`; only the name field and the
- * route change, so those two arrive already resolved.
- *
- * This build a frontmatter (aka object)
+ * The shape of a topic, in one place. The three collections share `id`,
+ * `backlog`, `publishDate` and `sources`; only the name field changes, so
+ * it arrives already resolved. The link to the post is built by
+ * `ContentRoute` from the entry itself.
  */
 const buildTopic = (
 	entry: SourcedEntry,
 	kind: Topic["kind"],
 	name: string,
-	basePath: string,
 ): Topic => ({
 	id: `${kind}-${entry.id}`,
 	slug: entry.id,
 	kind,
 	name,
-	href: entry.data.backlog === "upload" ? `${basePath}/${entry.id}` : undefined,
+	href:
+		entry.data.backlog === "upload"
+			? `${ContentRoute.getLink(entry)}`
+			: undefined,
 	state: toState(entry.data.backlog),
 	date: entry.data.publishDate,
 	sources: entry.data.sources,
 });
 
 const biasToTopic = (entry: CollectionEntry<"biases">) =>
-	buildTopic(entry, "sesgo", entry.data.title, "/behavior/sesgos");
+	buildTopic(entry, "sesgo", entry.data.title);
 
 const modelToTopic = (entry: CollectionEntry<"mentalModels">) =>
-	buildTopic(entry, "modelo", entry.data.title, "/behavior/modelos-mentales");
+	buildTopic(entry, "modelo", entry.data.title);
 
 const designToTopic = (entry: CollectionEntry<"designLaws">) =>
-	buildTopic(entry, "diseño", entry.data.title, "/behavior/diseño");
+	buildTopic(entry, "diseño", entry.data.title);
 
 /**
  * A topic with no sources never reaches the drawer, so it never shows an
